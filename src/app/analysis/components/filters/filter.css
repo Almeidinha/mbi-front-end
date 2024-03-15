@@ -1,0 +1,54 @@
+.filter-card .ant-tabs-nav-list {
+  gap: 4px;
+}
+
+.filter-card  .ant-tabs-tab {
+  background-color: lightblue!important;
+  border-radius: 8px!important;
+  margin: 4px 0 0 0!important;
+  padding: 4px!important;
+  border: 1px solid gray!important;
+  border-bottom-left-radius: 0!important;
+  border-bottom-right-radius: 0!important;
+  border-bottom: 0!important;
+}
+
+.filter-card  .ant-tabs-tab .ant-tabs-tab-active {
+
+}
+
+.ant-tree-node-content-wrapper {
+  /*display: flex;*/
+}
+
+.title-wrapper {
+  align-items: center;
+}
+
+.ant-tree-node-content-wrapper  {
+  /*background-color: lightblue!important;*/
+}
+
+.filter-tree .title-wrapper .icon-wrapper {
+  gap: 4px;
+  display: flex;
+  margin: 0 12px;
+}
+
+.filter-tree .title-wrapper .anticon {
+  color: #4183bc;
+}
+
+.filter-tree .title-wrapper .anticon:hover {
+  transform: scale(1.2);
+  transition: 0.1s ease-in-out;
+}
+
+.ant-tree-title {
+  cursor: auto;
+}
+
+.filter-tree {
+  width: 100%;
+  padding: 12px 24px;
+}

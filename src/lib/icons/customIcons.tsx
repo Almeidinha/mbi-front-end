@@ -1,0 +1,140 @@
+import Icon, { CustomIconComponentProps } from "@ant-design/icons/lib/components/Icon";
+
+const KeySvg = () => (
+  <svg focusable="false" aria-hidden="true" viewBox="0 0 32 32" width="1em" height="1em" fill="currentColor">
+    <path d="M22 0c-5.523 0-10 4.477-10 10 0 0.626 0.058 1.238 0.168 1.832l-12.168 12.168v6c0 1.105 0.895 2 2 2h2v-2h4v-4h4v-4h4l2.595-2.595c1.063 0.385 2.209 0.595 3.405 0.595 5.523 0 10-4.477 10-10s-4.477-10-10-10zM24.996 10.004c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"></path>
+  </svg>
+);
+
+const KeyFillSvg = () => (
+  <svg focusable="false" aria-hidden="true" viewBox="0 0 32 32" width="1em" height="1em" fill="currentColor">
+    <path d="M22 0c-5.523 0-10 4.477-10 10 0 0.625 0.074 1.227 0.184 1.816l-12.184 12.184v8h12v-4h4v-4h4v-4l0.184-0.184c0.589 0.11 1.191 0.184 1.816 0.184 5.523 0 10-4.477 10-10s-4.477-10-10-10zM22.008 12c-1.105 0-2-0.895-2-2s0.895-2 2-2 2 0.895 2 2-0.895 2-2 2z"></path>
+  </svg>
+);
+
+const FilterDataSvg = () => (
+  <svg focusable="false" aria-hidden="true" viewBox="0 0 512 512" width="1em" height="1em">
+    <path pointerEvents="none" fill="none" d="M0 0h512v512H0z"/>
+    <path d="M85 448h21v20H85v-20zM291 489h21v21h-21v-21zM177 489h21v20h-21v-20zM322 429h21v20h-21v-20zM312 2H208c-6 0-10 5-10 10v142c0 5 4 10 10 10h104c6 0 10-5 10-10V12c0-5-4-10-10-10zm-31 101h-42V83h42v20zm0-40h-42V42h42v21zM167 2H63c-6 0-11 5-11 10v142c0 5 5 10 11 10h104c5 0 10-5 10-10V12c0-5-5-10-10-10zm-31 101H94V83h42v20zm0-40H94V42h42v21zM457 2H354c-6 0-11 5-11 10v142c0 5 5 10 11 10h103c6 0 11-5 11-10V12c0-5-5-10-11-10zm-31 101h-41V83h41v20zm0-40h-41V42h41v21zM465 197c-2-2-5-3-8-3H63c-6 0-11 5-11 10 0 3 1 5 3 7l164 170v107c0 4 2 7 6 9a10 10 0 0 0 11-1l62-51c2-2 4-5 4-8v-56l163-170c4-4 4-10 0-14zM266 314c-3 2-8 2-12 0l-42-31 13-16 25 18v-50h21v50l24-18 13 16-42 31zM385 372h21v20h-21v-20zM385 469h21v21h-21v-21z" fill="#4182bc"/>
+    <path d="M136 379h21v22h-21v-22z" fill="#4182bc"/>
+  </svg>
+);
+
+const AddFilterSvg = () => (
+  <svg focusable="false" aria-hidden="true" viewBox="0 0 512 512" width="1em" height="1em">
+    <path fillOpacity="0" pointerEvents="none" d="M0 0h512v512H0z"/>
+    <path d="M-1-1h512v512H-1z" fillOpacity="0" pointerEvents="none"/>
+    <path fillOpacity="0" pointerEvents="none" d="M-1-1h512v512H-1z"/>
+    <path d="M254 5C115 5 3 40 3 83v47l188 188v157c0 17 28 31 63 31 34 0 62-14 62-31V318l188-188V83c0-43-112-78-250-78zM49 73c12-7 28-13 48-19 43-12 99-18 157-18s113 6 157 18c19 6 35 12 47 19 8 4 12 8 14 10-2 2-6 6-14 10-12 7-28 13-47 19-44 11-99 18-157 18s-114-7-157-18c-20-6-36-12-48-19-8-4-12-8-14-10 2-2 6-6 14-10z" fill="#4183bc"/>
+    <g transform="matrix(.70789 0 0 -.70789 -37 561)" clipPath="url(#clipPath855)">
+      <g clipPath="url(#clipPath2094)" fill="#4182bc" transform="translate(-2 2)">
+        <g clipPath="url(#clipPath3084)" transform="translate(4 -9)">
+          <g clipPath="url(#clipPath4118)" transform="translate(-10 -16)">
+            <path d="M679 382h-88v-77h-73v-84h73v-77h88v77h77v84h-77z" fill="#4182bc"/>
+          </g>
+        </g>
+      </g>
+    </g>
+  </svg>
+);
+
+const SetSquareSvg = () => (
+  <svg focusable="false" aria-hidden="true" viewBox="0 0 512 512" width="1em" height="1em">
+    <path pointerEvents="none" fill="none" d="M0 0h512v512H0z"/>
+    <path d="M501 481L37 5c-8-7-19-7-26 0-3 3-5 8-5 13v150h28c10 0 18 8 18 18s-8 18-18 18H6v36h28c10 0 18 8 18 18s-8 18-18 18H6v43h28c10 0 18 7 18 18s-8 18-18 18H6v35h28c10 0 18 8 18 18s-8 18-18 18H6v68c0 10 8 18 18 18h464c10 0 18-8 18-18 0-5-2-9-5-13zm-371-88V277l111 116H130z" fill="#4183bc"/>
+  </svg>
+);
+
+const CubeStackSvg = () => (
+  <svg focusable="false" aria-hidden="true" viewBox="0 0 512 512" width="1em" height="1em">
+    <path pointerEvents="none" fill="none" d="M0 0h512v512H0z"/>
+    <path d="M2 291l1 151c0 2 1 4 3 4l120 64h3l1 1a5 5 0 0 0 5 0l119-64 2-3 3 2 120 64h3l1 1a5 5 0 0 0 5 0l119-64c2-1 3-3 3-5V285v-1l-1-1v-1a6 6 0 0 0-1-1h-1v-1l-123-59h-2V65v-1-1-1l-1-1a6 6 0 0 0-1-1h-1L257 0l-5 1-121 63c-2 1-3 2-3 4v153h-1L5 284c-1 1-3 3-3 5v2zM365 65l-107 60-113-56 110-58 110 54zm7 155l-108 57V134l108-60v146zm19 135l108-61v145l-108 59V355zm-119-66l110-57 110 54-106 59-114-56zm-134 66l108-61v145l-108 59V355zM19 289l110-57 110 54-106 59-114-56z" fill="#4183bc"/>
+  </svg>
+);
+
+const DatabaseSvg = () => (
+  <svg focusable="false" aria-hidden="true" viewBox="0 0 512 512" width="1em" height="1em">
+    <rect width="512" height="512" fillOpacity="0" pointerEvents="none"/>
+    <path transform="matrix(2.426 0 0 2.426 -2692.7 -412.32)" d="m1299.3 312.6c-0.4 0.4-0.8 0.9-1.2 1.3-0.6 0.6-1.4 1.3-2.1 1.9-0.5 0.4-0.9 0.8-1.3 1.2-0.9 0.7-1.8 1.3-2.8 2-0.4 0.3-0.8 0.6-1.3 0.9-1.5 1-3 1.9-4.7 2.8-17 9.2-42.5 14.4-69.8 14.4s-52.7-5.3-69.8-14.4c-1.7-0.9-3.2-1.8-4.7-2.8-0.5-0.3-0.9-0.7-1.4-1-0.9-0.6-1.9-1.3-2.7-1.9-0.5-0.4-0.9-0.8-1.4-1.2l-2.1-1.8c-0.4-0.4-0.8-0.9-1.2-1.3-0.6-0.6-1.1-1.2-1.6-1.8l-0.3-0.3v33.2c0 18.9 39 34.8 85.1 34.8s85.1-15.9 85.1-34.8v-33.2l-0.3 0.3c-0.4 0.5-1 1.1-1.5 1.7zm-83.3-141.2c-46.1 0-85.1 15.9-85.1 34.8 0 7.4 6.2 14.8 17.5 20.9 16.4 8.8 41 13.9 67.6 13.9s51.2-5.1 67.6-13.9c11.3-6.1 17.5-13.5 17.5-20.9 0-18.8-38.9-34.8-85.1-34.8zm0 62.5c-34.2 0-63.2-11.1-63.2-24.2 0-12.9 18.9-18.9 19.8-19.2 1.2-0.4 2.5 0.3 2.8 1.5 0.4 1.2-0.3 2.5-1.5 2.8-0.2 0.1-16.6 5.3-16.6 14.9 0 9.1 25.6 19.7 58.6 19.7 1.3 0 2.3 1 2.3 2.3 0.1 1.1-0.9 2.2-2.2 2.2zm83.3-12.9c-0.4 0.4-0.8 0.9-1.2 1.3-0.6 0.6-1.4 1.3-2.1 1.9-0.5 0.4-0.9 0.8-1.3 1.2-0.9 0.7-1.8 1.3-2.8 2-0.4 0.3-0.8 0.6-1.3 0.9-1.5 1-3 1.9-4.7 2.8-17 9.2-42.5 14.4-69.8 14.4s-52.7-5.3-69.8-14.4c-1.7-0.9-3.2-1.8-4.7-2.8-0.5-0.3-0.9-0.7-1.4-1-0.9-0.6-1.9-1.3-2.7-1.9-0.5-0.4-0.9-0.8-1.4-1.2l-2.1-1.8c-0.4-0.4-0.8-0.9-1.2-1.3-0.6-0.6-1.1-1.2-1.6-1.8l-0.3-0.3v33c0 7.4 6.2 14.8 17.5 20.9 16.4 8.8 41 13.9 67.6 13.9s51.2-5.1 67.6-13.9c11.3-6.1 17.5-13.5 17.5-20.9v-33.2l-0.3 0.3c-0.4 0.7-1 1.3-1.5 1.9zm-0.1 45.9c-0.4 0.4-0.8 0.9-1.2 1.3-0.7 0.6-1.4 1.3-2.1 1.9-0.4 0.4-0.8 0.8-1.3 1.1-0.9 0.7-1.8 1.4-2.8 2-0.4 0.3-0.8 0.6-1.3 0.9-1.5 1-3 1.9-4.7 2.8-17 9.2-42.5 14.4-69.8 14.4s-52.7-5.3-69.8-14.4c-1.7-0.9-3.2-1.8-4.7-2.8-0.5-0.3-0.9-0.7-1.4-1-0.9-0.6-1.9-1.3-2.7-1.9-0.5-0.4-0.9-0.8-1.4-1.2l-2.1-1.8c-0.4-0.4-0.8-0.9-1.2-1.3-0.6-0.6-1.1-1.2-1.6-1.8l-0.3-0.3v33.2c0 7.4 6.2 14.8 17.5 20.9 16.4 8.8 41 13.9 67.6 13.9s51.2-5.1 67.6-13.9c11.3-6.1 17.5-13.5 17.5-20.9v-33.2l-0.3 0.3c-0.3 0.5-0.9 1.1-1.5 1.8z" fill="#4182bc"/>
+  </svg>
+);
+
+const FunctionSvg = () => (
+  <svg focusable="false" aria-hidden="true" viewBox="0 0 512 512" width="1em" height="1em">
+    <path fill="#4183bc" d="M384 85v64h-149l106 107-106 107h149v64h-256v-43l139-128-139-128v-43h256z"></path>
+  </svg>
+);
+
+const CalculatorSvg = () => (
+  <svg focusable="false" aria-hidden="true" viewBox="0 0 512 512" width="1em" height="1em">
+    <path fill="#4183bc" d="M192 32h-160c-17.6 0-32 14.4-32 32v160c0 17.6 14.398 32 32 32h160c17.6 0 32-14.4 32-32v-160c0-17.6-14.4-32-32-32zM192 160h-160v-32h160v32zM448 32h-160c-17.602 0-32 14.4-32 32v416c0 17.6 14.398 32 32 32h160c17.6 0 32-14.4 32-32v-416c0-17.6-14.4-32-32-32zM448 320h-160v-32h160v32zM448 224h-160v-32h160v32zM192 288h-160c-17.6 0-32 14.4-32 32v160c0 17.6 14.398 32 32 32h160c17.6 0 32-14.4 32-32v-160c0-17.6-14.4-32-32-32zM192 416h-64v64h-32v-64h-64v-32h64v-64h32v64h64v32z"></path>
+  </svg>
+);
+
+const AddSequenceSvg = () => (
+  <svg focusable="false" aria-hidden="true" viewBox="0 0 512 512" width="1em" height="1em">
+    <path fillOpacity="0" pointerEvents="none" d="M0 0h512v512H0z"/>
+    <path d="M0 0h512v512H0z" fillOpacity="0" pointerEvents="none"/>
+    <path fillOpacity="0" pointerEvents="none" d="M0 0h512v512H0z"/>
+    <path d="M213 429v-50h61l-11-15h-50v-51h111v28l13 6V185l1-5v-11h7c3-3 8-5 13-5h60c5 0 10 2 13 5h21v58h-13v16h13v54h-13v16h13v28l15-6V28c0-10-8-18-18-18H23c-9 0-17 8-17 18v398c0 7 3 12 7 15v3h6l4 1h299l-12-16h-97zM338 26h111c2 0 3 1 3 2v53H338V26zm0 70h114v57H338V96zM213 26h111v55H213V26zm0 70h111v57H213V96zm0 73h111v58H213v-58zm0 74h111v54H213v-54zM74 429H22l-1-3v-47h53v50zm0-65H21v-51h53v51zm0-67H21v-54h53v54zm0-70H21v-58h53v58zm0-74H21V96h53v57zm124 276H89v-50h109v50zm0-65H89v-51h109v51zm0-67H89v-54h109v54zm0-70H89v-58h109v58zm0-74H89V96h109v57zm0-72H89V26h109v55zm306 262L390 499c-1 2-3 3-5 3s-3-1-5-3L267 343a7 7 0 0 1 0-8c1-2 4-3 7-2l75 32V181c0-4 3-6 6-6h60c4 0 6 2 6 6v184l76-32c2-1 5 0 7 2v8z" fill="#4183bc"/>
+</svg>
+);
+
+const OpenFolderSvg = () => (
+  <svg focusable="false" aria-hidden="true" viewBox="0 0 512 512" width="1em" height="1em">
+    <path fillOpacity="0" pointerEvents="none" d="M0 0h512v512H0z"/>
+    <path d="M396.091 421.887c1.083-.382 1.985-.955 2.887-1.337 9.742-6.876 19.664-13.561 29.586-20.056V142.442c0-21.393-15.695-36.864-35.9-36.864H275.222V92.589c0-25.595-16.958-44.314-38.967-44.314H65.413c-21.829 0-41.132 18.72-41.132 44.314v322.04c0 3.63.902 6.876 1.624 10.315l.36.19c.722 3.63 1.805 6.877 3.248 10.124h349.08c4.33-3.247 8.659-6.685 13.169-9.741 1.082-1.529 2.525-2.866 4.33-3.63z" fill="#4182bc"/>
+    <path transform="matrix(1.804 0 0 1.91 -268.332 -328.966)" d="M366.5 230.5c9.2 0 15.9 7.2 15.9 16.3v120.4c2.7-2.9 5.3-5.8 8-8.8V246.8c0-6.4-2.4-12.2-7-16.7-4.5-4.5-10.5-6.6-16.9-6.6h-61.1v-2.8c0-7.4-2.5-14.1-7.3-19.3-4.9-5.4-11.3-7.9-18.3-7.9h-94.7c-14.2 0-26.8 11.8-26.8 27.2v168.6c0 1.7.4 3.3.7 4.8h8.3v-.6l.1-.1c-.2-1.3-.1-2.6-.1-4.1V220.7c0-11.2 7.7-20.2 17.8-20.2h94.7c10 0 17.6 9 17.6 20.2v9.8h69.1z" fill="#fff" stroke="#4182bc" strokeWidth="5"/>
+    <path d="M400.962 416.73c0 11.652-7.937 22.157-18.22 22.157H76.057c-10.464 0-19.664-10.505-19.664-22.157V148.173c0-11.652 9.2-20.63 19.664-20.63h306.685c10.463 0 18.22 8.978 18.22 20.63V416.73z" fill="#fff"/>
+    <path d="M375.242 453.67c2.278 0 4.303-.269 6.329-.537-2.026 0-4.304.536-6.33.536z" fill="#3a2f28"/>
+    <path d="M140.28 147.218h228.21v9.55H140.28v-9.55zM91.03 169.375h277.46v9.55H91.03v-9.55z" fill="#4182bc"/>
+    <g>
+      <path d="M420.846 420.587c-3.747 10.391-14.81 20.782-24.803 20.782H37.378c-9.814 0-14.81-10.39-10.885-20.782l72.269-197.432c3.747-10.391 14.81-17.948 24.803-17.948h358.664c9.814 0 14.81 7.557 10.885 17.948l-72.268 197.432z" fill="#4182bc"/>
+      <path d="M369.8 405h-201c-3.6 0-6.9-1.7-8.9-4.5-2.2-3.3-2.6-7.7-1-11.9l40.5-104.5c2.7-6.9 10.2-12.1 17.6-12.1h201c4 0 7.3 1.5 9.2 4.3 2 2.9 2.2 6.6.7 10.6l-40.5 104.5c-2.6 6.6-10 13.6-17.6 13.6zM217 280c-4.1 0-8.6 3.1-10.1 6.9l-40.5 104.5c-.6 1.7-.6 3.4.1 4.5.5.7 1.2 1.1 2.3 1.1h201c3.5 0 8.5-4.1 10.1-8.4l40.5-104.5c.5-1.4.6-2.6.2-3.2-.4-.5-1.3-.9-2.6-.9H217z" fill="#fff" stroke="#4182bc" strokeWidth="5" paintOrder="fill" transform="matrix(1.7844 0 0 1.8893 -263.65 -316.24)"/>
+    </g>
+  </svg>
+);
+
+export const KeyIcon = (props: Partial<CustomIconComponentProps>) => (
+  <Icon component={KeySvg} {...props} />
+);
+
+export const KeyFillIcon = (props: Partial<CustomIconComponentProps>) => (
+  <Icon component={KeyFillSvg} {...props} />
+);
+
+export const FilterDataIcon = (props: Partial<CustomIconComponentProps>) => (
+  <Icon component={FilterDataSvg} {...props} />
+);
+
+export const AddFilterIcon = (props: Partial<CustomIconComponentProps>) => (
+  <Icon component={AddFilterSvg} {...props} />
+);
+
+export const SetSquareIcon = (props: Partial<CustomIconComponentProps>) => (
+  <Icon component={SetSquareSvg} {...props} />
+);
+
+export const CubeStackIcon = (props: Partial<CustomIconComponentProps>) => (
+  <Icon component={CubeStackSvg} {...props} />
+);
+
+export const DatabaseIcon = (props: Partial<CustomIconComponentProps>) => (
+  <Icon component={DatabaseSvg} {...props} />
+);
+
+export const FunctionIcon = (props: Partial<CustomIconComponentProps>) => (
+  <Icon component={FunctionSvg} {...props} />
+);
+
+export const CalculatorIcon = (props: Partial<CustomIconComponentProps>) => (
+  <Icon component={CalculatorSvg} {...props} />
+);
+
+export const AddSequenceIcon = (props: Partial<CustomIconComponentProps>) => (
+  <Icon component={AddSequenceSvg} {...props} />
+);
+
+export const OpenFolderIcon = (props: Partial<CustomIconComponentProps>) => (
+  <Icon component={OpenFolderSvg} {...props} />
+);

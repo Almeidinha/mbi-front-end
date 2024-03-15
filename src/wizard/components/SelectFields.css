@@ -1,0 +1,99 @@
+.ant-table label.ant-checkbox-wrapper-disabled {
+  display: none;
+}
+
+.source-table .ant-table-selection-column,
+.dimension-table .ant-checkbox,
+.metric-table .ant-checkbox,
+.fields-table .ant-checkbox,
+.fields-table .ant-radio  {
+  display: none;
+}
+
+.source-table .ant-table-cell .ant-table-cell-with-append,
+.fields-table .ant-table-cell .ant-table-cell-with-append {
+  padding-left: 12px;
+}
+
+.custom-table-wrapper {
+  width: 100%;
+}
+
+.custom-table-wrapper .ant-table-wrapper {
+  border-right: 1px solid #f0f0f0;
+}
+
+.ant-table-wrapper .ant-table-container {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.dimension-table .ant-table-body, 
+.metric-table .ant-table-body,
+.fields-table .ant-table-body,
+.source-table .ant-table-body {
+  margin-right: -6px;
+}
+
+
+.dimension-table .ant-table-tbody tr:last-of-type td,
+.metric-table .ant-table-tbody tr:last-of-type td,
+.fields-table .ant-table-tbody tr:last-of-type td {
+  border-bottom: 0;
+}
+
+.source-table .ant-table-tbody .ant-table-cell,
+.dimension-table .ant-table-tbody .ant-table-cell,
+.metric-table .ant-table-tbody tr .ant-table-cell,
+.fields-table .ant-table-tbody tr .ant-table-cell {
+  border-right: 0;
+  border-inline-end: 0!important;
+}
+
+.dimension-table .ant-table-container,
+.metric-table .ant-table-container,
+.fields-table .ant-table-container,
+.source-table .ant-table-container {
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.custom-table-title {
+  background-color: #fafafa;
+  border: 1px solid #f0f0f0;
+  border-bottom: 0;
+  border-top-right-radius: 6px;
+  border-top-left-radius: 6px;
+}
+
+.custom-table-title h5 {
+  margin: 12px 24px;
+}
+
+.select-fields-form {
+  border: 1px solid #f0f0f0;
+  padding: 24px !important;
+  border-radius: 6px;
+}
+
+
+
+div::-webkit-scrollbar-thumb {
+  background-color: #E5E7EB;
+}
+div:hover::-webkit-scrollbar-thumb {
+  background-color: #E5E7EB;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-thumb {
+  min-height: 50px;
+  border: 0;
+  background-clip: padding-box;
+  border-radius: 1em;
+}
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}

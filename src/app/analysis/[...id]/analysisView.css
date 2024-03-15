@@ -1,0 +1,47 @@
+
+.analysis-table .ant-table-tbody .ant-table-row .ant-table-cell {
+  padding: 0!important;
+  height: 0!important;
+}
+
+.analysis-table-wrapper {  
+  width: 100%;
+}
+
+.analysis-table-wrapper .custom-table-header {
+  background-color: #fafafa;
+  border: 1px solid  rgb(51, 119, 204);
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  border-bottom: none;
+  padding: 12px;
+}
+
+.analysis-table-wrapper .ant-table-container {
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+
+.analysis-table-wrapper .ant-table-wrapper .ant-table-container table>thead>tr:first-child >*:last-child {
+  border-start-end-radius: 0;  
+}
+
+.analysis-table-wrapper .ant-table-wrapper .ant-table-container table>thead>tr:first-child >*:first-child {
+  border-start-start-radius: 0;
+}
+
+.custom-table-header .anticon:hover {
+  transform: scale(1.2);
+  transition: 0.1s ease-in-out;
+}
+
+.analysis-table .ant-table-cell {
+  border-color: rgb(51, 119, 204)!important;
+  border-inline-end-color: rgb(51, 119, 204)!important;
+  border-inline-start-color: rgb(51, 119, 204)!important;
+}
+
+.analysis-table .ant-table-container {
+  border-inline-start-color: rgb(51, 119, 204)!important;
+  border-top-color: rgb(51, 119, 204)!important;
+} 
