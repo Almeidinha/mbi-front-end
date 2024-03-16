@@ -50,7 +50,7 @@ const Table: React.FC<TableProps> = memo((props: TableProps) => {
         className={`table editable ${
             tableSelectedId === table.id ? 'table-selected' : ''
         }`}
-        style={{ borderColor: table.theme }}
+        style={{ borderColor: table.theme, width: tableWidth -12}}
         onMouseOver={() => setTableSelectId(table.id)}
         onMouseOut={() => setTableSelectId(null)}
       >

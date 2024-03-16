@@ -14,8 +14,8 @@ const columns: ColumnsType<FieldType> = [
     title: 'Name',
     key: 'name',
     dataIndex: 'name',
+    width: '100%',
     render: (text, record) => <span>{`${record.tableName}.${text}`}</span>,
-    filterSearch: true,
   },
 ]
 
@@ -68,7 +68,7 @@ const FieldsConfiguration: React.FC = () => {
         name: data.name,
         type: data.type,
         analyticType: data.analyticType,
-        title: data.title || data.tableName,
+        title: data.title || data.name,
         tableName: data.tableName,
         nickname: data.nickname || data.name,
         visualizationOrder: dimensions.length + (index + 1),
@@ -112,8 +112,6 @@ const FieldsConfiguration: React.FC = () => {
 
   }
 
-  console.log('selectedField >>', selectedField)
-
   return <Card type="inner">
     <Row>
       <Col span={12} style={{padding: '0 48px'}}>
@@ -124,7 +122,6 @@ const FieldsConfiguration: React.FC = () => {
             </Typography.Title>
           </div>
           <Table
-            style={{overflowY: 'auto'}}
             className='fields-table'
             columns={columns}
             dataSource={dataSource}

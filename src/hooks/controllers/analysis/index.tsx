@@ -16,10 +16,11 @@ export const useAnalysisController = (props: {analysisId?: number}) => {
   
   const { mutate: addAnalysis, isLoading: isAddingAnalysis, data: newIndicator, isSuccess: indicatorCreated } =  useMutation(
     QueryKeys.Keys.ADD_ANALYSIS,
-    (analysis: AnalysisInput) => addAnalysisFn(analysis),
+    (variables: {analysis: AnalysisInput, onSuccess?: () => void}) => addAnalysisFn(variables.analysis),
     {
-      onSuccess: () => {  
+      onSuccess: (_, variables) => {  
         queryClient.invalidateQueries(QueryKeys.Keys.FETCH_ANALYSIS_DTO_LIST);
+        variables.onSuccess?.();        
       },
       onError: (error) => {
         console.log('error > ', error)
@@ -29,10 +30,11 @@ export const useAnalysisController = (props: {analysisId?: number}) => {
 
   const { mutate: editAnalysis, isLoading: isEditingAnalysis, data: updatedIndicator, isSuccess: indicatorUpdated } = useMutation(
     QueryKeys.Keys.PUT_ANALYSIS,
-    (analysis: AnalysisInput) =>  putAnalysisFn(analysis),
+    (variables: {analysis: AnalysisInput, onSuccess?: () => void}) =>  putAnalysisFn(variables.analysis),
       {
-        onSuccess: () => {
-          queryClient.invalidateQueries({queryKey: [QueryKeys.Keys.FETCH_ANALYSIS, analysis?.id]})
+        onSuccess: (_, variables) => {
+          queryClient.invalidateQueries({queryKey: [QueryKeys.Keys.FETCH_ANALYSIS, analysis?.id]}),
+          variables.onSuccess?.(); 
         },
         onError: (error) => {
           // handle error
@@ -60,7 +62,6 @@ export const useAnalysisController = (props: {analysisId?: number}) => {
     (variables: {analysisId: number, add: boolean}) => addSequenceFn(variables.analysisId, variables.add),
     {
       onSuccess: (_, variables) => {
-        console.log('variables > ', variables)  
         queryClient.invalidateQueries({
           queryKey: [QueryKeys.Keys.FETCH_ANALYSIS_TABLE, variables.analysisId],
         });

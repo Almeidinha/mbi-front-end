@@ -3,10 +3,13 @@
 }
 
 .source-table .ant-table-selection-column,
-.dimension-table .ant-checkbox,
-.metric-table .ant-checkbox,
-.fields-table .ant-checkbox,
-.fields-table .ant-radio  {
+.source-table .ant-table-selection-col,
+.dimension-table .ant-table-selection-column,
+.dimension-table .ant-table-selection-col,
+.metric-table .ant-table-selection-column,
+.metric-table .ant-table-selection-col,
+.fields-table .ant-table-selection-column,
+.fields-table .ant-table-selection-col {
   display: none;
 }
 
@@ -96,4 +99,8 @@ div:hover::-webkit-scrollbar-thumb {
 }
 ::-webkit-scrollbar-corner {
   background-color: transparent;
+}
+
+.drag-handle {
+  cursor: grab;
 }

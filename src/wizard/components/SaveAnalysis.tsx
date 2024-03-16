@@ -1,15 +1,16 @@
 import { useAnalysisController } from '@/hooks/controllers/analysis'
 import { useAreaListController } from '@/hooks/controllers/area'
-import { Button, Card, Col, Form, Input, Row, Select } from 'antd'
+import { Button, Card, Col, Form, Input, Modal, Row, Select } from 'antd'
 import { useForm } from 'antd/es/form/Form'
 import React, { useEffect } from 'react'
 import useWizardState from '../hooks/use-wizard-state'
 import { debounce, isEmpty, isNil } from 'lodash'
-import { SaveOutlined } from '@ant-design/icons'
+import { QuestionCircleOutlined, SaveOutlined } from '@ant-design/icons'
 import { AnalysisInput } from '../types'
 import { AggregationType, AnalyticType, Endpoint, FieldType, LinkDict, UserDataType } from '@/ERDEngine/types'
-import { defaultTo, isDefined } from '@/lib/helpers/safe-navigation'
+import { defaultTo, is, isDefined } from '@/lib/helpers/safe-navigation'
 import { BIAnalysisField } from '@/lib/types/Analysis'
+import { navigate } from '@/app/api/redirect'
 
 const SaveAnalysis = () => {
 
@@ -47,17 +48,44 @@ const SaveAnalysis = () => {
     setDdbAnalysis
   } = useWizardState.useContainer();
 
+  const [modal, contextHolder] = Modal.useModal();
+
   useEffect(() => {
 
-    if (indicatorCreated) {
-      setDdbAnalysis(newIndicator)
+    const shouldRedirect = (id: number) => {
+      modal.confirm({
+        title: 'indicvador Criado!',
+        icon: <QuestionCircleOutlined />,
+        content: 'Deseja Abrilo ou ir para a Lista?',
+        footer: (_, { OkBtn, CancelBtn }) => (
+          <>
+            <CancelBtn />
+            <Button onClick={() => navigate('analysis/list')}>List</Button>
+            <OkBtn/>
+          </>
+        ),
+        okText: 'Abrir',
+        onOk: () => navigate(`analysis/${id}`),
+      });
     }
-    
-    if (indicatorUpdated) {
+
+    if (is(indicatorUpdated)) {
       setDdbAnalysis(updatedIndicator)
     }
 
-  },[indicatorCreated, newIndicator, updatedIndicator, indicatorUpdated, setDdbAnalysis])
+    if (!is(indicatorUpdated) && is(indicatorCreated)) {
+      setDdbAnalysis(newIndicator)
+    }
+
+    if (is(indicatorUpdated) || is(indicatorCreated)) {
+      shouldRedirect(newIndicator?.id! || updatedIndicator?.id!)  
+    }
+    
+    
+
+  },[indicatorCreated, newIndicator, updatedIndicator, indicatorUpdated, setDdbAnalysis, modal])
+
+
  
   const handleFormSubmit = () => {
     
@@ -115,10 +143,12 @@ const SaveAnalysis = () => {
     
     isDefined(analysis?.id ) 
       ? editAnalysis({
-        ...analysis,
-        id: analysis.id
-      }) 
-      : addAnalysis(analysis)  
+        analysis: {
+          ...analysis,
+          id: analysis.id
+        }}
+      ) 
+      : addAnalysis({analysis: analysis}) 
   }
 
   const insureLinksHasNoDuplicates = () => {
@@ -272,6 +302,7 @@ const SaveAnalysis = () => {
         </Form>
       </Col>
     </Row>
+    {contextHolder}
   </Card>
 }
 

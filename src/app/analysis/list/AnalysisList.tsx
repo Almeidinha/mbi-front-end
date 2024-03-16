@@ -109,9 +109,6 @@ const AnalysisList = () => {
     }
     
   }
-  
-  
-  console.log('analysis > ', analysis)
 
   return <Card type='inner'>
     

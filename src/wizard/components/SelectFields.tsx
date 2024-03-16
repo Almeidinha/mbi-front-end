@@ -2,10 +2,11 @@ import React, { useState } from 'react'
 import useWizardState from '../hooks/use-wizard-state'
 import { Button, Card, Col, Flex, Row, Space, Table, Tooltip, Typography, notification } from 'antd'
 import { ColumnsType } from 'antd/es/table'
-import { DeleteRowOutlined, FastBackwardOutlined, FastForwardOutlined, MinusOutlined, StepBackwardOutlined, StepForwardOutlined, TableOutlined } from '@ant-design/icons'
+import { DeleteRowOutlined, FastBackwardOutlined, FastForwardOutlined, MenuOutlined, MinusOutlined, StepBackwardOutlined, StepForwardOutlined, TableOutlined } from '@ant-design/icons'
 import { defaultTo, isNil } from 'lodash'
 import { AnalyticType, FieldType } from '@/ERDEngine/types'
 import { MessageType, getMessageIcon } from '@/lib/helpers/alerts'
+import ReactDragListView from 'react-drag-listview';
 import "./SelectFields.css"
 
 interface DataType {
@@ -40,9 +41,16 @@ const sourceColumns: ColumnsType<DataType> = [
 
 const destineColumns: ColumnsType<FieldType> = [
   {
+    title: "Operates",
+    key: "operate",
+    render: (text, record, index) =>
+    <MenuOutlined className="drag-handle"/>
+  },
+  {
     title: 'Dimensions',
     key: 'name',
     dataIndex: 'name',
+    width: '100%',
     render: (text, record) => <Space>
       <Typography.Text type='secondary' strong>{record.tableName}</Typography.Text> 
         <MinusOutlined />
@@ -184,6 +192,26 @@ const SelectFields: React.FC = () => {
     }))
   }))
 
+  const dimDragProps = {
+    onDragEnd(fromIndex: number, toIndex: number) {
+        const data = [...dimensions];
+        const item = data.splice(fromIndex, 1)[0];
+        data.splice(toIndex, 0, item);
+        setDimensions(data);
+    },
+    handleSelector: "svg",
+  };
+
+  const metDragProps = {
+    onDragEnd(fromIndex: number, toIndex: number) {
+        const data = [...metrics];
+        const item = data.splice(fromIndex, 1)[0];
+        data.splice(toIndex, 0, item);
+        setMetrics(data);
+    },
+    handleSelector: "svg",
+  };
+
   return <Card type="inner" >
       <Row>
         <Col span={10} style={{padding: '0 48px'}}>
@@ -246,21 +274,23 @@ const SelectFields: React.FC = () => {
                 Dimensões
               </Typography.Title>
               </div>
-              <Table
-                style={{ maxHeight: '200px', overflowY: 'auto'}}
-                className='dimension-table'
-                showHeader={false}
-                columns={destineColumns}
-                dataSource={dimensions}
-                pagination={false}
-                size="small"
-                bordered
-                onRow={onDimensionRowClick}
-                rowSelection={{
-                  type: 'checkbox',
-                  selectedRowKeys: dimensionKeys
-                }}
-              />
+              <ReactDragListView {...dimDragProps}>
+                <Table
+                  style={{ maxHeight: '200px', overflowY: 'auto'}}
+                  className='dimension-table'
+                  showHeader={false}
+                  columns={destineColumns}
+                  dataSource={dimensions}
+                  pagination={false}
+                  size="small"
+                  bordered
+                  onRow={onDimensionRowClick}
+                  rowSelection={{
+                    type: 'checkbox',
+                    selectedRowKeys: dimensionKeys
+                  }}
+                />
+              </ReactDragListView>
             </Space.Compact>
           </Row>
           <Row justify={'center'} style={{height:'50%'}} >
@@ -270,21 +300,23 @@ const SelectFields: React.FC = () => {
                   Métricas
                 </Typography.Title>
               </div>
-              <Table
-                style={{ maxHeight: '200px', overflowY: 'auto'}}
-                className='metric-table'
-                showHeader={false}
-                columns={destineColumns}
-                dataSource={metrics}
-                pagination={false}
-                size="small"
-                bordered
-                onRow={onMetricRowClick}
-                rowSelection={{
-                  type: 'checkbox',
-                  selectedRowKeys: metricsKeys
-                }}
-              />
+              <ReactDragListView {...metDragProps}>
+                <Table
+                  style={{ maxHeight: '200px', overflowY: 'auto'}}
+                  className='metric-table'
+                  showHeader={false}
+                  columns={destineColumns}
+                  dataSource={metrics}
+                  pagination={false}
+                  size="small"
+                  bordered
+                  onRow={onMetricRowClick}
+                  rowSelection={{
+                    type: 'checkbox',
+                    selectedRowKeys: metricsKeys
+                  }}
+                />
+              </ReactDragListView>
             </Space.Compact>            
           </Row>
         </Col>
