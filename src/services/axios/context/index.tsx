@@ -1,46 +1,44 @@
 "use client"
 
-/*
 import axios, { AxiosInstance } from "axios";
-import { createContext, useEffect, useRef, ReactNode } from "react";
+import { getSession } from "next-auth/react";
+import { createContext, useContext, useMemo } from "react";
 
-type ContextValue = AxiosInstance | undefined;
 
-export const AxiosContext = createContext<ContextValue>(undefined);
+export const AxiosContext = createContext<AxiosInstance | undefined>(undefined);
 
-type InstanceProvider =  {
-  config: {},
-  requestInterceptors?: never[],
-  responseInterceptors?: never[],
-  children: ReactNode
-}
-
-export const AxiosInstanceProvider = ({
-  config = {},
-  requestInterceptors = [],
-  responseInterceptors = [],
+export default function AxiosProvider({
   children,
-}: InstanceProvider) => {
-  
-  const instanceRef = useRef(axios.create(config));
+}: React.PropsWithChildren<unknown>) {
 
-  useEffect(() => {
-    requestInterceptors.forEach((interceptor) => {
-      instanceRef.current.interceptors.request.use(
-        interceptor
-      );
+  
+  const instance = useMemo(() => {
+    const axiosInstance = axios.create({
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
-    responseInterceptors.forEach((interceptor) => {
-      instanceRef.current.interceptors.response.use(
-        interceptor
-      );
+
+    axiosInstance.interceptors.request.use(async config => {
+      
+      const session = await getSession();
+
+      const token = session?.authToken;
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+
+      return config;
     });
+
+    return axiosInstance;
   }, []);
 
   return (
-    <AxiosContext.Provider value={instanceRef.current}>
-      {children}
-    </AxiosContext.Provider>
+    <AxiosContext.Provider value={instance}>{children}</AxiosContext.Provider>
   );
-};
-*/
+}
+
+export function useAxios() {
+  return useContext(AxiosContext);
+}

@@ -24,7 +24,7 @@ export default async function RootLayout({
 
   const session = await getServerSession(authOptions);
 
-  if (isNil(session) /*|| isNil(session.authToken)*/ ) {
+  if (isNil(session) || isNil(session.authToken) ) {
     redirect("/api/auth/signin")
   }
 

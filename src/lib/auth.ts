@@ -1,6 +1,9 @@
 import { randomBytes, randomUUID } from 'crypto';
 import { Account, AuthOptions, User } from 'next-auth';
 import CredentialsProvider from "next-auth/providers/credentials";
+import { isDefined, isNil } from './helpers/safe-navigation';
+import axios from 'axios';
+import { JwtAuthenticationResponse } from './types/responses';
 
 interface TUser extends User {
   authToken?: string | null
@@ -24,18 +27,25 @@ export const authOptions: AuthOptions = {
       CredentialsProvider({
         name: "Credentials",
         credentials: {
-          username: { label: "Username", type: "text", placeholder: "Nome" },
+          username: { label: "Username (email)", type: "text", placeholder: "Nome" },
           password: { label: "Password", type: "password", placeholder: "Senha" }
         },
         async authorize(credentials, req) {
-          // Add logic here to look up the user from the credentials supplied
-          const res = await fetch("https://jsonplaceholder.typicode.com/users/1")
-    
-          const user = await res.json()
-
+          
+          if(isNil(credentials)) {
+            return null  
+          }
+          
+          const authResponse = await autenticateUserFn(credentials.username!, credentials.password!)
+          
           // If no error and we have user data, return it
-          if (res.ok && user) {
-            console.log('returning user...')
+          if (authResponse && authResponse.authToken) {
+            const user: TUser = {
+              authToken: authResponse.authToken,
+              email: authResponse.email,
+              name: '',
+              id: '0'
+            }
             return user
           }
           // Return null if user data could not be retrieved
@@ -44,36 +54,24 @@ export const authOptions: AuthOptions = {
       })
     ],
     callbacks: {
-      async signIn({ user, account }: { user: TUser, account: Account | null }): Promise<boolean> {
-        /*if (isDefined(user) && user.email?.includes('@edvisor.io')) {
-          return Promise.resolve(true)
-        }
-        return Promise.resolve(false)*/
+      async signIn({ user, account }: { user: TUser, account: Account | null }): Promise<boolean> {        
         return Promise.resolve(true)
       },
       async session({ session, token }) {
         return { ...session,  authToken: token.authToken}
       },
-      async jwt({ token, account }) {
-        /*if (isDefined(account)) {
-          const client = getClient();
-
-          const { data } = await client.query({
-            query: gql`
-              query ($googleTokenId: String!){
-                getAuthToken(googleTokenId: $googleTokenId)
-              }
-            `,
-            variables: {
-              googleTokenId: account.id_token // account.access_token
-            }
-          })
-
-          return {...token, authToken: data.getAuthToken}
+      async jwt({ token, user }: { token: any | null, user: TUser | null }) {
+                
+        if(isDefined(user) && isDefined(user.authToken)) {
+          return {...token, authToken: user.authToken}
         }
-        return token
-        }*/
+ 
         return token
       }
     }
+  }
+
+  const autenticateUserFn = async (username: string, password: string) => {
+    const response = await axios.post<JwtAuthenticationResponse>(`${process.env.BASE_URL}/auth/signin`, {email: username, password})
+    return response.data;
   }
