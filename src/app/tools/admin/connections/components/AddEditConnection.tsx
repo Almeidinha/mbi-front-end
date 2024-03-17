@@ -36,8 +36,6 @@ const AddEditConnection = (props: IAddEditConnection) => {
     if (isNil(values.databaseTypeValue)) {
       return ""
     }
-    
-    console.log("values > ", values)
 
     const newUrl = [
       JdbcUrl[DatabaseTypes[values.databaseTypeValue] as keyof typeof JdbcUrl],

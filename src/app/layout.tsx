@@ -27,6 +27,7 @@ export default async function RootLayout({
   if (isNil(session) || isNil(session.authToken) ) {
     redirect("/api/auth/signin")
   }
+  
 
   return (
     <html lang="en">

@@ -3,8 +3,9 @@
 import { isDefined } from "@/lib/helpers/safe-navigation";
 import { User } from "@/lib/types/User";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { addUsersFn, deleteUserFn, getAllUsersFn, getUserByIdFn, patchUserFn, updateUserIndFavoriteFn } from "./queries";
+import { addUsersFn, deleteUserFn, getAllUsersFn, getUserByIdFn, getUserByIdMail, patchUserFn, updateUserIndFavoriteFn } from "./queries";
 import * as QueryKeys from "@/lib/types/QueryKeys";
+import { Session } from "next-auth";
 
 
 export const useUserController = (props: {userId?: number}) => {
@@ -113,4 +114,20 @@ export const useUserIndController = () => {
     updatingUserIndFavorite
   }
   
+}
+
+export const useUserSessionController = (email?: string) => {
+
+  const { isLoading: loadingUser, isError, data: user, refetch: reloadUsers } = useQuery(
+    QueryKeys.Keys.FETCH_SESSION_USER,
+    () => getUserByIdMail(email!),
+    { enabled: false}
+  );
+
+  return {
+    user,
+    reloadUsers,
+    loadingUser,
+    isError
+  }
 }

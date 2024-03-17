@@ -1,4 +1,4 @@
-import { User } from "@/lib/types/User";
+import { BIUserDTO, User } from "@/lib/types/User";
 import AxiosClient from "@/services/axios";
 
 export const getAllUsersFn = async () => {
@@ -25,6 +25,12 @@ export const getUserByIdFn = async (userId: number) => {
   const response = await AxiosClient.get<User>(`/user/${userId}`)
   return response.data;
 };
+
+export const getUserByIdMail = async (email: string) => {
+  const response = await AxiosClient.get<BIUserDTO>('/user/email/', {params: {email}})
+  return response.data;
+};
+
 
 export const updateUserIndFavoriteFn = async (userId: number, indicatorId: number) => {
   const response = await AxiosClient.post<void>(`/user-ind/toggle-favorite/${userId}/${indicatorId}`)

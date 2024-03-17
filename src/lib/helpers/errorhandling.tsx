@@ -1,25 +1,26 @@
 import axios from "axios";
 
 type ApiError = {
-  type: string;
-  title: string;
-  status: number;
-  detail: string;
-  instance: string;
+  error: string;
+  message: string;
+  path: number;
+  status: string;
+  trace: string;
 };
 
 function isApiErrorResponse(res: any): res is ApiError {
   return (
     res &&
-    "type" in res &&
-    "title" in res &&
+    "error" in res &&
+    "message" in res &&
+    "path" in res &&
     "status" in res &&
-    "detail" in res &&
-    "instance" in res
+    "trace" in res
   );
 }
 
 export const handleErrorMessage = (error: unknown) => {
+  
   if (!axios.isAxiosError(error)) {
     return "Unknown error";
   }
@@ -32,21 +33,7 @@ export const handleErrorMessage = (error: unknown) => {
     return error.message;
   }
 
-  return error.response.data.detail;
-};
+  const message = error.response.data.message;
 
-export const handleErrorCode = (error: unknown) => {
-  if (!axios.isAxiosError(error)) {
-    throw Error("Unknown error");
-  }
-
-  if (!error.response) {
-    return error.status;
-  }
-
-  if (!isApiErrorResponse(error.response.data)) {
-    return error.response.status;
-  }
-
-  return error.response.data.status;
+  return message
 };

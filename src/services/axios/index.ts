@@ -19,6 +19,7 @@ const AxiosClient = () => {
     
     if (session) {
       request.headers['Authorization'] = `Bearer ${session.authToken}`;
+      request.headers['userEmail'] = session.user.email;
     }
     
     return request;
@@ -28,9 +29,9 @@ const AxiosClient = () => {
     
     return response;
   },
-  (error: any) => {
+  /*(error: any) => {
       console.log(`error`, error);
-    },
+    },*/
   );
 
   return instance;

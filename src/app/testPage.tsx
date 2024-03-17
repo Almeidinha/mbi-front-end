@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import { useAppDispatch, useAppSelector } from './redux/hooks'
 import { decrement, increment, incrementByAmount } from './redux/features/counter/counter-slice'
-import { Button, Divider, Input, InputNumber, List, Select, Space, Typography } from 'antd'
+import { Button, Divider, InputNumber, List, Select, Space, Typography } from 'antd'
 import { useGetBreedsQuery } from './redux/features/dogs/dogs-api-slice'
 import Image from 'next/image'
 
