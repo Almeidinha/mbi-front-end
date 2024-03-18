@@ -9,6 +9,7 @@ export type User = {
 }
 
 export interface BIUserDTO {
+  id?: number;
   userGroupId: number;
   firstName: string;
   lastName: string;

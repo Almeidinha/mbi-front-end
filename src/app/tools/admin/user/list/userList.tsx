@@ -59,6 +59,12 @@ const UserList = () => {
       title: 'Group',
       key: 'group',
       dataIndex: 'group',
+      render: (_, record) => <>{record.userGroup?.name}</>,
+    },
+    {
+      title: 'Group Role',
+      key: 'role',
+      dataIndex: 'role',
       render: (_, record) => <>{record.userGroup?.roleCode}</>,
     },
     {

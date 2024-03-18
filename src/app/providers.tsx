@@ -5,7 +5,7 @@ import { MessageType, getMessageIcon } from "@/lib/helpers/alerts";
 import { handleErrorMessage } from "@/lib/helpers/errorhandling";
 import { ConfigProvider, Modal, notification } from "antd";
 import theme from "@/lib/themeConfig";
-import { SessionProvider, signOut, useSession } from "next-auth/react";
+import { SessionProvider, signOut } from "next-auth/react";
 import { QueryClientProvider, MutationCache, QueryCache, QueryClient } from "react-query";
 import { Provider } from "react-redux";
 import { isDefined } from "@/lib/helpers/safe-navigation";
@@ -30,8 +30,8 @@ export const AntdConfigProvider = ({ children }: Props) => {
 
 export const QueryClientWrapperProvider = ({ children }: Props) => {
 
-  const [api, contextHolder] = notification.useNotification();
-  const [modal] = Modal.useModal();
+  const [api, apiContext] = notification.useNotification();
+  const [modal, modalContext] = Modal.useModal();
 
   const queryClientConfig = new QueryClient({
     defaultOptions: {
@@ -52,6 +52,7 @@ export const QueryClientWrapperProvider = ({ children }: Props) => {
 
 
           if (errorMessage.includes('JWT expired')) {
+            console.log('goingo to log out?')
             modal.warning({
               title: "Session Expired",
               icon: <ExclamationCircleOutlined />,
@@ -101,7 +102,8 @@ export const QueryClientWrapperProvider = ({ children }: Props) => {
   });
 
   return <QueryClientProvider client={queryClientConfig}>
-    {contextHolder}
+    {apiContext}
+    {modalContext}
     {children}
   </QueryClientProvider>
 };
