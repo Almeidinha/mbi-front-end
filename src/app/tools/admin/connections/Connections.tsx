@@ -57,7 +57,7 @@ const Connections = () => {
     {
       title: 'Separador Decimal',
       key: 'decimalSeparator',
-      dataIndex: 'dateFormat'
+      dataIndex: 'decimalSeparator'
     },
     {
       title: 'Extra Properties',
