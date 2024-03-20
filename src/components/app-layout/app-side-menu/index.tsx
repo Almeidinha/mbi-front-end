@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation"
 import { useRouter } from 'next-nprogress-bar';
 import { useState } from "react";
 import { uniq } from "lodash";
-import { HomeOutlined, FundProjectionScreenOutlined, FolderOpenOutlined, DashboardOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
+import { HomeOutlined, FundProjectionScreenOutlined, FolderOpenOutlined, DashboardOutlined, MailOutlined, SettingOutlined, BugOutlined } from '@ant-design/icons';
 
 
 type MenuItem = Required<MenuProps>['items'][number];
@@ -62,9 +62,9 @@ const menuItems: MenuItem[] = [
     ]),
     getItem("Slide Show", "/tools/slideShow", null, [
       getItem("Manutenção", "/tools/slideShow/maintenance"),
-    ]),*/
-  ]),
-  
+    ]),*/ 
+  ],),
+  getItem("Test Page", "/testPage", <BugOutlined style={{fontSize: '24px'}} />),
 ]
 
 const menus = [

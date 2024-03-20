@@ -11,6 +11,7 @@ import { FilterType } from './types';
 import useAnalysisState from '../../hooks/use-analysis-state';
 import AddFilterModal from './AddFilterModal';
 import { findMetricFilter } from './helper';
+import { startCase, toLower } from 'lodash';
 
 interface ModalState {
   title: string;
@@ -192,7 +193,10 @@ const AnalysisFilter = (props: {indicatorId: number, onFinish?: () => void}) => 
 
   const filterAction = (link: string, filterType: FilterType, action : FilterAction) => {  
     
-    
+    if (action === FilterAction.ADD || action === FilterAction.REMOVE) { 
+      updateEditingFields(undefined, link)
+    }
+
     if (action === FilterAction.REMOVE) { 
       
       const input: FilterBuilderInput = {
@@ -216,7 +220,6 @@ const AnalysisFilter = (props: {indicatorId: number, onFinish?: () => void}) => 
         },
         indicatorId: indicator!.id!
       })
-      updateEditingFields(undefined, link)
       return
     }
 
@@ -253,7 +256,7 @@ const AnalysisFilter = (props: {indicatorId: number, onFinish?: () => void}) => 
         onClick={() => updateIndFilter({indicatorId, dto: stateFilters!, onSuccess: props.onFinish})}>Save</Button>
     </Space>
     <AddFilterModal
-      title={modalState.title}
+      title={startCase(toLower(modalState.title))}
       open={modalState.open}      
       destroyOnClose={true}
       onFinish={() => setModalState((prev) => ({...prev, open: false}))}

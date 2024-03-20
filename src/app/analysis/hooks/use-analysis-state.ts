@@ -41,7 +41,7 @@ const useAnalysisState = (): AnalysisState => {
         setEditingFields({
           connector: getKeyByValue(defaultTo(parentFilter?.connector, "AND"), ConnectorType) as ConnectorType, 
           field: childFilter.condition.field.fieldId, 
-          operator: getKeyByValue(childFilter.condition.operator.symbol!, OperatorTypeValues) as OperatorTypeValues, 
+          operator: childFilter.condition.operator.symbol as OperatorTypeValues, 
           value: childFilter.condition.value
         })
       }
@@ -63,7 +63,7 @@ const useAnalysisState = (): AnalysisState => {
     if (dimensionsHierarchy) {
       const {childFilter} = dimensionsHierarchy
       childFilter.condition.operator.symbol = operator, 
-      childFilter.condition.operator.description = operator, 
+      childFilter.condition.operator.description = startCase(getKeyByValue(operator, OperatorTypeValues) as OperatorTypeValues).toLocaleLowerCase(), 
       childFilter.condition.value = value
       childFilter.condition.valuesMap = value.split(";").reduce((acc: any, curr: any, index: number) => ({ ...acc, [index + 1]: curr }), {})
     }

@@ -4,7 +4,7 @@ import { useQuery } from "react-query";
 
 
 export const getTestFn = async () => {
-  const response = await AxiosClient.get<string>('/test/table/5');
+  const response = await AxiosClient.get<string>('/test/table/1');
   return response.data;
 };
 

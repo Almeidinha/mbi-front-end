@@ -11,10 +11,14 @@ import { Provider } from "react-redux";
 import { isDefined } from "@/lib/helpers/safe-navigation";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { clearStore } from "@/lib/helpers/localStorageUtils";
+import { isAxiosError } from "axios";
 
 type Props = {
   children?: React.ReactNode;
 };
+
+const MAX_RETRIES = 6;
+const HTTP_STATUS_TO_NOT_RETRY = [400, 401, 403, 404];
 
 export const NextAuthProvider = ({ children }: Props) => {
   return <SessionProvider>{children}</SessionProvider>;
@@ -39,8 +43,21 @@ export const QueryClientWrapperProvider = ({ children }: Props) => {
         refetchOnWindowFocus: false,
         refetchOnMount: false,
         refetchOnReconnect: false,
-        retry: 5,
         staleTime: 60 * 1000,
+        retry: (failureCount, error) => {
+          console.log('error', error)
+          if (failureCount > MAX_RETRIES) {
+            return false
+          }
+          if (isAxiosError(error)) {
+            const errorMessage = handleErrorMessage(error);
+            if (HTTP_STATUS_TO_NOT_RETRY.includes(error.response?.status ?? 0) || errorMessage.includes('JWT expired')) {
+              return false
+            }
+          }
+          return true;
+        }
+        
       },
     },
     queryCache: new QueryCache({
@@ -52,7 +69,6 @@ export const QueryClientWrapperProvider = ({ children }: Props) => {
 
 
           if (errorMessage.includes('JWT expired')) {
-            console.log('goingo to log out?')
             modal.warning({
               title: "Session Expired",
               icon: <ExclamationCircleOutlined />,

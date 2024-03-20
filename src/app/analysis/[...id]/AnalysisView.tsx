@@ -5,11 +5,12 @@ import { chunkArray, defaultTo, is, isDefined } from '@/lib/helpers/safe-navigat
 import { Card, Modal, Space, Table, Typography } from 'antd'
 
 import "./analysisView.css"
-import { FilterDataIcon, AddFilterIcon, AddSequenceIcon } from '@/lib/icons/customIcons'
+import { AddFilterIcon, AddSequenceIcon, RefreshIcon } from '@/lib/icons/customIcons'
 import { CloseCircleOutlined } from '@ant-design/icons'
 import { ReactNode, useEffect, useMemo, useState } from 'react'
 import AnalysisFilter from '../components/filters/Filter'
 import useAnalysisState from '../hooks/use-analysis-state'
+import { nanoid } from '@reduxjs/toolkit'
 
 interface IAnalysisView {
   indicatorId: number
@@ -21,6 +22,14 @@ type DataType = {
 
 interface Style {
   [key: string]: string;
+}
+
+const getHeaderTitle = (header: any) => {
+  if (isDefined(header.properties?.html)) {
+    return <div className='header' dangerouslySetInnerHTML={{__html: header.properties.html}}/>
+  }
+
+  return header.title;
 }
 
 const AnalysisView = (params: IAnalysisView) => {
@@ -86,7 +95,7 @@ const AnalysisView = (params: IAnalysisView) => {
 
     return defaultTo(table.headers, []).map((header: any, index: number) => {    
       return {
-        title: header.title,
+        title: getHeaderTitle(header),
         key: `${header.title}-${index}`,
         dataIndex: header.title,
         width: 100,
@@ -113,7 +122,8 @@ const AnalysisView = (params: IAnalysisView) => {
     return table?.headers.reduce((a: any, v: any, i: number) => ({ 
       ...a, 
       [v.title]: row[i].value, 
-      className: row[i].className 
+      className: row[i].className,
+      key: nanoid()
     }), {}) 
   })
 
@@ -133,6 +143,10 @@ const AnalysisView = (params: IAnalysisView) => {
     }
   }
 
+  const refreshAnalysis = () => {
+    reloadAnalysisResult()
+  }
+
   return <Card type='inner' /*style={{
       maxHeight: "100%",
     }} bodyStyle={{
@@ -147,7 +161,7 @@ const AnalysisView = (params: IAnalysisView) => {
         <Space.Compact style={{float: "right", gap: "4px"}}>
           <span onClick={handleFilterClick}><AddFilterIcon style={{fontSize: "24px", cursor: "pointer"}} /></span>
           <span onClick={handleSequenceClick}><AddSequenceIcon style={{fontSize: "24px", cursor: "pointer"}} /></span>
-          <span><FilterDataIcon style={{fontSize: "24px", cursor: "pointer"}}/></span>
+          <span onClick={refreshAnalysis}><RefreshIcon style={{fontSize: "24px", cursor: "pointer"}}/></span>
         </Space.Compact>
       </div>
     
@@ -155,7 +169,7 @@ const AnalysisView = (params: IAnalysisView) => {
         // scroll={{ y: 450 }}
         className='analysis-table'
         bordered
-        loading={loadingAnalysisResult || fetchingAnalysisResult}
+        loading={loadingAnalysisResult || fetchingAnalysisResult || isTogglingSequenceSequence}
         size='small'
         dataSource={data}
         columns={columns}
