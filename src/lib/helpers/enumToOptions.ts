@@ -1,6 +1,6 @@
 import { startCase, toLower } from "lodash";
 
-const enumToOptions = (enumObj: { [key: string]: any }, zeroBasedIndex: boolean = true, labelName: string = 'label', valueName: string = 'value'): { [x: string]: any; }[] => {
+const enumToOptions = (enumObj: { [key: string]: any }, disabledValues: Array<string | number> = [], labelName: string = 'label', valueName: string = 'value'): { [x: string]: any; }[] => {
   if (!enumObj) {
     return [];
   }
@@ -8,7 +8,8 @@ const enumToOptions = (enumObj: { [key: string]: any }, zeroBasedIndex: boolean 
     .filter(key => isNaN(Number(key))) || [])
     .map(key => ({
       [labelName]: startCase(toLower(key)),
-      [valueName]: zeroBasedIndex ? enumObj[key] : enumObj[key] + 1
+      [valueName]: enumObj[key],
+      disabled: disabledValues.includes(enumObj[key])
     }))
 }
 

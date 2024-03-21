@@ -7,7 +7,7 @@ import useAnalysisState from '../../hooks/use-analysis-state'
 import { FilterAction } from '@/lib/types/Filter'
 import { SaveOutlined } from '@ant-design/icons'
 import { useIndFilterMutationController } from '@/hooks/controllers/filters'
-import { isDefined } from '@/lib/helpers/safe-navigation'
+import { isDefined, isNil } from '@/lib/helpers/safe-navigation'
 import { getAnalysisFieldFromFieldDto } from './helper'
 import { startCase } from 'lodash'
 
@@ -22,6 +22,7 @@ interface IFilterModal extends ModalProps {
 const AddFilterModal = (props: IFilterModal) => {
 
   const [form] = useForm()
+  const formField = Form.useWatch('field', form);
 
   const {
     indicator,
@@ -47,6 +48,7 @@ const AddFilterModal = (props: IFilterModal) => {
     }
 
   }, [buildedFilter, setFilters])
+
 
   const initialValues: EditingFields = {
     connector: editingFields?.connector,
@@ -94,6 +96,16 @@ const AddFilterModal = (props: IFilterModal) => {
     .filter((field) => field.fieldType === (props.filterType === FilterType.DIMENSION ? "D" : "M") && field.defaultField == "S")
     .map((field) => ({label: field.title, value: field.fieldId}))
 
+  const getDisabledOperators = () => {
+    const field = indicator?.biAnalysisFields.find(f => f.fieldId === formField)
+    if (field) {
+      return field.fieldType === "D" && field.dataType !== "N" 
+        ? [OperatorTypeValues.GREATER_THAN, OperatorTypeValues.GREATER_TAN_OR_EQUAL, OperatorTypeValues.LESS_THAN, OperatorTypeValues.LESS_THAN_OR_EQUAL] 
+        : [OperatorTypeValues.STARTS_WITH]
+    }
+    return []
+  }
+
   return <Modal
     title={props.title}
     { ...props }
@@ -120,7 +132,10 @@ const AddFilterModal = (props: IFilterModal) => {
           labelAlign="left"
           rules={[{ required: true, message: 'Selecione um conector' }]}
         >
-          <Select options={enumToOptions(ConnectorType)} disabled={props.action === FilterAction.UPDATE} />
+          <Select 
+            options={enumToOptions(ConnectorType)} 
+            disabled={props.action === FilterAction.UPDATE} 
+          />
         </Form.Item>
         ) : null
       }
@@ -131,7 +146,11 @@ const AddFilterModal = (props: IFilterModal) => {
         labelAlign="left"
         rules={[{ required: true, message: 'Selecione um campo' }]}
       >
-        <Select options={availableFields} disabled={props.action === FilterAction.UPDATE} />
+        <Select 
+          options={availableFields} 
+          disabled={props.action === FilterAction.UPDATE} 
+          onChange={() => form.setFieldValue("operator", undefined)}
+        />
       </Form.Item>
       <Form.Item 
         label="Operador"
@@ -139,7 +158,7 @@ const AddFilterModal = (props: IFilterModal) => {
         labelAlign="left"
         rules={[{ required: true, message: 'Selecione um operador' }]}
       >
-        <Select options={enumToOptions(OperatorTypeValues)} />
+        <Select options={enumToOptions(OperatorTypeValues, getDisabledOperators())} />
       </Form.Item>
       <Form.Item 
         label="Valor"

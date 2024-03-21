@@ -11,6 +11,9 @@ import { ReactNode, useEffect, useMemo, useState } from 'react'
 import AnalysisFilter from '../components/filters/Filter'
 import useAnalysisState from '../hooks/use-analysis-state'
 import { nanoid } from '@reduxjs/toolkit'
+import { extractPropValue } from '@/lib/helpers/doomHelper'
+import EditFieldComponent from '../components/field/EditField'
+import { set } from 'lodash'
 
 interface IAnalysisView {
   indicatorId: number
@@ -24,9 +27,14 @@ interface Style {
   [key: string]: string;
 }
 
-const getHeaderTitle = (header: any) => {
+const getHeaderTitle = (header: any, clickAction: () => void) => {
   if (isDefined(header.properties?.html)) {
-    return <div className='header' dangerouslySetInnerHTML={{__html: header.properties.html}}/>
+    return <div 
+      onClick={clickAction}  
+      className='header' 
+      style={{cursor: 'pointer'}} 
+      dangerouslySetInnerHTML={{__html: header.properties.html}}
+    />
   }
 
   return header.title;
@@ -93,9 +101,20 @@ const AnalysisView = (params: IAnalysisView) => {
       }, {});
     };
 
+    const handleHeaderClick = (header: any) => {
+      const fieldId = extractPropValue(header.properties.html, 'data-code-col');
+      
+      if (isDefined(fieldId)) {
+        setModalTitle('Edit Field Properties')
+        setModalContent(<EditFieldComponent fieldId={fieldId} onFinish={() => setModalOpen(false)} />)
+        setModalOpen(true)
+      }
+      
+    }
+
     return defaultTo(table.headers, []).map((header: any, index: number) => {    
       return {
-        title: getHeaderTitle(header),
+        title: getHeaderTitle(header, handleHeaderClick.bind(null, header)),
         key: `${header.title}-${index}`,
         dataIndex: header.title,
         width: 100,
@@ -182,13 +201,11 @@ const AnalysisView = (params: IAnalysisView) => {
       />
     </Space.Compact>
     <Modal
-      width={"60%"}
-      style={{maxWidth: "750px"}}
+      
       centered
       title={modalTitle}
       open={modalOpen}
       onCancel={() => setModalOpen(false)}
-      onOk={() => setModalOpen(false)}
       destroyOnClose
       closeIcon={<CloseCircleOutlined />}
       footer={null}

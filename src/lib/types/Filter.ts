@@ -12,6 +12,29 @@ export enum FilterAction {
   UPDATE = "UPDATE"
 }
 
+export enum FieldTypes {
+  METRIC = "M",
+  DIMENSION = "D",
+}
+
+export enum FieldDataTypes {
+  NUMBER = "N",
+  DATA = "D",
+  STRING = "S",
+}
+
+export enum FieldDefaultValues {
+  YES = "S",
+  NO = "N",
+  ONLY_CALCULATION = "T",
+}
+
+export enum FieldColumnAlignment {
+  LEFT = "E",
+  RIGHT = "D",
+  CENTER = "C",
+}
+
 export interface FilterBuilderInput {
   filters: FiltersDTO;
   field?: FieldDTO;
