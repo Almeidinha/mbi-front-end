@@ -1,7 +1,7 @@
 "use client"
 
 import { useAnalysisController, useAnalysisTableController } from '@/hooks/controllers/analysis'
-import { chunkArray, defaultTo, is, isDefined } from '@/lib/helpers/safe-navigation'
+import { chunkArray, defaultTo, is, isDefined, isNil } from '@/lib/helpers/safe-navigation'
 import { Card, Modal, Space, Table, Typography } from 'antd'
 
 import "./analysisView.css"
@@ -11,23 +11,17 @@ import { ReactNode, useEffect, useMemo, useState } from 'react'
 import AnalysisFilter from '../components/filters/Filter'
 import useAnalysisState from '../hooks/use-analysis-state'
 import { nanoid } from '@reduxjs/toolkit'
-import { extractPropValue } from '@/lib/helpers/doomHelper'
+import { convertToStyleTag, extractPropValue } from '@/lib/helpers/doomHelper'
 import EditFieldComponent from '../components/field/EditField'
-import { set } from 'lodash'
+import DangerousElement from '@/lib/helpers/DangerousElement'
+import { IHeader, IResultTableRow } from '@/lib/types/Analysis'
 
 interface IAnalysisView {
   indicatorId: number
 }
 
-type DataType = {
-  [key: string]: any
-}
 
-interface Style {
-  [key: string]: string;
-}
-
-const getHeaderTitle = (header: any, clickAction: () => void) => {
+const getHeaderTitle = (header: IHeader, clickAction: () => void) => {
   if (isDefined(header.properties?.html)) {
     return <div 
       onClick={clickAction}  
@@ -77,10 +71,9 @@ const AnalysisView = (params: IAnalysisView) => {
     }    
   }, [analysisResult, setIndicator])
 
-
   const table = analysisResult?.table;
 
-  const rows = chunkArray(defaultTo(table?.rows, []), table?.headers.length);
+  const rows: IResultTableRow[][]  = chunkArray(defaultTo(table?.rows, []), defaultTo(table?.headers.length, 0));
   const title = table?.title;
 
   
@@ -89,45 +82,26 @@ const AnalysisView = (params: IAnalysisView) => {
       return [];
     }
     
-    const getCellStyles = (className: string): Style | undefined => {    
-      const classNames = className.split(' ');
-  
-      return classNames.reduce((acc: Style | undefined, currClassName: string) => {
-          const style = table.styles?.[currClassName];
-          if (style) {
-              return { ...acc, ...style };
-          }
-          return acc;
-      }, {});
-    };
-
-    const handleHeaderClick = (header: any) => {
+    const handleHeaderClick = (header: IHeader) => {
       const fieldId = extractPropValue(header.properties.html, 'data-code-col');
       
       if (isDefined(fieldId)) {
         setModalTitle('Edit Field Properties')
         setModalContent(<EditFieldComponent fieldId={fieldId} onFinish={() => setModalOpen(false)} />)
         setModalOpen(true)
-      }
-      
+      } 
     }
 
-    return defaultTo(table.headers, []).map((header: any, index: number) => {    
+    return defaultTo(table.headers, []).map((header: IHeader, index: number) => {    
       return {
         title: getHeaderTitle(header, handleHeaderClick.bind(null, header)),
         key: `${header.title}-${index}`,
         dataIndex: header.title,
-        width: 100,
-        render: (text: string, record: any) => {
-          return <div className={record.className.split(' ')[0]} style={{
-              ...getCellStyles(record.className),
-              padding: '4px 4px',  
-              height: '100%',
-              width: '100%',
-              minWidth:'100%',
-            }}
-            dangerouslySetInnerHTML={{__html: text}}
-            />
+        width: header.title === "Seq" ? 30 : undefined,
+        render: (row: {className: string, value: string}) => {
+          return <div className={row.className} 
+            dangerouslySetInnerHTML={{__html: row.value}}
+          />
         },
       }
     })
@@ -137,14 +111,13 @@ const AnalysisView = (params: IAnalysisView) => {
     return <Card type='inner' loading={loadingAnalysisResult} />
   }
 
-  const data: DataType[] = rows.map((row: any) => {
-    return table?.headers.reduce((a: any, v: any, i: number) => ({ 
-      ...a, 
-      [v.title]: row[i].value, 
-      className: row[i].className,
+  const data: IResultTableRow[] = rows.map((row: IResultTableRow[]) =>  {
+    return table?.headers.reduce((acc: IResultTableRow, header: IHeader, index: number) => ({ 
+      ...acc, 
+      [header.title]: row[index],
       key: nanoid()
-    }), {}) 
-  })
+    }), {} as IResultTableRow) 
+  }).filter(Boolean) as IResultTableRow[];
 
   const handleFilterClick = () => {
     setModalTitle('Add Filter')
@@ -166,12 +139,8 @@ const AnalysisView = (params: IAnalysisView) => {
     reloadAnalysisResult()
   }
 
-  return <Card type='inner' /*style={{
-      maxHeight: "100%",
-    }} bodyStyle={{
-      maxHeight: "60vh",
-      overflow: "auto",
-    }}*/>    
+  return <Card type='inner'>
+    <DangerousElement markup={convertToStyleTag(defaultTo(table?.styles, []))}/>    
     <Space.Compact direction='vertical' className='analysis-table-wrapper'>
       <div className='custom-table-header'>
         <Typography.Text type='secondary' style={title?.style}>
@@ -185,7 +154,6 @@ const AnalysisView = (params: IAnalysisView) => {
       </div>
     
       <Table
-        // scroll={{ y: 450 }}
         className='analysis-table'
         bordered
         loading={loadingAnalysisResult || fetchingAnalysisResult || isTogglingSequenceSequence}

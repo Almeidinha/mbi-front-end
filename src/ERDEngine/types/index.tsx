@@ -63,7 +63,7 @@ export enum AnalyticType {
 }
 
 export enum AggregationType {
-  NO_AGGREGATION = 'NO_AGGREGATION',
+  EMPTY = 'EMPTY',
   SUM = 'SUM',
   AVG = 'AVG',
   MIN = 'MIN',

@@ -1,6 +1,6 @@
 import { isDefined } from "@/lib/helpers/safe-navigation";
-import { BIAnalysisField } from "@/lib/types/Analysis";
-import { DimensionFilterDTO, FieldDTO, FiltersDTO, MetricFilterDTO } from "@/lib/types/Filter";
+import { Field } from "@/lib/types/Analysis";
+import { DimensionFilterDTO, BIAnalysisFieldDTO, FiltersDTO, MetricFilterDTO } from "@/lib/types/Filter";
 import { isArray } from "lodash";
 
 export const findDimensionsHierarchy = (filters: FiltersDTO | undefined, link: string) => {
@@ -70,7 +70,7 @@ export const getValueByKey = <T extends object>(value: string, type: T)  => {
   return key;
 }
 
-export const getAnalysisFieldFromFieldDto = (analysisField: BIAnalysisField):FieldDTO  => {
+export const getAnalysisFieldFromFieldDto = (analysisField: Field):BIAnalysisFieldDTO  => {
   return {
     ...analysisField,
     orderDirection: analysisField.direction,

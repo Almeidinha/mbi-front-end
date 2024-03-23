@@ -7,9 +7,8 @@ import useAnalysisState from '../../hooks/use-analysis-state'
 import { FilterAction } from '@/lib/types/Filter'
 import { SaveOutlined } from '@ant-design/icons'
 import { useIndFilterMutationController } from '@/hooks/controllers/filters'
-import { isDefined, isNil } from '@/lib/helpers/safe-navigation'
+import { isDefined } from '@/lib/helpers/safe-navigation'
 import { getAnalysisFieldFromFieldDto } from './helper'
-import { startCase } from 'lodash'
 
 
 interface IFilterModal extends ModalProps {

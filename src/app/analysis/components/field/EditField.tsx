@@ -4,9 +4,10 @@ import { Button, Card, Form, Input, InputNumber, Select, Space, Typography } fro
 import { useForm } from 'antd/es/form/Form'
 import React from 'react'
 import useAnalysisState from '../../hooks/use-analysis-state'
-import { BIAnalysisField } from '@/lib/types/Analysis'
+import { Field } from '@/lib/types/Analysis'
 import { isNil } from '@/lib/helpers/safe-navigation'
 import { SaveOutlined } from '@ant-design/icons'
+import { useFieldController } from '@/hooks/controllers/fields'
 
 interface IProps {
   fieldId: string
@@ -21,18 +22,22 @@ const EditFieldComponent = (props: IProps) => {
     indicator,
   } = useAnalysisState.useContainer()
 
-  const field: BIAnalysisField | undefined = indicator?.biAnalysisFields.find((field) => field.fieldId === Number(props.fieldId))
+  const {
+    editField,
+    isEditingField,
+  } = useFieldController({})
+
+  const field: Field | undefined = indicator?.biAnalysisFields.find((field) => field.fieldId === Number(props.fieldId))
 
   if (isNil(field)) {
     return <Typography.Text type="warning">Could not find Field with ID {props.fieldId}</Typography.Text>
   }
 
-  const initialValues: Partial<BIAnalysisField> = {
+  const initialValues: Partial<Field> = {
     title: field.title,
     fieldType: field.fieldType,
     dataType: field.dataType,
     defaultField: field.defaultField,
-    tableNickname: field.tableNickname,
     columnWidth: field.columnWidth,
     columnAlignment: field.columnAlignment,
     dateMask: field.dateMask,
@@ -42,15 +47,16 @@ const EditFieldComponent = (props: IProps) => {
   const handleFormSubmit = (values: any) => {
     
     form.validateFields().then(fields => {
-      // do something
+      editField({
+        ...fields,
+        fieldId: field.fieldId
+      })
     })
   }
 
 
-  return <Card type='inner'>
-    
+  return <Card type='inner' loading={isEditingField}>    
     <Form
-
       form = {form}
       preserve={false}
       name = "EditFieldForm"
@@ -88,14 +94,6 @@ const EditFieldComponent = (props: IProps) => {
         labelAlign="left"
       >
         <Select options={enumToOptions(FieldDefaultValues)} />
-      </Form.Item>
-      <Form.Item 
-        label="Apelido Tabela"
-        name="tableNickname"
-        labelAlign="left"
-        rules={[{ required: true, message: 'Digite um apelido' }]}
-      >
-        <Input type="text" allowClear />
       </Form.Item>
       <Form.Item 
         label="Largura Coluna"

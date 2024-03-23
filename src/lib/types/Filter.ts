@@ -37,7 +37,7 @@ export enum FieldColumnAlignment {
 
 export interface FilterBuilderInput {
   filters: FiltersDTO;
-  field?: FieldDTO;
+  field?: BIAnalysisFieldDTO;
   operator?: String;
   value?: String;
   link: String;
@@ -45,7 +45,7 @@ export interface FilterBuilderInput {
 }
 
 
-export interface FieldDTO {
+export interface BIAnalysisFieldDTO {
   fieldId?: number;
   name: string;
   title: string;
@@ -93,7 +93,7 @@ export interface FieldDTO {
   calculatorPerRestriction?: boolean;
   originalFieldCode?: number;
   replicateChanges?: boolean;
-  dependentCalculatedFields?: FieldDTO[];
+  dependentCalculatedFields?: BIAnalysisFieldDTO[];
   isNavigableUpwards?: boolean;
   drillDown: boolean;
   drillUp?: boolean;
@@ -113,7 +113,7 @@ export interface DimensionFilterDTO {
   connector: string;
   condition: ConditionDTO;
   macro: BIMacroDTO;
-  macroField: FieldDTO;
+  macroField: BIAnalysisFieldDTO;
   drillDown: boolean;
 }
 
@@ -128,7 +128,7 @@ export interface MetricFilterDTO {
 export interface ConditionDTO {
   valuesMap: Map<number, any>;
   valueCount: number;
-  field: FieldDTO;
+  field: BIAnalysisFieldDTO;
   operator: OperatorDTO;
   value: string;
   title: string;

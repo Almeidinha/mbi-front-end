@@ -1,4 +1,9 @@
+import { defaultTo, kebabCase, snakeCase } from "lodash";
+import { ITableStyles } from "../types/Analysis";
 
+interface Style {
+  [key: string]: string;
+}
 
 export const stringToStyleArray = (input: string, split: boolean = true): string[] => {
   const styles: string[] = [];
@@ -29,3 +34,34 @@ export const extractPropValue = (html: string, propName: string): string | null 
   
   return element.getAttribute(propName);
 }
+
+export const convertToStyleTag = (styles: ITableStyles[]): string =>{
+  let styleString = '<style>';
+
+  for (const className in styles) {
+    styleString += `.${className} {`;
+
+    const classProperties = styles[className];
+    for (const property in classProperties) {
+      const snakeCaseProperty = kebabCase(property);
+      styleString += `  ${snakeCaseProperty}: ${classProperties[property]};`;
+    }
+
+    styleString += ` }\n`;
+  }
+
+  styleString += '</style>';
+  return styleString;
+}
+
+export const getCellStyles = (className: string, styles: any): Style | undefined => {    
+  const classNames = defaultTo(className?.split(' '), []);
+
+  return classNames.reduce((acc: Style | undefined, currClassName: string) => {
+      const style = styles?.[currClassName];
+      if (style) {
+          return { ...acc, ...style };
+      }
+      return acc;
+  }, {});
+};

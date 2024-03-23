@@ -1,4 +1,4 @@
-import { BIAnalysisField } from "@/lib/types/Analysis";
+import { Field } from "@/lib/types/Analysis";
 import { GenericFilter } from "@/lib/types/Filter";
 import { BIUserGroupIndDTO, BIUserIndDTO } from "@/lib/types/User";
 
@@ -70,7 +70,7 @@ export type AnalysisInput = {
   name: string,
   usesSequence?: boolean,
   defaultDisplay?: string,
-  biAnalysisFields: BIAnalysisField[]
+  biAnalysisFields: Field[]
   biAreaByArea: {
     companyId?: number,
     description?: string,

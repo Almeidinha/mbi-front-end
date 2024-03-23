@@ -9,7 +9,7 @@ import { QuestionCircleOutlined, SaveOutlined } from '@ant-design/icons'
 import { AnalysisInput } from '../types'
 import { AggregationType, AnalyticType, Endpoint, FieldType, LinkDict, UserDataType } from '@/ERDEngine/types'
 import { defaultTo, is, isDefined } from '@/lib/helpers/safe-navigation'
-import { BIAnalysisField } from '@/lib/types/Analysis'
+import { Field } from '@/lib/types/Analysis'
 import { navigate } from '@/app/api/redirect'
 
 const SaveAnalysis = () => {
@@ -91,11 +91,11 @@ const SaveAnalysis = () => {
     
     form.validateFields().then(formFields => {
 
-      const fields: BIAnalysisField[] =  getFields([...dimensions, ...metrics])
+      const fields: Field[] =  getFields([...dimensions, ...metrics])
       const fromClause = "FROM " + tableList.map((table) => `${table.name} ${table.name}`).join(", ")
       
       const searchClause = "SELECT " + fields.map((field) => {
-        if (field.aggregationType !== AggregationType.NO_AGGREGATION) {
+        if (field.aggregationType !== AggregationType.EMPTY) {
           return `${field.aggregationType}(${field.tableNickname}.${field.name}) ${field.nickname}`  
         }
         return `${field.tableNickname}.${field.name} ${field.nickname}`
@@ -181,14 +181,14 @@ const SaveAnalysis = () => {
 
   const searchForFieldId = (field: FieldType) => {
     if (isNil(dbAnalysis)) {
-      return 0
+      return undefined
     }
     return defaultTo(dbAnalysis.biAnalysisFields, [])
       .find((analysisField) => analysisField.tableNickname === field.tableName 
         &&  analysisField.name === field.nickname)?.fieldId
   }
 
-  const getFields = (rawFields: FieldType[]): BIAnalysisField[] => {
+  const getFields = (rawFields: FieldType[]): Field[] => {
     return rawFields.map((field) => ({
       fieldId: searchForFieldId(field),
       indicatorId: dbAnalysis?.id,

@@ -62,18 +62,18 @@ export function getIdFromParameters(params: Params, name: string) {
     ? Number(params[name][0]) : undefined
 }
 
-export function chunkArray(inputArray: any[], perChunk: number) {
-   return inputArray.reduce((resultArray, item, index) => { 
-    const chunkIndex = Math.floor(index/perChunk)
-  
-    if(!resultArray[chunkIndex]) {
-      resultArray[chunkIndex] = [] 
+export function chunkArray<T>(inputArray: T[], perChunk: number): T[][] {
+  return inputArray.reduce<T[][]>((resultArray, item, index) => {
+    const chunkIndex = Math.floor(index / perChunk);
+
+    if (!resultArray[chunkIndex]) {
+      resultArray[chunkIndex] = [];
     }
-  
-    resultArray[chunkIndex].push(item)
-  
-    return resultArray
-  }, [])
+
+    resultArray[chunkIndex].push(item);
+
+    return resultArray;
+  }, [] as T[][]);
 }
 
 export function* chunks<T>(arr: T[], n: number): Generator<T[], void> {

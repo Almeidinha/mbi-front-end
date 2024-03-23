@@ -59,7 +59,7 @@ const FieldsConfiguration: React.FC = () => {
         visualizationOrder: (index + 1),
         drillDownLevel: (index + 1),
         initiallyVisible: data.initiallyVisible || true,
-        aggregationType: data.aggregationType || AggregationType.NO_AGGREGATION,
+        aggregationType: data.aggregationType || AggregationType.EMPTY,
       })
     ))
 
@@ -162,12 +162,26 @@ const FieldsConfiguration: React.FC = () => {
           wrapperCol={{ span: 14 }}
         >
           <Form.Item
-            label="Nome da Tabela"
-            name="tableName"
+            label="Nome"
             labelAlign="left"
           >
-            <Input placeholder="Nome da Tabela" disabled variant="borderless"/>
-          </Form.Item> 
+            {
+              selectedField && <Typography.Text type='secondary' style={{marginLeft: '11px'}}>
+                {`${selectedField?.tableName}.${selectedField?.name}`}
+              </Typography.Text>
+            }
+            
+          </Form.Item>
+          <Form.Item
+            label="Tipo Campo"
+            labelAlign="left"
+          >
+            {
+              selectedField && <Typography.Text type='secondary' style={{marginLeft: '11px'}}>
+                {selectedField?.analyticType}
+              </Typography.Text>
+            }
+          </Form.Item>
           <Form.Item
             label="Titulo"
             name="title"
@@ -176,25 +190,11 @@ const FieldsConfiguration: React.FC = () => {
             <Input placeholder="Titulo" />
           </Form.Item>
           <Form.Item
-            label="Nome do Campo"
-            name="name"
-            labelAlign="left"
-          >
-            <Input placeholder="Nome do Campo"/>
-          </Form.Item>
-          <Form.Item
             label="Apelido"
             name="nickname"
             labelAlign="left"
           >
             <Input placeholder="Apelido" />
-          </Form.Item>
-          <Form.Item
-            label="Tipo Campo"
-            name="analyticType"
-            labelAlign="left"
-          >
-            <Input disabled variant="borderless"/>
           </Form.Item>
           <Form.Item
             label="Tipo customizado"

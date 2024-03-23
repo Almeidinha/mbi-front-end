@@ -1,3 +1,4 @@
+import { IAnalysisResult } from "@/lib/types/Analysis";
 import  AxiosClient  from "@/services/axios";
 import { AnalysisInput, BIIndDTO } from "@/wizard/types";
 
@@ -33,7 +34,7 @@ export const putAnalysisFn = async (analysis: AnalysisInput) => {
 };
 
 export const getAnalysisTableFn = async (analysisId: number) => {
-  const response = await AxiosClient.get<any>(`/analysis/${analysisId}/table`);
+  const response = await AxiosClient.get<IAnalysisResult>(`/analysis/${analysisId}/table`);
   return response.data;
 };
 

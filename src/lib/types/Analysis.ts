@@ -1,6 +1,47 @@
 import { FiltersDTO, GenericFilter } from "./Filter";
 import { BIUserGroupIndDTO, BIUserIndDTO } from "./User";
 
+export interface IAnalysisResult {
+  table: ITableResult;
+  indicator: BIIndLogicDTO;
+}
+
+export interface ITableResult {
+  headers: IHeader[];
+  rows: IResultTableRow[];
+  styles: ITableStyles[];
+  title: {
+    drillup: any[],
+    style: IStyle;
+  };
+}
+
+export interface ITableStyles {
+  [className: string]: {
+    [property: string]: string;
+  };
+}
+
+export interface IStyle {
+  [property: string]: string | boolean | Number | undefined;
+}
+
+export interface IResultTableRow {
+  className: string;
+  values: string;
+}
+
+export interface IHeader {
+  title: string;
+  properties: IProperties;
+}
+
+export interface IProperties {
+  className: string;
+  colSpan: number;
+  rowSpan: number;
+  html: string;
+}
 
 export interface BIIndLogicDTO {
   id?: number;
@@ -33,14 +74,14 @@ export interface BIIndLogicDTO {
   biIndMetricFilter?: GenericFilter;
   biIndSqlMetricFilter?: GenericFilter;
   biIndAlertColors?: BIIndAlertColorDTO[];
-  biAnalysisFields: BIAnalysisField[];
+  biAnalysisFields: Field[];
   biColorConditions?: BIColorConditionsDTO[];
   filtersDTO?: FiltersDTO;
   biUserIndicators?: BIUserIndDTO[];
   biUserGroupIndicators?: BIUserGroupIndDTO[];
 }
 
-export interface BIAnalysisField {
+export interface Field {
   fieldId?: number;
   indicatorId?: number;
   name: string;
