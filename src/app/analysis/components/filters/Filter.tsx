@@ -116,6 +116,7 @@ const buildDimensionTree = (dimensionFilter: DimensionFilterDTO | undefined, lin
 
 const treeData = (filters: FiltersDTO | undefined, filterAction: Function): TreeDataNode[] => {
   if (isNil(filters)) {
+    console.log('No filters found.')
     return []
   }
   
@@ -186,11 +187,6 @@ const AnalysisFilter = (props: {indicatorId: number, onFinish?: () => void}) => 
   const [modalState, setModalState] = useState<ModalState>({title: '', open: false});
   const [modalAction, setModalAction] = useState<ModalAction>({filterType: FilterType.DIMENSION, action: FilterAction.ADD, link: ''});
 
-
-  if (loadingIndFilters) {
-    return <Card loading/>
-  }
-
   const filterAction = (link: string, filterType: FilterType, action : FilterAction) => {  
     
     if (action === FilterAction.ADD || action === FilterAction.REMOVE) { 
@@ -236,9 +232,9 @@ const AnalysisFilter = (props: {indicatorId: number, onFinish?: () => void}) => 
     }))
   }
 
-  return <Card
+  return <Card loading={loadingIndFilters || updatingFilter}
     className='filter-card'
-    bodyStyle={{backgroundColor: '#4183bc', borderTopRightRadius: '8px', borderTopLeftRadius: '8px'}}
+    bodyStyle={{borderTopRightRadius: '8px', borderTopLeftRadius: '8px'}}
   >
     <Space direction='vertical' style={{width: '100%'}}>
       <Tree
@@ -248,7 +244,7 @@ const AnalysisFilter = (props: {indicatorId: number, onFinish?: () => void}) => 
         switcherIcon={<DownOutlined style={{color: "#4183bc"}} />}
         defaultExpandAll={true}
         selectable={false}
-        treeData={treeData(stateFilters, filterAction)}
+        treeData={treeData(stateFilters || indFilters, filterAction)}
       />
       <Button 
         icon={<SaveOutlined/>} 

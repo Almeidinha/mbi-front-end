@@ -169,7 +169,8 @@ const AnalysisView = (params: IAnalysisView) => {
       />
     </Space.Compact>
     <Modal
-      
+      width="auto"
+      maskClosable={false}
       centered
       title={modalTitle}
       open={modalOpen}
@@ -177,6 +178,8 @@ const AnalysisView = (params: IAnalysisView) => {
       destroyOnClose
       closeIcon={<CloseCircleOutlined />}
       footer={null}
+      style={{minWidth: '520px'}}
+
     >
       {modalContent}
     </Modal>    
