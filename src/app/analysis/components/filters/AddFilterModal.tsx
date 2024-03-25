@@ -70,7 +70,7 @@ const AddFilterModal = (props: IFilterModal) => {
         return
       }
 
-      const analysisField = indicator?.biAnalysisFields.find(field => field.fieldId === values.field)
+      const analysisField = indicator?.fields.find(field => field.fieldId === values.field)
       
       if (isDefined(analysisField)) {
         buildFilterMutation({
@@ -82,7 +82,7 @@ const AddFilterModal = (props: IFilterModal) => {
             link: props.link,
             connector: fields.connector,
           },
-          indicatorId: indicator!.id!
+          indicatorId: indicator!.code!
         })
       }
       
@@ -91,12 +91,12 @@ const AddFilterModal = (props: IFilterModal) => {
     })
   }
 
-  const availableFields = indicator?.biAnalysisFields
+  const availableFields = indicator?.fields
     .filter((field) => field.fieldType === (props.filterType === FilterType.DIMENSION ? "D" : "M") && field.defaultField == "S")
     .map((field) => ({label: field.title, value: field.fieldId}))
 
   const getDisabledOperators = () => {
-    const field = indicator?.biAnalysisFields.find(f => f.fieldId === formField)
+    const field = indicator?.fields.find(field => field.fieldId === formField)
     if (field) {
       return field.fieldType === "D" && field.dataType !== "N" 
         ? [OperatorTypeValues.GREATER_THAN, OperatorTypeValues.GREATER_TAN_OR_EQUAL, OperatorTypeValues.LESS_THAN, OperatorTypeValues.LESS_THAN_OR_EQUAL] 

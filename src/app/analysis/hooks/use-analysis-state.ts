@@ -1,4 +1,4 @@
-import { BIIndLogicDTO } from "@/lib/types/Analysis";
+import { IndicatorDTO } from "@/lib/types/Analysis";
 import { ConditionDTO, DimensionFilterDTO, FilterType, FiltersDTO, MetricFilterDTO } from "@/lib/types/Filter";
 import { useState } from "react";
 import { createContainer } from "unstated-next"
@@ -11,8 +11,8 @@ import { defaultTo, isNil, startCase } from "lodash";
 interface AnalysisState {
   synchronized: boolean;
   setSynchronized: React.Dispatch<React.SetStateAction<boolean>>;
-  indicator: BIIndLogicDTO | undefined;
-  setIndicator: React.Dispatch<React.SetStateAction<BIIndLogicDTO | undefined>>;
+  indicator: IndicatorDTO | undefined;
+  setIndicator: React.Dispatch<React.SetStateAction<IndicatorDTO | undefined>>;
   filters: FiltersDTO | undefined;
   setFilters: React.Dispatch<React.SetStateAction<FiltersDTO | undefined>>;
   editingFields: EditingFields | undefined;
@@ -23,7 +23,7 @@ interface AnalysisState {
 
 const useAnalysisState = (): AnalysisState => {
 
-  const [indicator, setIndicator] = useState<BIIndLogicDTO | undefined>(undefined)
+  const [indicator, setIndicator] = useState<IndicatorDTO | undefined>(undefined)
   const [filters, setFilters] = useState<FiltersDTO | undefined>(undefined)
   const [synchronized, setSynchronized] = useState<boolean>(true)
   const [editingFields, setEditingFields] = useState<EditingFields | undefined>(undefined)

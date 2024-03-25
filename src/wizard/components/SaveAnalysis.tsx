@@ -9,7 +9,7 @@ import { QuestionCircleOutlined, SaveOutlined } from '@ant-design/icons'
 import { AnalysisInput } from '../types'
 import { AggregationType, AnalyticType, Endpoint, FieldType, LinkDict, UserDataType } from '@/ERDEngine/types'
 import { defaultTo, is, isDefined } from '@/lib/helpers/safe-navigation'
-import { Field } from '@/lib/types/Analysis'
+import { FieldDTO } from '@/lib/types/Analysis'
 import { navigate } from '@/app/api/redirect'
 
 const SaveAnalysis = () => {
@@ -91,7 +91,7 @@ const SaveAnalysis = () => {
     
     form.validateFields().then(formFields => {
 
-      const fields: Field[] =  getFields([...dimensions, ...metrics])
+      const fields: FieldDTO[] =  getFields([...dimensions, ...metrics])
       const fromClause = "FROM " + tableList.map((table) => `${table.name} ${table.name}`).join(", ")
       
       const searchClause = "SELECT " + fields.map((field) => {
@@ -118,7 +118,7 @@ const SaveAnalysis = () => {
         userId: 1,
         connectionId: tenantId!,
         name: formFields.analysisName,
-        biAnalysisFields: fields,
+        fields: fields,
         biFromClause: {
           ...dbAnalysis?.biFromClause,
           sqlText: fromClause
@@ -183,12 +183,12 @@ const SaveAnalysis = () => {
     if (isNil(dbAnalysis)) {
       return undefined
     }
-    return defaultTo(dbAnalysis.biAnalysisFields, [])
+    return defaultTo(dbAnalysis.fields, [])
       .find((analysisField) => analysisField.tableNickname === field.tableName 
         &&  analysisField.name === field.nickname)?.fieldId
   }
 
-  const getFields = (rawFields: FieldType[]): Field[] => {
+  const getFields = (rawFields: FieldType[]): FieldDTO[] => {
     return rawFields.map((field) => ({
       fieldId: searchForFieldId(field),
       indicatorId: dbAnalysis?.id,
@@ -198,27 +198,26 @@ const SaveAnalysis = () => {
       dataType: field.analyticType === AnalyticType.METRIC ? "N" : getDatatypeAbr(field.userDataType!),
       nickname: field.nickname!,
       expression: false,
-      filterSequence: field.analyticType === AnalyticType.DIMENSION ? field.drillDownLevel! : 0,
+      drillDownSequence: field.analyticType === AnalyticType.DIMENSION ? field.drillDownLevel! : 0,
       visualizationSequence: field.visualizationOrder!,
       defaultField: field.initiallyVisible! ? "S" : "N",
-      fieldOrder: 0,
+      order: 0,
       tableNickname: field.tableName,
-      direction: 'ASC',
-      decimalPosition: 0,
-      fieldTotalization: false,
-      vertical: "N",
+      orderDirection: 'ASC',
+      numDecimalPositions: 0,
+      totalizingField: false,
+      sumLine: false,
+      verticalAnalysisType: "N",
       aggregationType: field.aggregationType!,
       accumulatedShare: "N",
       accumulatedValue: false,
-      localApres: 0,
+      displayLocation: 0,
       columnWidth: 100,
       columnAlignment: field.analyticType === AnalyticType.DIMENSION ? 'E' : 'D',
-      horizontal: "N",
-      lineFieldTotalization: false,
-      accumulatedLineField: false,
+      horizontalAnalysisType: "N",
+      horizontalParticipationAccumulated: false,
       partialTotalization: false,
       horizontalParticipation: false,
-      accumulatedHorizontalParticipation: false,
       accumulatedOrder: 0,
       accumulatedOrderDirection: 'ASC',
       usesLineMetric: false,

@@ -1,4 +1,4 @@
-import { BIIndLogicDTO } from "@/lib/types/Analysis";
+import { IndicatorDTO } from "@/lib/types/Analysis";
 import { FilterBuilderInput, FiltersDTO } from "@/lib/types/Filter";
 import  AxiosClient  from "@/services/axios";
 
@@ -7,7 +7,7 @@ export const getAnalysisFilters = async (indicatorId: number) => {
   return response.data;
 };
 
-export const getAnalysisFilterFromDto = async (dto: BIIndLogicDTO) => {
+export const getAnalysisFilterFromDto = async (dto: IndicatorDTO) => {
   const response = await AxiosClient.post<FiltersDTO>(`/filters/${dto.id}`, dto)
   return response.data;
 };

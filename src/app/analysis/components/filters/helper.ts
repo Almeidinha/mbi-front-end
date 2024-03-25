@@ -1,5 +1,5 @@
 import { isDefined } from "@/lib/helpers/safe-navigation";
-import { Field } from "@/lib/types/Analysis";
+import { FieldDTO } from "@/lib/types/Analysis";
 import { DimensionFilterDTO, BIAnalysisFieldDTO, FiltersDTO, MetricFilterDTO } from "@/lib/types/Filter";
 import { isArray } from "lodash";
 
@@ -70,15 +70,15 @@ export const getValueByKey = <T extends object>(value: string, type: T)  => {
   return key;
 }
 
-export const getAnalysisFieldFromFieldDto = (analysisField: Field):BIAnalysisFieldDTO  => {
+export const getAnalysisFieldFromFieldDto = (analysisField: FieldDTO):BIAnalysisFieldDTO  => {
   return {
     ...analysisField,
-    orderDirection: analysisField.direction,
-    totalizingField: analysisField.fieldTotalization,
-    verticalAnalysisType: analysisField.vertical,
-    horizontalAnalysisType: analysisField.horizontal,
-    drillDownSequence: analysisField.filterSequence, 
+    orderDirection: analysisField.orderDirection,
+    totalizingField: analysisField.partialTotalization,
+    verticalAnalysisType: analysisField.verticalAnalysisType,
+    horizontalAnalysisType: analysisField.horizontalAnalysisType,
+    drillDownSequence: analysisField.drillDownSequence, 
     visualizationSequence: analysisField.visualizationSequence, 
-    order: analysisField.fieldOrder,
+    order: analysisField.order,
   }
 }

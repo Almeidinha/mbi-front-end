@@ -4,7 +4,7 @@ import { Button, Card, Form, Input, InputNumber, Select, Space, Typography } fro
 import { useForm } from 'antd/es/form/Form'
 import React from 'react'
 import useAnalysisState from '../../hooks/use-analysis-state'
-import { Field } from '@/lib/types/Analysis'
+import { FieldDTO } from '@/lib/types/Analysis'
 import { isNil } from '@/lib/helpers/safe-navigation'
 import { SaveOutlined } from '@ant-design/icons'
 import { useFieldController } from '@/hooks/controllers/fields'
@@ -27,13 +27,13 @@ const EditFieldComponent = (props: IProps) => {
     isEditingField,
   } = useFieldController({})
 
-  const field: Field | undefined = indicator?.biAnalysisFields.find((field) => field.fieldId === Number(props.fieldId))
+  const field: FieldDTO | undefined = indicator?.fields.find((field) => field.fieldId === Number(props.fieldId))
 
   if (isNil(field)) {
     return <Typography.Text type="warning">Could not find Field with ID {props.fieldId}</Typography.Text>
   }
 
-  const initialValues: Partial<Field> = {
+  const initialValues: Partial<FieldDTO> = {
     title: field.title,
     fieldType: field.fieldType,
     dataType: field.dataType,

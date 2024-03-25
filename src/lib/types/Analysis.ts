@@ -1,9 +1,9 @@
-import { FiltersDTO, GenericFilter } from "./Filter";
+import { FiltersDTO, GenericFilter, OperatorDTO } from "./Filter";
 import { BIUserGroupIndDTO, BIUserIndDTO } from "./User";
 
 export interface IAnalysisResult {
   table: ITableResult;
-  indicator: BIIndLogicDTO;
+  indicator: IndicatorDTO;
 }
 
 export interface ITableResult {
@@ -43,131 +43,155 @@ export interface IProperties {
   html: string;
 }
 
-export interface BIIndLogicDTO {
-  id?: number;
-  companyId: number;
+export interface IndicatorDTO {
+  code: number;
   name: string;
-  areaId: number;
-  fileName?: string;
-  graphTitle?: string;
-  scheduled?: boolean;
-  defaultGraph?: number;
-  lastUpdatedUser?: number;
-  comment?: string | null;
-  isFrozen?: boolean;
-  defaultDisplay?: string;
-  connectionId?: string;
-  numberOfSteps?: number;
-  usesSequence?: boolean;
-  tableType?: number;
-  originalIndicator?: number;
-  inheritsFields?: boolean;
-  inheritsRestrictions?: boolean;
-  biSearchClause: GenericFilter;
-  biFromClause: GenericFilter;
-  biWhereClause: GenericFilter;
-  biGroupClause?: GenericFilter;
-  biOrderClause?: GenericFilter;
-  biHavingClause?: GenericFilter;
-  biFixedConditionClause?: GenericFilter;
-  biDimensionFilter?: GenericFilter;
-  biIndMetricFilter?: GenericFilter;
-  biIndSqlMetricFilter?: GenericFilter;
-  biIndAlertColors?: BIIndAlertColorDTO[];
-  biAnalysisFields: Field[];
-  biColorConditions?: BIColorConditionsDTO[];
-  filtersDTO?: FiltersDTO;
-  biUserIndicators?: BIUserIndDTO[];
-  biUserGroupIndicators?: BIUserGroupIndDTO[];
+  areaCode: number;
+  companyId: number;
+  filters: FiltersDTO;
+  // filtersFunction: FiltersFunction; // TODO: MAP THIS WHEN IMPLEMENTING FILTERS FUNCTION
+  fields: FieldDTO[];
+  // analysisComments: AnalysisComments; // TODO: MAP THIS WHEN IMPLEMENTING AnalysisComments
+  // AnalysisUserPermissions: AnalysisUserPermission[]; // TODO: CODE THIS WHEN IMPLEMENTING ANALYSIS PERMISSIONS
+  // analysisGroupPermissions: AnalysisGroupPermissions[]; // TODO: CODE THIS WHEN IMPLEMENTING ANALYSIS PERMISSIONS
+  fileName: string;
+  searchClause: string;
+  fixedConditionClause: string;
+  fromClause: string;
+  whereClause: string;
+  groupClause: string;
+  orderClause: string;
+  dimensionFilters: string;
+  metricSqlFilters: string;
+  metricFilters: string;
+  scheduled: boolean;
+  scheduledCode: number | null;
+  filterTable: string;
+  temporaryFrozenStatus: boolean;
+  frozenStatus: boolean;
+  panelCode: number;
+  connectionId: string;
+  databaseType: number | null;
+  tenantId: string;
+  isMultidimensional: boolean;
+  currentView: string;
+  dateFormat: string;
+  leftCoordinates: number;
+  topCoordinates: number;
+  height: number;
+  width: number;
+  isMaximized: boolean;
+  isOpen: boolean;
+  // restrictions: Restrictions; // TODO: MAP THIS WHEN IMPLEMENTING restrictions
+  partialTotalizations: PartialTotalizationsDTO;
+  usesSequence: boolean;
+  tableType: number;
+  // metricDimensionRestrictions: MetricDimensionRestrictions; // TODO: MAP THIS WHEN IMPLEMENTING metricDimensionRestrictions
+  colorAlerts: ColorsAlertDTO;
+  panelIndex: number;
+  hasData: boolean;
+  originalCode: number;
+  originalIndicator: number | null;
+  inheritsRestrictions: boolean;
+  inheritsFields: boolean;
+  replicateChanges: boolean;
 }
 
-export interface Field {
+export interface FieldDTO {
   fieldId?: number;
   indicatorId?: number;
   name: string;
   title: string;
-  fieldType: string;
-  dataType: string;
   nickname: string;
   expression: boolean;
-  filterSequence: number;
+  drillDownSequence: number;
   visualizationSequence: number;
   defaultField: string;
-  fieldOrder: number;
+  order: number;
+  delegateOrder?: number;
   tableNickname: string;
-  direction: string;
-  decimalPosition?: number;
-  fieldTotalization: boolean;
-  vertical: string;
+  orderDirection: string;
+  numDecimalPositions: number;
+  totalizingField: boolean;
+  verticalAnalysis?: boolean;
+  verticalAnalysisType: string;
+  horizontalAnalysis?: boolean;
+  horizontalAnalysisType: string;
   aggregationType: string;
-  accumulatedShare?: string;
-  fieldColor?: string;
-  defaultGraph?: string;
-  ignoreZeros?: string;
-  accumulatedValue: boolean;
-  localApres?: number;
+  accumulatedParticipation?: boolean;
+  accumulatedValue?: boolean;
+  lastColorValueList?: boolean;
+  dataType: string;
+  fieldType: string;
+  displayLocation: number;
   columnWidth: number;
-  columnAlignment?: string;
-  horizontal: string;
-  lineFieldTotalization?: boolean;
-  accumulatedLineField?: boolean;
-  tendencyLine?: string;
-  tendencyLineColor?: string;
+  columnAlignment: string;
+  sumLine: boolean;
+  accumulatedLine?: string;
   dateMask?: string;
   partialTotalization: boolean;
-  numberOfSteps?: number;
-  ganttGraphPosition?: number;
-  ganttGraphColor?: string;
+  partialMedia?: boolean;
+  partialExpression?: boolean;
+  partialTotalExpression?: boolean;
+  applyTotalizationExpression?: boolean;
+  generalFilter: number;
+  requiredField?: boolean;
   horizontalParticipation: boolean;
-  accumulatedHorizontalParticipation?: boolean;
+  horizontalParticipationAccumulated: boolean;
   accumulatedOrder: number;
   accumulatedOrderDirection: string;
-  usesLineMetric?: boolean;
+  mediaLine?: boolean;
+  childField?: boolean;
   fixedValue: boolean;
-  locApresGraph?: number;
-  graphType?: string;
-  firstGraphType?: string;
-  secGraphType?: string;
-  referenceAxis?: string;
-  graphVisualizationSequence?: number;
-  originalAnalysisField?: number;
+  calculatorPerRestriction?: boolean;
+  replicateChanges?: boolean;
+  dependentCalculatedFields?: FieldDTO[];
+  navigableUpwards?: boolean;
   drillDown: boolean;
-  generalFilter: number;
-  mandatoryFilter?: boolean;
-  delegateOrder?: number;
+  drillUp?: boolean;
+  navigable?: boolean;
+  deleted?: boolean;
+  numberOfSteps?: number;
 }
 
-interface BIIndAlertColorDTO {
-  alertSequence: number;
-  indicatorId: number;
-  firstFieldId: number;
+interface ColorsAlertDTO {
+  colorAlertList: ColorAlertDTO[];
+}
+interface ColorAlertDTO {
+  sequence: number;
+  firstField: FieldDTO;
   firstFieldFunction: string;
-  operator: string;
+  operator: OperatorDTO;
+  firstValue: string;
+  secondValue: string;
   valueType: string;
-  firstValueReference: string;
-  secondValueReference: string;
-  secondFiled?: number;
-  secondFiledFunction?: string;
+  secondField: FieldDTO;
+  secondFieldFunction: string;
   action: string;
+  alertProperty: AlertPropertyDTO;
+  compareToAnotherField: boolean;
+}
+
+interface AlertPropertyDTO {
   fontName: string;
-  fontSize?: number;
+  fontSize: number;
   fontStyle: string;
   fontColor: string;
-  backgroundColor: string;
-}
-
-
-interface BIColorConditionsDTO {
-  indicatorId: number;
-  fieldId: number;
-  initialValue: number;
-  finalValue: number;
-  classDescription: string;
-  fontColor: string;
-  backgroundColor: string;
+  cellBackgroundColor: string;
 }
 
 export type AnalysisResponse = {
   table: any;
-  indicator: BIIndLogicDTO;
+  indicator: IndicatorDTO;
+}
+
+export interface PartialTotalizationsDTO {
+  totalizationList: PartialTotalizationDTO[];
+}
+
+interface PartialTotalizationDTO {
+  field: FieldDTO;
+  values: any[][];
+  partialTotalization: number;
+  sequence: number;
 }

@@ -1,7 +1,7 @@
 import * as QueryKeys from "@/lib/types/QueryKeys";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { buildFilters, getAnalysisFilterFromDto, getAnalysisFilters, removeFilter, updateFilter } from "./query";
-import { BIIndLogicDTO } from "@/lib/types/Analysis";
+import { IndicatorDTO } from "@/lib/types/Analysis";
 import { isDefined } from "@/lib/helpers/safe-navigation";
 import { FilterBuilderInput, FiltersDTO } from "@/lib/types/Filter";
 
@@ -29,7 +29,7 @@ export const useIndFilterMutationController = () => {
 
   const { mutate: getFilterFromPost, isLoading: isPostingFilter, data: filterFromPost } =  useMutation(
     [QueryKeys.Keys.FETCH_FILTERS_FROM_DTO],
-    (dto: BIIndLogicDTO) => getAnalysisFilterFromDto(dto),
+    (dto: IndicatorDTO) => getAnalysisFilterFromDto(dto),
     {
       onSuccess: () => {  
         
