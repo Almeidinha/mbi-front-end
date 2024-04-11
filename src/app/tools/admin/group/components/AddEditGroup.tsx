@@ -85,7 +85,7 @@ const AddEditGroup = (props: IAddEditGroupProps) => {
         labelAlign="left"
         rules={[{ required: true, message: 'Please input group role code!' }]}
       >
-        <Select options={enumToOptions(RoleCode, true)} placeholder="Select Role Code" />
+        <Select options={enumToOptions(RoleCode)} placeholder="Select Role Code" />
       </Form.Item>
       
       <Form.Item wrapperCol={{ offset: 20 }}>

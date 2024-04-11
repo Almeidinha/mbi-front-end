@@ -8,7 +8,7 @@ export const getAnalysisFilters = async (indicatorId: number) => {
 };
 
 export const getAnalysisFilterFromDto = async (dto: IndicatorDTO) => {
-  const response = await AxiosClient.post<FiltersDTO>(`/filters/${dto.id}`, dto)
+  const response = await AxiosClient.post<FiltersDTO>(`/filters/${dto.code}`, dto)
   return response.data;
 };
 

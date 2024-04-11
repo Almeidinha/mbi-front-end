@@ -66,7 +66,7 @@ export interface BIAnalysisFieldDTO {
   horizontalAnalysisType: string;
   aggregationType: string;
   accumulatedParticipation?: boolean;
-  accumulatedValue: boolean;
+  accumulatedValue?: boolean;
   lastColorValueList?: boolean;
   dataType: string;
   fieldType: string;

@@ -15,7 +15,7 @@ const nextConfig = {
     ],
   },
   env: {
-    NEXTAUTH_URL: "https://9613-179-186-231-126.ngrok-free.app",
+    NEXTAUTH_URL: "https://1460-177-24-162-3.ngrok-free.app",
     BASE_URL: "http://localhost:8081/api/v1",
   },
 };

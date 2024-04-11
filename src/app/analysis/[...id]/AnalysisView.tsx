@@ -7,7 +7,7 @@ import { Card, Modal, Space, Table, Typography } from 'antd'
 import "./analysisView.css"
 import { AddFilterIcon, AddSequenceIcon, InsertColumnIcon, RefreshIcon } from '@/lib/icons/customIcons'
 import { CloseCircleOutlined } from '@ant-design/icons'
-import { ReactNode, useEffect, useMemo, useState } from 'react'
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
 import AnalysisFilter from '../components/filters/Filter'
 import useAnalysisState from '../hooks/use-analysis-state'
 import { nanoid } from '@reduxjs/toolkit'
@@ -91,12 +91,12 @@ const AnalysisView = (params: IAnalysisView) => {
   const rows: IResultTableRow[][]  = chunkArray(defaultTo(table?.rows, []), getHeaderSize(defaultTo(table?.headers, [])));
   const title = table?.title;
   
-  const getHeaders = () => {
+  const getHeaders = useCallback(() => {
     const tableHeaders = defaultTo(table?.headers, []);
     return is(indicator?.multidimensional) 
       ? [{title: 'Seq', properties: {className: '', html: ''}}, ...tableHeaders] 
       : tableHeaders
-  }
+  }, [indicator?.multidimensional, table?.headers])
 
   const columns = useMemo(() => {         
     if (!table) {
@@ -146,7 +146,7 @@ const AnalysisView = (params: IAnalysisView) => {
         }
       }
     })
-  }, [getHeaders, table])
+  }, [getHeaders, indicator?.multidimensional, table])
 
   if (loadingAnalysisResult) {
     return <Card type='inner' loading={loadingAnalysisResult} />

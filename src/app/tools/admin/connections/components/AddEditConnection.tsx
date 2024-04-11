@@ -122,7 +122,6 @@ const AddEditConnection = (props: IAddEditConnection) => {
       rules={[{ required: true, message: 'Please input connection host!' }, {validator: spaceValidator}]}
     >
       <Input placeholder="Input the host server" onChange={(e) => {
-        console.log('e > ', e.target.value)
         e.target.value = e.target.value.replace(/\s/g, '');
       }} />
     </Form.Item>
