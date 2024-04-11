@@ -5,7 +5,7 @@ import { chunkArray, defaultTo, is, isDefined, isNil } from '@/lib/helpers/safe-
 import { Card, Modal, Space, Table, Typography } from 'antd'
 
 import "./analysisView.css"
-import { AddFilterIcon, AddSequenceIcon, RefreshIcon } from '@/lib/icons/customIcons'
+import { AddFilterIcon, AddSequenceIcon, InsertColumnIcon, RefreshIcon } from '@/lib/icons/customIcons'
 import { CloseCircleOutlined } from '@ant-design/icons'
 import { ReactNode, useEffect, useMemo, useState } from 'react'
 import AnalysisFilter from '../components/filters/Filter'
@@ -15,9 +15,18 @@ import { convertToStyleTag, extractPropValue } from '@/lib/helpers/doomHelper'
 import EditFieldComponent from '../components/field/EditField'
 import DangerousElement from '@/lib/helpers/DangerousElement'
 import { IHeader, IResultTableRow } from '@/lib/types/Analysis'
+import ManageAnalysis from '../components/manage-analysis-type/ManageAnalysis'
+import CustomTableHeader from '@/components/custom/custom-table-header'
 
 interface IAnalysisView {
   indicatorId: number
+}
+
+interface IRow {
+  colspan: number
+  rowspan: number
+  className: string
+  value: string
 }
 
 
@@ -32,6 +41,12 @@ const getHeaderTitle = (header: IHeader, clickAction: () => void) => {
   }
 
   return header.title;
+}
+
+const getHeaderSize = (headers: IHeader[]) => {
+  return defaultTo(headers.reduce(
+    (total, header) => total + defaultTo(header.properties?.colspan, 1), 0), 0
+  )
 }
 
 const AnalysisView = (params: IAnalysisView) => {
@@ -73,10 +88,16 @@ const AnalysisView = (params: IAnalysisView) => {
 
   const table = analysisResult?.table;
 
-  const rows: IResultTableRow[][]  = chunkArray(defaultTo(table?.rows, []), defaultTo(table?.headers.length, 0));
+  const rows: IResultTableRow[][]  = chunkArray(defaultTo(table?.rows, []), getHeaderSize(defaultTo(table?.headers, [])));
   const title = table?.title;
-
   
+  const getHeaders = () => {
+    const tableHeaders = defaultTo(table?.headers, []);
+    return is(indicator?.multidimensional) 
+      ? [{title: 'Seq', properties: {className: '', html: ''}}, ...tableHeaders] 
+      : tableHeaders
+  }
+
   const columns = useMemo(() => {         
     if (!table) {
       return [];
@@ -92,27 +113,47 @@ const AnalysisView = (params: IAnalysisView) => {
       } 
     }
 
-    return defaultTo(table.headers, []).map((header: IHeader, index: number) => {    
+    return getHeaders().map((header: IHeader, index: number) => {    
       return {
+        colSpan: header.title === "Seq" && is(indicator?.multidimensional) ? 0 : defaultTo(header.properties?.colspan, 1),
         title: getHeaderTitle(header, handleHeaderClick.bind(null, header)),
         key: `${header.title}-${index}`,
         dataIndex: header.title,
         width: header.title === "Seq" ? 30 : undefined,
-        render: (row: {className: string, value: string}) => {
-          return <div className={row.className} 
-            dangerouslySetInnerHTML={{__html: row.value}}
-          />
+        render: (row: IRow) => {
+          if (!isDefined(row)) {
+            return {
+              props: {
+                colSpan: 0,
+                rowSpan: 0
+              }
+            };
+          }
+          return {
+            children: <div className={row?.className} dangerouslySetInnerHTML={{__html: row?.value}}/>,
+            props: {
+              colSpan: defaultTo(row?.colspan, 1),
+              rowSpan: defaultTo(row?.rowspan, 1)
+            }
+          }
         },
+        onCell: (row: IResultTableRow, i: number| undefined) => {
+          return {
+            onClick: () => {
+              console.log('row clicked: ', row)
+            }
+          }
+        }
       }
     })
-  }, [table])
+  }, [getHeaders, table])
 
   if (loadingAnalysisResult) {
     return <Card type='inner' loading={loadingAnalysisResult} />
   }
 
   const data: IResultTableRow[] = rows.map((row: IResultTableRow[]) =>  {
-    return table?.headers.reduce((acc: IResultTableRow, header: IHeader, index: number) => ({ 
+    return getHeaders().reduce((acc: IResultTableRow, header: IHeader, index: number) => ({ 
       ...acc, 
       [header.title]: row[index],
       key: nanoid()
@@ -122,6 +163,12 @@ const AnalysisView = (params: IAnalysisView) => {
   const handleFilterClick = () => {
     setModalTitle('Add Filter')
     setModalContent(<AnalysisFilter indicatorId={indicatorId} onFinish={() => setModalOpen(false)} />)
+    setModalOpen(true)
+  }
+
+  const handleAnalysisTypeChange = () => {
+    setModalTitle('')
+    setModalContent(<ManageAnalysis onFinish={() => setModalOpen(false)} />)
     setModalOpen(true)
   }
 
@@ -140,19 +187,17 @@ const AnalysisView = (params: IAnalysisView) => {
   }
 
   return <Card type='inner'>
-    <DangerousElement markup={convertToStyleTag(defaultTo(table?.styles, []))}/>    
-    <Space.Compact direction='vertical' className='analysis-table-wrapper'>
-      <div className='custom-table-header'>
-        <Typography.Text type='secondary' style={title?.style}>
-          {indicator?.name || 'Indicator'}
-        </Typography.Text>
-        <Space.Compact style={{float: "right", gap: "4px"}}>
-          <span onClick={handleFilterClick}><AddFilterIcon style={{fontSize: "24px", cursor: "pointer"}} /></span>
-          <span onClick={handleSequenceClick}><AddSequenceIcon style={{fontSize: "24px", cursor: "pointer"}} /></span>
-          <span onClick={refreshAnalysis}><RefreshIcon style={{fontSize: "24px", cursor: "pointer"}}/></span>
-        </Space.Compact>
-      </div>
-    
+    <DangerousElement markup={convertToStyleTag(defaultTo(table?.styles, []))}/> 
+    <CustomTableHeader
+      style={{borderColor: 'rgb(51, 119, 204)'}} 
+      title={indicator?.name || 'Indicator'}
+      actions={[
+        {onClick: handleAnalysisTypeChange, icon: <InsertColumnIcon/>},
+        {onClick: handleFilterClick, icon: <AddFilterIcon/>},
+        {onClick: handleSequenceClick, icon: <AddSequenceIcon/>},
+        {onClick: refreshAnalysis, icon: <RefreshIcon/>}
+      ]}  
+    >
       <Table
         className='analysis-table'
         bordered
@@ -167,7 +212,7 @@ const AnalysisView = (params: IAnalysisView) => {
           showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`
         }}
       />
-    </Space.Compact>
+    </CustomTableHeader>
     <Modal
       width="auto"
       maskClosable={false}

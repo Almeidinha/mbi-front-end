@@ -104,6 +104,15 @@ const RefreshSvg = () => (
   </svg>
 );
 
+const InsertColumnSvg = () => (
+  <svg focusable="false" aria-hidden="true" viewBox="0 0 512 512" width="1em" height="1em">
+    <path fillOpacity="0" pointerEvents="none" d="M0 0h512v512H0z"/>
+    <path d="M0 0h512v512H0z" fillOpacity="0" pointerEvents="none"/>
+    <path fillOpacity="0" pointerEvents="none" d="M0 0h512v512H0z"/>
+    <path d="M501 27c0-12-10-22-22-22H287c-12 0-22 10-22 22v81H36c-11 0-21 9-21 21v359c0 11 10 21 21 21h359c12 0 21-10 21-21v-98h63c12 0 22-9 22-21V27zM374 466H57V150h208v78h-45c-3 0-6 2-8 4l-52 72-26-19a9 9 0 0 0-14 6l-13 115a9 9 0 0 0 13 9l105-46a9 9 0 0 0 2-16l-26-19 40-54h24v89c0 12 10 21 22 21h87v76zm83-119H309v-70h148v70zm0-114H309v-70h148v70z" fill="#4182bc"/>
+  </svg>
+);
+
 export const KeyIcon = (props: Partial<CustomIconComponentProps>) => (
   <Icon component={KeySvg} {...props} />
 );
@@ -150,4 +159,8 @@ export const OpenFolderIcon = (props: Partial<CustomIconComponentProps>) => (
 
 export const RefreshIcon = (props: Partial<CustomIconComponentProps>) => (
   <Icon component={RefreshSvg} {...props} />
+);
+
+export const InsertColumnIcon = (props: Partial<CustomIconComponentProps>) => (
+  <Icon component={InsertColumnSvg} {...props} />
 );

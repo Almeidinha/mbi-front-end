@@ -35,7 +35,7 @@ export enum FilterType {
   FUNCTION = "FUNCTION"
 }
 
-export interface EditingFields {
+export interface EditingFilter {
   connector?: ConnectorType
   field?: number
   operator?: OperatorTypeValues

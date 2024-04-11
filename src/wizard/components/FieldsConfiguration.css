@@ -1,0 +1,30 @@
+
+.fields-table .ant-table-selection-column,
+.fields-table .ant-table-selection-col {
+  display: none;
+}
+
+.select-fields-form {
+  border: 1px solid #f0f0f0;
+  padding: 24px !important;
+  border-radius: 6px;
+}
+
+.fields-table {
+  overflow: auto;
+  border-bottom: 1px solid #f0f0f0;
+  border-left: 1px solid #f0f0f0;
+  border-right: 1px solid #f0f0f0;
+}
+
+
+.fields-table .ant-table-container {
+  border-inline-start: 0 !important;
+}
+.fields-table .ant-table-cell {
+  border-inline-end: 0 !important;
+}
+
+.fields-table .ant-table-placeholder .ant-table-cell {
+  border-bottom: 0;
+}

@@ -7,7 +7,8 @@ import { useForm } from 'antd/es/form/Form'
 import { debounce } from 'lodash'
 import { isDefined, isNil } from '@/lib/helpers/safe-navigation'
 import enumToOptions from '@/lib/helpers/enumToOptions'
-import "./SelectFields.css"
+import CustomTableHeader from '@/components/custom/custom-table-header'
+import "./FieldsConfiguration.css"
 
 const columns: ColumnsType<FieldType> = [
   {
@@ -115,12 +116,7 @@ const FieldsConfiguration: React.FC = () => {
   return <Card type="inner">
     <Row>
       <Col span={12} style={{padding: '0 48px'}}>
-        <Space.Compact direction='vertical' className='custom-table-wrapper'>
-          <div className='custom-table-title'>
-            <Typography.Title type='secondary' level={5}>
-              Fields
-            </Typography.Title>
-          </div>
+        <CustomTableHeader title='Fields'>
           <Table
             className='fields-table'
             columns={columns}
@@ -143,9 +139,8 @@ const FieldsConfiguration: React.FC = () => {
               type: 'radio',
               selectedRowKeys: selectedKeys
             }}
-            scroll={{ y: 500 }}
           />
-        </Space.Compact>
+        </CustomTableHeader>
       </Col>
       <Col span={12} style={{padding: '0 48px'}}>
         <Form

@@ -2,11 +2,13 @@ import { useUserGroupListController } from '@/hooks/controllers/group'
 import { useUserListController } from '@/hooks/controllers/user'
 import { defaultTo, isEmpty, isNil } from '@/lib/helpers/safe-navigation'
 import { FastBackwardOutlined, FastForwardOutlined, StepBackwardOutlined, StepForwardOutlined } from '@ant-design/icons'
-import { Button, Card, Col, Row, Space, Table, Typography } from 'antd'
+import { Button, Card, Col, Divider, Row, Space, Table, Typography } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 import useWizardState from '../hooks/use-wizard-state'
-import { PermissionLevel, PermissionType, Permission } from '../types'
+import { PermissionLevel, PermissionType } from '../types'
 import { useState } from 'react'
+import CustomTableHeader from '@/components/custom/custom-table-header'
+import "./SelectPermissions.css"
 
 interface DataType {
   key: string;
@@ -23,6 +25,13 @@ const columns: ColumnsType<DataType> = [
     dataIndex: 'name',
   },
 ]
+
+const tableProps = {
+  showHeader: false as const,
+  size: "small" as const,
+  bordered: true as const,
+  pagination: false as const,
+}
 
 const SelectPermissions = () => {
 
@@ -153,113 +162,84 @@ const SelectPermissions = () => {
   }
 
   return <Card type="inner">
-    <Row>
-      <Col span={10} style={{padding: '0 48px'}}>
-        <Space.Compact direction='vertical' className='custom-table-wrapper'>
-          <div className='custom-table-title'>
-            <Typography.Title type='secondary' level={5}>
-              Usuarios Disponíveis
-            </Typography.Title>
-          </div>
-          <Table  
-            showHeader={false}
-            size="small"
-            bordered
-            style={{ maxHeight: '500px', overflowY: 'auto'}}
-            className='source-table'
-            pagination={false}
-            columns={columns}
-            dataSource={data}
-            loading={loadingUsers || loadingUserGroups}
-            onRow={onSourceRowClick}
-            rowSelection={{
-              type: 'radio',
-              selectedRowKeys: [defaultTo(selectedSourceRow?.key, '')]
-            }}
-          />  
-        </Space.Compact>
-      </Col>
-
-      <Col span={4} style={{height: '500px'}}>
-        <Row justify={'center'} align={'middle'} style={{flexDirection: 'column', height: '50%'}}>
-          <Space direction='vertical'>
-            <Button disabled={isNil(selectedSourceRow)} shape="round" onClick={() => addPermissions(PermissionLevel.READ)} icon={<StepForwardOutlined />}/>
-            <Button disabled shape="round" icon={<FastForwardOutlined />}/>
-            <Button onClick={() => removeAllPermissions(PermissionLevel.READ)} shape="round" icon={<FastBackwardOutlined />}/>
-            <Button onClick={() => removePermission(PermissionLevel.READ)} disabled={isEmpty(readKeys)} shape="round" icon={<StepBackwardOutlined />}/>
-          </Space>
-        </Row>
-        <Row justify={'center'} align={'middle'} style={{flexDirection: 'column', height: '50%'}}>
-          <Space direction='vertical'>
-            <Button disabled={isNil(selectedSourceRow)} shape="round" onClick={() => addPermissions(PermissionLevel.WRITE)} icon={<StepForwardOutlined />}/>
-            <Button disabled shape="round" icon={<FastForwardOutlined />}/>
-            <Button onClick={() => removeAllPermissions(PermissionLevel.WRITE)} shape="round" icon={<FastBackwardOutlined />}/>
-            <Button onClick={() => removePermission(PermissionLevel.WRITE) } disabled={isEmpty(writeKeys)} shape="round" icon={<StepBackwardOutlined/>}/>
-          </Space>
-        </Row>
-      </Col>
-
-      <Col span={10} style={{padding: '0 48px'}}>
-        <Row justify={'center'} style={{height:'50%'}}>
-          <Space.Compact direction='vertical' className='custom-table-wrapper'>
-            <div className='custom-table-title'>
-              <Typography.Title type='secondary' level={5}>
-                Permissão de Leitura
-              </Typography.Title>
-            </div>
-            <Table 
-              showHeader={false}
-              size="small"
-              bordered
-              pagination={false}
+    <Col span={24}>
+      <Row>
+        <Col span={10}>
+          <CustomTableHeader title='Usuarios Disponíveis'>
+            <Table  
+              {...tableProps}
+              rootClassName='source-table'
               columns={columns}
-              dataSource={permissions.filter(permission => permission.level === PermissionLevel.READ).map(permission => ({
-                key: `${permission.type}-${permission.id}`,
-                name: `${permission.name} (${permission.type})`,
-                id: permission.id.toString(),
-                type: permission.type 
-              }))}
-              style={{ maxHeight: '200px', overflowY: 'auto'}}
-              className='dimension-table'
-              onRow={onReadRowClick}
+              dataSource={data}
+              loading={loadingUsers || loadingUserGroups}
+              onRow={onSourceRowClick}
               rowSelection={{
-                type: 'checkbox',
-                selectedRowKeys: readKeys
+                type: 'radio',
+                selectedRowKeys: [defaultTo(selectedSourceRow?.key, '')]
               }}
-            />  
-          </Space.Compact>
-        </Row>
-        <Row justify={'center'} style={{height:'50%'}} >
-          <Space.Compact direction='vertical' className='custom-table-wrapper'>
-            <div className='custom-table-title'>
-              <Typography.Title type='secondary' level={5}>
-                Permissão de Gravação
-              </Typography.Title>
-            </div>
-            <Table
-              showHeader={false}
-              size="small"
-              pagination={false}
-              columns={columns}
-              dataSource={permissions.filter(permission => permission.level === PermissionLevel.WRITE).map(permission => ({
-                key: `${permission.type}-${permission.id}`,
-                name: `${permission.name} (${permission.type})`,
-                id: permission.id.toString(),
-                type: permission.type 
-              }))}
-              bordered
-              style={{ maxHeight: '200px', overflowY: 'auto'}}
-              className='metric-table'
-              onRow={onWriteRowClick}
-              rowSelection={{
-                type: 'checkbox',
-                selectedRowKeys: writeKeys
-              }}
-            />  
-          </Space.Compact>
-        </Row>
-      </Col>
-    </Row>
+            /> 
+          </CustomTableHeader>
+        </Col>
+
+        <Col span={4} style={{textAlign: 'center', alignContent: 'center'}}>
+          <Space split={<Divider type="horizontal" />} direction='vertical' align='center' style={{justifyContent: 'center'}}>
+            <Space direction='vertical' align='center' style={{justifyContent: 'center'}}>
+              <Button disabled={isNil(selectedSourceRow)} shape="round" onClick={() => addPermissions(PermissionLevel.READ)} icon={<StepForwardOutlined />}/>
+              <Button disabled shape="round" icon={<FastForwardOutlined />}/>
+              <Button onClick={() => removeAllPermissions(PermissionLevel.READ)} shape="round" icon={<FastBackwardOutlined />}/>
+              <Button onClick={() => removePermission(PermissionLevel.READ)} disabled={isEmpty(readKeys)} shape="round" icon={<StepBackwardOutlined />}/>
+            </Space>
+            <Space direction='vertical' align='center' style={{justifyContent: 'center'}}>
+              <Button disabled={isNil(selectedSourceRow)} shape="round" onClick={() => addPermissions(PermissionLevel.WRITE)} icon={<StepForwardOutlined />}/>
+              <Button disabled shape="round" icon={<FastForwardOutlined />}/>
+              <Button onClick={() => removeAllPermissions(PermissionLevel.WRITE)} shape="round" icon={<FastBackwardOutlined />}/>
+              <Button onClick={() => removePermission(PermissionLevel.WRITE) } disabled={isEmpty(writeKeys)} shape="round" icon={<StepBackwardOutlined/>}/>
+            </Space>
+          </Space>
+        </Col>
+
+        <Col span={10} style={{padding: '0 48px'}}>
+        <Space split={<Divider type="horizontal" />} direction='vertical'style={{width: '100%', justifyContent: 'center'}}>
+            <CustomTableHeader title='Permissão de Leitura'>
+              <Table 
+                {...tableProps}
+                rootClassName='selected-permissions-table dimension-table'
+                columns={columns}
+                dataSource={permissions.filter(permission => permission.level === PermissionLevel.READ).map(permission => ({
+                  key: `${permission.type}-${permission.id}`,
+                  name: `${permission.name} (${permission.type})`,
+                  id: permission.id.toString(),
+                  type: permission.type 
+                }))}
+                onRow={onReadRowClick}
+                rowSelection={{
+                  type: 'checkbox',
+                  selectedRowKeys: readKeys
+                }}
+              />  
+            </CustomTableHeader>
+            <CustomTableHeader title='Permissão de Escrita'>
+              <Table
+                {...tableProps}
+                rootClassName='selected-permissions-table metric-table'
+                columns={columns}
+                dataSource={permissions.filter(permission => permission.level === PermissionLevel.WRITE).map(permission => ({
+                  key: `${permission.type}-${permission.id}`,
+                  name: `${permission.name} (${permission.type})`,
+                  id: permission.id.toString(),
+                  type: permission.type 
+                }))}
+                onRow={onWriteRowClick}
+                rowSelection={{
+                  type: 'checkbox',
+                  selectedRowKeys: writeKeys
+                }}
+              /> 
+            </CustomTableHeader>
+        </Space>
+        </Col>
+      </Row>
+    </Col>
   </Card>
 }
 

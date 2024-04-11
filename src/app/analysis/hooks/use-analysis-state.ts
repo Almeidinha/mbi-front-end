@@ -1,10 +1,10 @@
 import { IndicatorDTO } from "@/lib/types/Analysis";
-import { ConditionDTO, DimensionFilterDTO, FilterType, FiltersDTO, MetricFilterDTO } from "@/lib/types/Filter";
+import { FilterType, FiltersDTO } from "@/lib/types/Filter";
 import { useState } from "react";
 import { createContainer } from "unstated-next"
 import { findDimensionsHierarchy, findMetricFilter, getKeyByValue, getValueByKey } from "../components/filters/helper";
 import { isDefined } from "@/lib/helpers/safe-navigation";
-import { ConnectorType, EditingFields, OperatorTypeValues } from "../components/filters/types";
+import { ConnectorType, EditingFilter, OperatorTypeValues } from "../components/filters/types";
 import { defaultTo, isNil, startCase } from "lodash";
 
 
@@ -15,10 +15,10 @@ interface AnalysisState {
   setIndicator: React.Dispatch<React.SetStateAction<IndicatorDTO | undefined>>;
   filters: FiltersDTO | undefined;
   setFilters: React.Dispatch<React.SetStateAction<FiltersDTO | undefined>>;
-  editingFields: EditingFields | undefined;
+  editingFilter: EditingFilter | undefined;
   updateDimensionFilter: (link: string, operator: string, value: string) => void;
   updateMetricFilter: (link: string, operator: string, value: string) => void;
-  updateEditingFields: (filterType: FilterType | undefined, link: string) => void;
+  updateEditingFilter: (filterType: FilterType | undefined, link: string) => void;
 }
 
 const useAnalysisState = (): AnalysisState => {
@@ -26,19 +26,19 @@ const useAnalysisState = (): AnalysisState => {
   const [indicator, setIndicator] = useState<IndicatorDTO | undefined>(undefined)
   const [filters, setFilters] = useState<FiltersDTO | undefined>(undefined)
   const [synchronized, setSynchronized] = useState<boolean>(true)
-  const [editingFields, setEditingFields] = useState<EditingFields | undefined>(undefined)
+  const [editingFilter, setEditingFilter] = useState<EditingFilter | undefined>(undefined)
 
-  const updateEditingFields = (filterType: FilterType | undefined, link: string) => {
+  const updateEditingFilter = (filterType: FilterType | undefined, link: string) => {
     
     if(isNil(filterType)) {
-      return setEditingFields(undefined)
+      return setEditingFilter(undefined)
     }
 
     if (filterType === FilterType.DIMENSION) {
       const dimensionsHierarchy = findDimensionsHierarchy(filters, link)
       if (isDefined(dimensionsHierarchy)) {
         const {childFilter, parentFilter} = dimensionsHierarchy
-        setEditingFields({
+        setEditingFilter({
           connector: getKeyByValue(defaultTo(parentFilter?.connector, "AND"), ConnectorType) as ConnectorType, 
           field: childFilter.condition.field.fieldId, 
           operator: childFilter.condition.operator.symbol as OperatorTypeValues, 
@@ -48,7 +48,7 @@ const useAnalysisState = (): AnalysisState => {
     } else {
 
       const filter = findMetricFilter(filters, link)
-      setEditingFields({
+      setEditingFilter({
         connector: ConnectorType.AND,
         field: filter?.condition.field.fieldId, 
         operator: getValueByKey(filter?.condition.operator.symbol!, OperatorTypeValues) as OperatorTypeValues, 
@@ -88,8 +88,8 @@ const useAnalysisState = (): AnalysisState => {
     setFilters,
     synchronized,
     setSynchronized,
-    editingFields,
-    updateEditingFields,
+    editingFilter,
+    updateEditingFilter,
     updateDimensionFilter,
     updateMetricFilter
   }

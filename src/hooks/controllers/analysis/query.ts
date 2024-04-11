@@ -28,7 +28,7 @@ export const deleteAnalysisFn = async (analysisId: number) => {
   return response.data;
 };
 
-export const putAnalysisFn = async (analysis: AnalysisInput) => {
+export const putAnalysisFn = async (analysis: Partial<AnalysisInput>) => {
   const response = await AxiosClient.put<AnalysisInput>(`/analysis/${analysis.id}`, analysis)
   return response.data;
 };

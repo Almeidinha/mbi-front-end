@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Card, Space, Tooltip, Tree, TreeDataNode, Typography } from 'antd';
 
-import './filter.css'
 import { CubeStackIcon, DatabaseIcon, SetSquareIcon } from '@/lib/icons/customIcons';
 import { CloseCircleOutlined, DeleteOutlined, DownOutlined, EditOutlined, PlusOutlined, SaveOutlined } from '@ant-design/icons';
 import { useIndFilterController, useIndFilterMutationController } from '@/hooks/controllers/filters';
@@ -12,6 +11,8 @@ import useAnalysisState from '../../hooks/use-analysis-state';
 import AddFilterModal from './AddFilterModal';
 import { findMetricFilter } from './helper';
 import { startCase, toLower } from 'lodash';
+
+import './filter.css'
 
 interface ModalState {
   title: string;
@@ -156,7 +157,7 @@ const AnalysisFilter = (props: {indicatorId: number, onFinish?: () => void}) => 
     filters: stateFilters,
     setFilters,
     setSynchronized,
-    updateEditingFields
+    updateEditingFilter
   } = useAnalysisState.useContainer()
 
   const {
@@ -190,7 +191,7 @@ const AnalysisFilter = (props: {indicatorId: number, onFinish?: () => void}) => 
   const filterAction = (link: string, filterType: FilterType, action : FilterAction) => {  
     
     if (action === FilterAction.ADD || action === FilterAction.REMOVE) { 
-      updateEditingFields(undefined, link)
+      updateEditingFilter(undefined, link)
     }
 
     if (action === FilterAction.REMOVE) { 
@@ -214,7 +215,7 @@ const AnalysisFilter = (props: {indicatorId: number, onFinish?: () => void}) => 
         input: {
           ...input              
         },
-        indicatorId: indicator!.id!
+        indicatorId: indicator!.code!
       })
       return
     }
@@ -222,7 +223,7 @@ const AnalysisFilter = (props: {indicatorId: number, onFinish?: () => void}) => 
     setModalAction({filterType, action, link})
 
     if (action === FilterAction.UPDATE) {
-      updateEditingFields(filterType, link)
+      updateEditingFilter(filterType, link)
     }
 
     setModalState((prev) => ({

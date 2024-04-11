@@ -30,10 +30,13 @@ export const useAnalysisController = (props: {analysisId?: number}) => {
 
   const { mutate: editAnalysis, isLoading: isEditingAnalysis, data: updatedIndicator, isSuccess: indicatorUpdated } = useMutation(
     QueryKeys.Keys.PUT_ANALYSIS,
-    (variables: {analysis: AnalysisInput, onSuccess?: () => void}) =>  putAnalysisFn(variables.analysis),
+    (variables: {analysis: Partial<AnalysisInput>, onSuccess?: () => void}) =>  putAnalysisFn(variables.analysis),
       {
-        onSuccess: (_, variables) => {
-          queryClient.invalidateQueries({queryKey: [QueryKeys.Keys.FETCH_ANALYSIS, analysis?.id]}),
+        onSuccess: async (_, variables) => {
+          await Promise.all([
+            queryClient.invalidateQueries({queryKey: [QueryKeys.Keys.FETCH_ANALYSIS, variables.analysis?.id]}),
+            queryClient.invalidateQueries({queryKey: [QueryKeys.Keys.FETCH_ANALYSIS_TABLE, variables.analysis?.id]}),
+          ]);
           variables.onSuccess?.(); 
         },
         onError: (error) => {

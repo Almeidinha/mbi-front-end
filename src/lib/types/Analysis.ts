@@ -38,13 +38,13 @@ export interface IHeader {
 
 export interface IProperties {
   className: string;
-  colSpan: number;
-  rowSpan: number;
+  colspan?: number;
+  rowspan?: number;
   html: string;
 }
 
 export interface IndicatorDTO {
-  code: number;
+  code?: number;
   name: string;
   areaCode: number;
   companyId: number;
@@ -73,7 +73,7 @@ export interface IndicatorDTO {
   connectionId: string;
   databaseType: number | null;
   tenantId: string;
-  isMultidimensional: boolean;
+  multidimensional: boolean;
   currentView: string;
   dateFormat: string;
   leftCoordinates: number;

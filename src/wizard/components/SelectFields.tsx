@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import useWizardState from '../hooks/use-wizard-state'
-import { Button, Card, Col, Flex, Row, Space, Table, Tooltip, Typography, notification } from 'antd'
+import { Button, Card, Col, Divider, Flex, Row, Space, Table, Tooltip, Typography, notification } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 import { DeleteRowOutlined, FastBackwardOutlined, FastForwardOutlined, MenuOutlined, MinusOutlined, StepBackwardOutlined, StepForwardOutlined, TableOutlined } from '@ant-design/icons'
 import { defaultTo, isNil } from 'lodash'
 import { AnalyticType, FieldType } from '@/ERDEngine/types'
 import { MessageType, getMessageIcon } from '@/lib/helpers/alerts'
 import ReactDragListView from 'react-drag-listview';
+import CustomTableHeader from '@/components/custom/custom-table-header'
 import "./SelectFields.css"
 
 interface DataType {
@@ -21,6 +22,13 @@ interface DataType {
 enum ColumnType {
   METRIC = 'METRIC',
   DIMENSION = 'DIMENSION'
+}
+
+const tableProps = {
+  showHeader: false as const,
+  size: "small" as const,
+  bordered: true as const,
+  pagination: false as const,
 }
 
 const sourceColumns: ColumnsType<DataType> = [
@@ -75,18 +83,6 @@ const SelectFields: React.FC = () => {
   const [selectedRow, setSelectedRow] = useState<DataType | undefined>(undefined)
 
   const [api, contextHolder] = notification.useNotification();
-
-  const onSourceRowClick = (data: DataType, index?: number) => {
-    return {
-      onClick:  () => {
-        
-        if (data.type === 'table') return;
-
-        setSourceKeys(() => [data.key])
-        setSelectedRow(() => data)
-      } 
-    }
-  }
 
   const showMessage = (message: string, description: string, type: MessageType) => {
     api.info({
@@ -148,6 +144,18 @@ const SelectFields: React.FC = () => {
   const removeFromMetrics = () => {
     setMetrics((data) => data.filter(d => !metricsKeys.includes(d.key)))
     setMetricsKeys((data) => data.filter(key => !metricsKeys.includes(key)))
+  }
+
+  const onSourceRowClick = (data: DataType, index?: number) => {
+    return {
+      onClick:  () => {
+        
+        if (data.type === 'table') return;
+
+        setSourceKeys(() => [data.key])
+        setSelectedRow(() => data)
+      } 
+    }
   }
 
   const onDimensionRowClick = (data: FieldType, index?: number) => {
@@ -213,114 +221,83 @@ const SelectFields: React.FC = () => {
   };
 
   return <Card type="inner" >
-      <Row>
-        <Col span={10} style={{padding: '0 48px'}}>
-          <Space.Compact direction='vertical' className='custom-table-wrapper'>
-            <div className='custom-table-title'>
-              <Typography.Title type='secondary' level={5}>
-                Available Columns
-              </Typography.Title>
-            </div>
-            <Table
-              style={{ maxHeight: '500px', overflowY: 'auto'}}
-              className='source-table'
-              showHeader={false}
-              expandable={{ 
-                defaultExpandAllRows: true,
-                expandRowByClick: true,
-              }}
-              columns={sourceColumns}
-              dataSource={data}
-              size="small"
-              bordered
-              pagination={false}
-              onRow={onSourceRowClick}
-              rowSelection={{
-                type: 'radio',
-                selectedRowKeys: sourceKeys
-              }}
-            />
-          </Space.Compact>
-        </Col>
-        
-        <Col span={4} style={{height: '500px'}}>
-          <Row justify={'center'} align={'middle'} style={{flexDirection: 'column', height: '50%'}}>
-            <Space direction='vertical'>
-              <Button disabled={sourceKeys.length === 0} shape="round" onClick={() => copyItem(setDimensions, ColumnType.DIMENSION)} icon={<StepForwardOutlined />}/>
-              <Button disabled shape="round" icon={<FastForwardOutlined />}/>
-              <Button onClick={() => clearItems(setDimensions, setDimensionKeys)} disabled={dimensions.length === 0} shape="round" icon={<FastBackwardOutlined />}/>
-              <Button 
-                onClick={removeFromDimension} 
-                disabled={dimensionKeys.length === 0} shape="round" icon={<StepBackwardOutlined />}/>
-            </Space>
-          </Row>
-          <Row justify={'center'} align={'middle'} style={{flexDirection: 'column', height: '50%'}}>
-            <Space direction='vertical'>
-              <Button disabled={sourceKeys.length === 0} shape="round" onClick={() => copyItem(setMetrics, ColumnType.METRIC)} icon={<StepForwardOutlined />}/>
-              <Button disabled shape="round" icon={<FastForwardOutlined />}/>
-              <Button onClick={() => clearItems(setMetrics, setMetricsKeys)} disabled={metrics.length === 0} shape="round" icon={<FastBackwardOutlined />}/>
-              <Button 
-                onClick={removeFromMetrics} 
-                disabled={metricsKeys.length === 0} shape="round" icon={<StepBackwardOutlined/>}/>
-            </Space>
-          </Row>
-        </Col>
-        
-        <Col span={10} style={{padding: '0 48px'}}>
-          <Row justify={'center'} style={{height:'50%'}}>
-            <Space.Compact direction='vertical' className='custom-table-wrapper'>
-              <div className='custom-table-title'>
-              <Typography.Title type='secondary' level={5}>
-                Dimensões
-              </Typography.Title>
-              </div>
-              <ReactDragListView {...dimDragProps}>
-                <Table
-                  style={{ maxHeight: '200px', overflowY: 'auto'}}
-                  className='dimension-table'
-                  showHeader={false}
-                  columns={destineColumns}
-                  dataSource={dimensions}
-                  pagination={false}
-                  size="small"
-                  bordered
-                  onRow={onDimensionRowClick}
+      <Col span={24}>
+        <Row>
+          <Col span={10}>
+            <CustomTableHeader title='Available Columns'>
+              <Table
+                  {...tableProps}
+                  rootClassName='source-table'
+                  expandable={{ 
+                    defaultExpandAllRows: true,
+                    expandRowByClick: true,
+                  }}
+                  columns={sourceColumns}
+                  dataSource={data}
+                  onRow={onSourceRowClick}
                   rowSelection={{
-                    type: 'checkbox',
-                    selectedRowKeys: dimensionKeys
+                    type: 'radio',
+                    selectedRowKeys: sourceKeys
                   }}
                 />
-              </ReactDragListView>
-            </Space.Compact>
-          </Row>
-          <Row justify={'center'} style={{height:'50%'}} >
-            <Space.Compact direction='vertical' className='custom-table-wrapper'>
-              <div className='custom-table-title'>
-              <Typography.Title type='secondary' level={5}>
-                  Métricas
-                </Typography.Title>
-              </div>
-              <ReactDragListView {...metDragProps}>
-                <Table
-                  style={{ maxHeight: '200px', overflowY: 'auto'}}
-                  className='metric-table'
-                  showHeader={false}
-                  columns={destineColumns}
-                  dataSource={metrics}
-                  pagination={false}
-                  size="small"
-                  bordered
-                  onRow={onMetricRowClick}
-                  rowSelection={{
-                    type: 'checkbox',
-                    selectedRowKeys: metricsKeys
-                  }}
-                />
-              </ReactDragListView>
-            </Space.Compact>            
-          </Row>
-        </Col>
-      </Row>
+            </CustomTableHeader>
+          </Col>
+          
+          <Col span={4} style={{textAlign: 'center', alignContent: 'center'}}>
+            <Space split={<Divider type="horizontal" />} direction='vertical' align='center' style={{justifyContent: 'center'}}>
+              <Space direction='vertical' align='center' style={{justifyContent: 'center'}}>
+                <Button disabled={sourceKeys.length === 0} shape="round" onClick={() => copyItem(setDimensions, ColumnType.DIMENSION)} icon={<StepForwardOutlined />}/>
+                <Button disabled shape="round" icon={<FastForwardOutlined />}/>
+                <Button onClick={() => clearItems(setDimensions, setDimensionKeys)} disabled={dimensions.length === 0} shape="round" icon={<FastBackwardOutlined />}/>
+                <Button onClick={removeFromDimension} 
+                  disabled={dimensionKeys.length === 0} shape="round" icon={<StepBackwardOutlined />}/>
+              </Space>
+              <Space direction='vertical' align='center' style={{justifyContent: 'center'}}>
+                <Button disabled={sourceKeys.length === 0} shape="round" onClick={() => copyItem(setMetrics, ColumnType.METRIC)} icon={<StepForwardOutlined />}/>
+                <Button disabled shape="round" icon={<FastForwardOutlined />}/>
+                <Button onClick={() => clearItems(setMetrics, setMetricsKeys)} disabled={metrics.length === 0} shape="round" icon={<FastBackwardOutlined />}/>
+                <Button onClick={removeFromMetrics} 
+                  disabled={metricsKeys.length === 0} shape="round" icon={<StepBackwardOutlined/>}/> 
+              </Space>
+            </Space>
+          </Col>
+          
+          <Col span={10}>
+            <Space split={<Divider type="horizontal" />} direction='vertical'style={{width: '100%', justifyContent: 'center'}}>
+              <CustomTableHeader title='Dimensões'>
+                <ReactDragListView {...dimDragProps}>
+                  <Table
+                    {...tableProps}
+                    rootClassName='selected-fields-table dimension-table'
+                    columns={destineColumns}
+                    dataSource={dimensions}
+                    onRow={onDimensionRowClick}
+                    rowSelection={{
+                      type: 'checkbox',
+                      selectedRowKeys: dimensionKeys
+                    }}
+                  />
+                </ReactDragListView>
+              </CustomTableHeader>
+              <CustomTableHeader title='Métricas'>
+                <ReactDragListView {...metDragProps}>
+                  <Table
+                    {...tableProps}
+                    rootClassName='selected-fields-table metric-table'
+                    columns={destineColumns}
+                    dataSource={metrics}
+                    onRow={onMetricRowClick}
+                    rowSelection={{
+                      type: 'checkbox',
+                      selectedRowKeys: metricsKeys
+                    }}
+                  />
+                </ReactDragListView>
+              </CustomTableHeader>
+            </Space>
+          </Col>
+        </Row>
+      </Col>
       {contextHolder}
   </Card>
 

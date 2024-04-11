@@ -116,6 +116,7 @@ const SaveAnalysis = () => {
           id: formFields.areaId
         },
         userId: 1,
+        tableType: 1,
         connectionId: tenantId!,
         name: formFields.analysisName,
         fields: fields,

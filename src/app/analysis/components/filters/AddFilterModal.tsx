@@ -1,6 +1,6 @@
 import { Button, Form, Input, Modal, ModalProps, Select } from 'antd'
 import React, { useEffect } from 'react'
-import { ConnectorType, EditingFields, FilterType, OperatorTypeValues } from './types'
+import { ConnectorType, EditingFilter, FilterType, OperatorTypeValues } from './types'
 import enumToOptions from '@/lib/helpers/enumToOptions'
 import { useForm } from 'antd/es/form/Form'
 import useAnalysisState from '../../hooks/use-analysis-state'
@@ -30,7 +30,7 @@ const AddFilterModal = (props: IFilterModal) => {
     setSynchronized,
     updateMetricFilter,
     updateDimensionFilter,
-    editingFields
+    editingFilter
   } = useAnalysisState.useContainer()
 
   const {
@@ -49,11 +49,11 @@ const AddFilterModal = (props: IFilterModal) => {
   }, [buildedFilter, setFilters])
 
 
-  const initialValues: EditingFields = {
-    connector: editingFields?.connector,
-    field: editingFields?.field,
-    operator: editingFields?.operator,
-    value: editingFields?.value,
+  const initialValues: EditingFilter = {
+    connector: editingFilter?.connector,
+    field: editingFilter?.field,
+    operator: editingFilter?.operator,
+    value: editingFilter?.value,
   }
 
   const handleFormSubmit = (values: any) => {

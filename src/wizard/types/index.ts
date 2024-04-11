@@ -71,6 +71,7 @@ export type AnalysisInput = {
   usesSequence?: boolean,
   defaultDisplay?: string,
   fields: FieldDTO[]
+  tableType: number,
   biAreaByArea: {
     companyId?: number,
     description?: string,
