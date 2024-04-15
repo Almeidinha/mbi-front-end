@@ -15,5 +15,6 @@ module.exports = (phase, { defaultConfig }) => {
       NEXTAUTH_URL: process.env.NEXTAUTH_URL,
       BASE_URL: process.env.BASE_URL,
     },
+    output: 'standalone',
   };
 }
