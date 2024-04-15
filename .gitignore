@@ -14,7 +14,6 @@
 /out/
 
 # production
-.env
 /build
 
 # misc
@@ -28,6 +27,7 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env
 
 # vercel
 .vercel
