@@ -107,6 +107,7 @@ const useWizardState = (): WizardState => {
     setLinkDict({} as LinkDictState);
     setName('');
     resizeHandler();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
 

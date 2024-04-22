@@ -7,17 +7,25 @@ import { addUsersFn, deleteUserFn, getAllUsersFn, getUserByIdFn, getUserByIdMail
 import * as QueryKeys from "@/lib/types/QueryKeys";
 import { Session } from "next-auth";
 
+export const useUserQuery = (props: {userId?: number}) => {
 
-export const useUserController = (props: {userId?: number}) => {
-
-  const queryClient = useQueryClient();
-  
   const {data: user, isLoading: loadingUser, refetch: refetchUser} = useQuery(
     [QueryKeys.Keys.FETCH_USER],
     () =>  getUserByIdFn(props.userId!),
     { enabled: isDefined(props.userId) }
   );
-  
+
+  return {
+    user,
+    loadingUser,
+    refetchUser,
+  }
+}
+
+export const useUserMutation = () => {
+
+  const queryClient = useQueryClient();
+    
   const { mutate: addUser, isLoading: isAddingUser } =  useMutation(
     QueryKeys.Keys.ADD_USER,
     (user: User) => addUsersFn(user),
@@ -62,20 +70,18 @@ export const useUserController = (props: {userId?: number}) => {
   );
 
   return {
-    user,
+    
     isAddingUser,
     isEditingUser,
     addUser,
-    loadingUser,
     editUser,
     deleteUser,
-    refetchUser,
     isDeletingUser,
   }
 
 }
 
-export const useUserListController = () => {
+export const useUserListQuery = () => {
 
   const { isLoading: loadingUsers, isError, data: users, refetch: reloadUsers } = useQuery(
     QueryKeys.Keys.FETCH_USERS,
@@ -92,7 +98,7 @@ export const useUserListController = () => {
 }
 
 
-export const useUserIndController = () => {
+export const useUserIndQuery = () => {
 
   const queryClient = useQueryClient();
 
@@ -116,7 +122,7 @@ export const useUserIndController = () => {
   
 }
 
-export const useUserSessionController = (email?: string) => {
+export const useUserSessionQuery = (email?: string) => {
 
   const { isLoading: loadingUser, isError, data: user, refetch: reloadUsers } = useQuery(
     QueryKeys.Keys.FETCH_SESSION_USER,

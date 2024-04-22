@@ -1,6 +1,6 @@
 "use client"
 
-import { useUserController, useUserListController } from "@/hooks/controllers/user"
+import { useUserMutation, useUserListQuery } from "@/hooks/controllers/user"
 import { User } from "@/lib/types/User"
 import { Button, Card, Modal, Space } from "antd"
 import Table, { ColumnsType } from "antd/es/table"
@@ -21,12 +21,12 @@ const UserList = () => {
     users,
     isError,
     loadingUsers
-  } = useUserListController()
+  } = useUserListQuery()
   
   const {
     deleteUser,
     isDeletingUser
-  } = useUserController({})
+  } = useUserMutation()
 
   const [modalTitle, setModalTitle] = useState<string>("");
   const [userModalOpen, setUserModalOpen] = useState<boolean>(false);

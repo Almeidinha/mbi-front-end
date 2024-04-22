@@ -5,7 +5,7 @@ import { IndicatorDTO } from "@/lib/types/Analysis";
 import { isDefined } from "@/lib/helpers/safe-navigation";
 import { FilterBuilderInput, FiltersDTO } from "@/lib/types/Filter";
 
-export const useIndFilterController = (props: {indicatorId: number}) => {
+export const useIndFiltersQuery = (props: {indicatorId: number}) => {
 
   const {data: indFilters, isLoading: loadingIndFilters, error: inFiltersError} = useQuery(
     [QueryKeys.Keys.FETCH_FILTERS, props.indicatorId],
@@ -23,7 +23,7 @@ export const useIndFilterController = (props: {indicatorId: number}) => {
 }
 
 
-export const useIndFilterMutationController = () => {
+export const useIndFiltersMutation = () => {
 
   const queryClient = useQueryClient();
 

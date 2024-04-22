@@ -4,7 +4,7 @@ import { addConnectionFn, deleteConnectionFn, getAllConnectionsFn, getConnection
 import { isDefined } from "@/lib/helpers/safe-navigation";
 import { Connection } from "@/lib/types/Connection";
 
-export const useConnectionController = (props: {connectionId?: string}) => {
+export const useConnectionQuery = (props: {connectionId?: string}) => {
   
   const {data: connection, isLoading: loadingConnection, refetch: refetchConnection} = useQuery(
     [QueryKeys.Keys.FETCH_CONNECTION],
@@ -19,7 +19,7 @@ export const useConnectionController = (props: {connectionId?: string}) => {
   }
 }
 
-export const useConnectionsController = () => {
+export const useConnectionsQuery = () => {
 
   const { isLoading: loadingConnections, isError, data: connections, refetch: reloadConnections, isFetching: fetchingConnections} = useQuery(
     QueryKeys.Keys.FETCH_CONNECTIONS,
@@ -36,7 +36,7 @@ export const useConnectionsController = () => {
   }
 }
 
-export const useConnectionMutationController = () => {
+export const useConnectionMutation = () => {
 
   const queryClient = useQueryClient();
   

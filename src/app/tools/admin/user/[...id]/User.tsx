@@ -1,6 +1,6 @@
 "use client"
 
-import { useUserController } from "@/hooks/controllers/user"
+import { useUserQuery } from "@/hooks/controllers/user"
 import { Button, Card, Col, Form, Input, Modal, Row } from "antd"
 import { useEffect, useState } from "react"
 import { CloseCircleOutlined } from '@ant-design/icons';
@@ -16,7 +16,7 @@ const UserData = (props: IProps) => {
   const {
     user,
     loadingUser,
-  } = useUserController({userId: props.userId})
+  } = useUserQuery({userId: props.userId})
 
   const [form] = useForm()
   

@@ -2,7 +2,7 @@ import { Card, Form, Modal, Select, Space } from "antd"
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import useWizardState from "../hooks/use-wizard-state";
 import { isDefined } from "@/lib/helpers/safe-navigation";
-import { useConnectionsController } from "@/hooks/controllers/connections";
+import { useConnectionsQuery } from "@/hooks/controllers/connections";
 import { defaultTo } from "lodash";
 import { selectFilterOption, selectFilterSort } from "@/lib/helpers/select";
 
@@ -16,7 +16,7 @@ export const SelectConnection: React.FC = () => {
   const {
     connections,
     loadingConnections
-  } = useConnectionsController()
+  } = useConnectionsQuery()
 
   const [modal, contextHolder] = Modal.useModal();
 

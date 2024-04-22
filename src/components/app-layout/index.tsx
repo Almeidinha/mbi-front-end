@@ -15,7 +15,7 @@ import {
 import { useAppDispatch } from "@/app/redux/hooks";
 import { setUser } from "@/app/redux/features/user/user-slice";
 import { useSession } from "next-auth/react";
-import { useUserSessionController } from "@/hooks/controllers/user";
+import { useUserSessionQuery } from "@/hooks/controllers/user";
 import { isDefined } from "@/lib/helpers/safe-navigation";
 
 const AppLayout: React.FC<{children?: React.ReactNode}> = ({ children }) => {
@@ -26,7 +26,7 @@ const AppLayout: React.FC<{children?: React.ReactNode}> = ({ children }) => {
   const {
     user,
     reloadUsers,
-  } =  useUserSessionController(session?.user.email)
+  } =  useUserSessionQuery(session?.user.email)
 
   useEffect(() => {
     

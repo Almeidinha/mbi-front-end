@@ -4,15 +4,26 @@ import { getFieldByIdFn, putFieldFn } from "./query";
 import { isDefined } from "@/lib/helpers/safe-navigation";
 import { BIAnalysisFieldDTO } from "@/lib/types/Filter";
 
-export const useFieldController = (props: {fieldId?: number}) => {
-
-  const queryClient = useQueryClient();
+export const useFieldsQuery = (props: {fieldId?: number}) => {
 
   const {data: field, isLoading: loadingField} = useQuery(
     [QueryKeys.Keys.FETCH_FIELD, props.fieldId!],
     () =>  getFieldByIdFn(props.fieldId!),
     { enabled: isDefined(props.fieldId) }
   );
+
+  return {
+    field,
+    loadingField,
+  }
+}
+
+
+export const useFieldsMutation = () => {
+
+  const queryClient = useQueryClient();
+
+
 
   const { mutate: editField, isLoading: isEditingField } = useMutation(
     QueryKeys.Keys.PUT_FIELD,
@@ -29,8 +40,6 @@ export const useFieldController = (props: {fieldId?: number}) => {
 
 
   return {
-    field,
-    loadingField,
     editField,
     isEditingField
   }

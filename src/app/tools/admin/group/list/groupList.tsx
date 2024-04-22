@@ -1,6 +1,6 @@
 "use client"
 
-import { useUserGroupController, useUserGroupListController } from "@/hooks/controllers/group"
+import { useUserGroupMutation, useUserGroupListQuery } from "@/hooks/controllers/group"
 import { UserGroup } from "@/lib/types/Group"
 import { CloseCircleOutlined, ExclamationCircleOutlined } from "@ant-design/icons"
 import { Button, Card, Modal, Space } from "antd"
@@ -20,12 +20,12 @@ const UserGroupList = () => {
     userGroups,
     isError,
     loadingUserGroups
-  } = useUserGroupListController()
+  } = useUserGroupListQuery()
   
   const {
     deleteUserGroup,
     isDeletingUserGroup,
-  } = useUserGroupController({})
+  } = useUserGroupMutation()
 
   const [modalTitle, setModalTitle] = useState<string>("");
   const [groupModalOpen, setGroupModalOpen] = useState<boolean>(false);

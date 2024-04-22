@@ -7,7 +7,7 @@ import useAnalysisState from '../../hooks/use-analysis-state'
 import { FieldDTO } from '@/lib/types/Analysis'
 import { isNil } from '@/lib/helpers/safe-navigation'
 import { SaveOutlined } from '@ant-design/icons'
-import { useFieldController } from '@/hooks/controllers/fields'
+import { useFieldsMutation } from '@/hooks/controllers/fields'
 
 interface IProps {
   fieldId: string
@@ -25,7 +25,7 @@ const EditFieldComponent = (props: IProps) => {
   const {
     editField,
     isEditingField,
-  } = useFieldController({})
+  } = useFieldsMutation()
 
   const field: FieldDTO | undefined = indicator?.fields.find((field) => field.fieldId === Number(props.fieldId))
 

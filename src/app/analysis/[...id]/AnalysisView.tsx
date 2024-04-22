@@ -1,6 +1,6 @@
 "use client"
 
-import { useAnalysisController, useAnalysisTableController } from '@/hooks/controllers/analysis'
+import { useAnalysisMutation, useAnalysisTableQuery } from '@/hooks/controllers/analysis'
 import { chunkArray, defaultTo, is, isDefined, isNil } from '@/lib/helpers/safe-navigation'
 import { Card, Modal, Space, Table, Typography } from 'antd'
 
@@ -61,14 +61,14 @@ const AnalysisView = (params: IAnalysisView) => {
     loadingAnalysisResult,
     reloadAnalysisResult, 
     fetchingAnalysisResult,
-  } = useAnalysisTableController({analysisId: indicatorId})
+  } = useAnalysisTableQuery({analysisId: indicatorId})
 
   const  {
     toggleSequence,
     sequenceData,
     isTogglingSequenceSequence,
     sequenceChanged
-  } = useAnalysisController({})
+  } = useAnalysisMutation()
 
   const {
     indicator,

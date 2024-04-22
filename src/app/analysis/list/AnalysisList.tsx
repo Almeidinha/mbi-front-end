@@ -1,7 +1,7 @@
 "use client"
 
-import { useAnalysisDtoListController } from '@/hooks/controllers/analysis'
-import { useUserIndController } from '@/hooks/controllers/user'
+import { useAnalysisDtoListQuery } from '@/hooks/controllers/analysis'
+import { useUserIndQuery } from '@/hooks/controllers/user'
 import { defaultTo, is, isEmpty, isNil } from '@/lib/helpers/safe-navigation'
 import { Card, Space, Switch, Tag, Tooltip, Typography, notification } from 'antd'
 import Table, { ColumnsType } from 'antd/es/table'
@@ -27,12 +27,12 @@ const AnalysisList = () => {
     analysis,
     reloadAnalysis,
     loadingAnalysis
-  } = useAnalysisDtoListController()
+  } = useAnalysisDtoListQuery()
 
   const {
     updateUserIndFavorite,
     updatingUserIndFavorite
-  } = useUserIndController();
+  } = useUserIndQuery();
 
   const router = useRouter()
   const [api, contextHolder] = notification.useNotification();

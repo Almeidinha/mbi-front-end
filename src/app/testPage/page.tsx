@@ -1,6 +1,6 @@
 'use client'
-import { useAnalysisDtoListController } from '@/hooks/controllers/analysis'
-import { useTestDataController } from '@/hooks/controllers/testStuff'
+import { useAnalysisDtoListQuery } from '@/hooks/controllers/analysis'
+import { useTestDataQuery } from '@/hooks/controllers/testStuff'
 import { defaultTo, isDefined, isNil } from '@/lib/helpers/safe-navigation'
 import { Card, Select, Space } from 'antd'
 import React, { useEffect, useState } from 'react'
@@ -11,12 +11,12 @@ const TestPage = () => {
 
   const {
     analysis
-  } = useAnalysisDtoListController()
+  } = useAnalysisDtoListQuery()
   
   const {
     testData,
     reloadTestData,
-  } = useTestDataController({id})
+  } = useTestDataQuery({id})
 
   const handleIdChange = (id: string) => {
     setId(id)

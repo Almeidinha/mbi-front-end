@@ -1,6 +1,6 @@
 "use client"
 
-import { useConnectionMutationController, useConnectionsController } from "@/hooks/controllers/connections"
+import { useConnectionMutation, useConnectionsQuery } from "@/hooks/controllers/connections"
 import { Connection, DatabaseTypes } from "@/lib/types/Connection"
 import { Button, Card, Modal, Space, Table } from "antd"
 import { ColumnsType } from "antd/es/table"
@@ -21,12 +21,12 @@ const Connections = () => {
     isError,
     loadingConnections,
     fetchingConnections
-  } = useConnectionsController()
+  } = useConnectionsQuery()
 
   const {
     deleteConnection,
     isDeletingConnection,
-  } = useConnectionMutationController()
+  } = useConnectionMutation()
 
   const [modal, contextHolder] = Modal.useModal();
   const [modalTitle, setModalTitle] = useState<string>("");

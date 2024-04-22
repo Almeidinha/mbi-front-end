@@ -2,9 +2,9 @@ import { User } from "@/lib/types/User"
 import { Button, Form, Input, Select } from "antd"
 import { useForm } from "antd/es/form/Form"
 import { SaveOutlined } from '@ant-design/icons';
-import { useUserController } from "@/hooks/controllers/user";
+import { useUserMutation } from "@/hooks/controllers/user";
 import { isDefined } from "@/lib/helpers/safe-navigation";
-import { useUserGroupListController } from "@/hooks/controllers/group";
+import { useUserGroupListQuery } from "@/hooks/controllers/group";
 
 type IAddEditUserProps = {
   user?: User
@@ -23,12 +23,12 @@ const AddEditUser = (props: IAddEditUserProps) => {
     isAddingUser,
     editUser,
     isEditingUser,
-  } = useUserController({})
+  } = useUserMutation()
 
   const {
     loadingUserGroups,
     userGroups
-  } = useUserGroupListController()
+  } = useUserGroupListQuery()
 
   const [form] = useForm()
 

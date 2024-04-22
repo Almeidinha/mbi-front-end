@@ -1,6 +1,6 @@
 "use client"
-import { useInterfaceListController } from "@/hooks/controllers/biInterface"
-import { useUserGroupListController } from "@/hooks/controllers/group"
+import { useInterfaceListQuery } from "@/hooks/controllers/biInterface"
+import { useUserGroupListQuery } from "@/hooks/controllers/group"
 import { isDefined, isNil } from "@/lib/helpers/safe-navigation"
 import { BIInterface, BIInterfaceAction, BIUserGroupInterface } from "@/lib/types/Interface"
 import { Card, Select, Space, Switch, TableColumnsType } from "antd"
@@ -41,12 +41,12 @@ export const BIGroupInterfacesPermissions: React.FC  = () => {
     biInterfaces,
     loadingInterfaces,
     reloadInterfaces
-  } = useInterfaceListController()
+  } = useInterfaceListQuery()
 
   const {
     userGroups,
     loadingUserGroups
-  } = useUserGroupListController()
+  } = useUserGroupListQuery()
 
   const [selectedGroupId, setSelectedGroupId] = useState<number | undefined>(undefined)
   

@@ -5,7 +5,7 @@ import MultiDimensionalAnalysisTransfer from './MultiDimensionalAnalysisTransfer
 import DefaultAnalysisTransfer from './DefaultAnalysisTransfer'
 import { is, isNil } from '@/lib/helpers/safe-navigation'
 import { FieldDTO } from '@/lib/types/Analysis'
-import { useAnalysisController } from '@/hooks/controllers/analysis'
+import { useAnalysisMutation } from '@/hooks/controllers/analysis'
 import { CloseCircleOutlined } from '@ant-design/icons'
 import MetricRestrictions from './MetricRestrictions'
 
@@ -22,7 +22,7 @@ const ManageAnalysis = (props: IProps) => {
 
   const {
     editAnalysis,
-  } = useAnalysisController({})
+  } = useAnalysisMutation()
 
   const [multidimensional, setMultidimensional] = useState<boolean>(is(indicator?.multidimensional)) 
   const [modalOpen, setModalOpen] = useState<boolean>(false);

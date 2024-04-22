@@ -6,7 +6,7 @@ import { useForm } from 'antd/es/form/Form'
 import useAnalysisState from '../../hooks/use-analysis-state'
 import { FilterAction } from '@/lib/types/Filter'
 import { SaveOutlined } from '@ant-design/icons'
-import { useIndFilterMutationController } from '@/hooks/controllers/filters'
+import { useIndFiltersMutation } from '@/hooks/controllers/filters'
 import { isDefined } from '@/lib/helpers/safe-navigation'
 import { getAnalysisFieldFromFieldDto } from './helper'
 
@@ -38,7 +38,7 @@ const AddFilterModal = (props: IFilterModal) => {
     buildedFilter,
     buildingFilter,
     filtersError,
-  } = useIndFilterMutationController()
+  } = useIndFiltersMutation()
 
   useEffect(() => {
 

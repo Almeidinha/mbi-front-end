@@ -4,15 +4,9 @@ import { addAnalysisFn, addSequenceFn, deleteAnalysisFn, getAnalysisByIdFn, getA
 import { isDefined } from "@/lib/helpers/safe-navigation";
 import { AnalysisInput } from "@/wizard/types";
 
-export const useAnalysisController = (props: {analysisId?: number}) => {
+export const useAnalysisMutation = () => {
   
   const queryClient = useQueryClient();
-
-  const {data: analysis, isLoading: loadingAnalysis, error: errorLoading} = useQuery(
-    [QueryKeys.Keys.FETCH_ANALYSIS, props.analysisId!],
-    () =>  getAnalysisByIdFn(props.analysisId!),
-    { enabled: isDefined(props.analysisId) }
-  );
   
   const { mutate: addAnalysis, isLoading: isAddingAnalysis, data: newIndicator, isSuccess: indicatorCreated } =  useMutation(
     QueryKeys.Keys.ADD_ANALYSIS,
@@ -75,12 +69,9 @@ export const useAnalysisController = (props: {analysisId?: number}) => {
     }
   );
 
-  return {
-    analysis,
+  return {    
     editAnalysis,
     isEditingAnalysis,
-    loadingAnalysis,
-    errorLoading,
     indicatorCreated,
     updatedIndicator,
     indicatorUpdated,
@@ -97,7 +88,22 @@ export const useAnalysisController = (props: {analysisId?: number}) => {
 
 }
 
-export const useAnalysisDtoListController = () => {
+export const useAnalysisQuery = (props: {analysisId?: number}) => {
+  
+  const {data: analysis, isLoading: loadingAnalysis, error: errorLoading} = useQuery(
+    [QueryKeys.Keys.FETCH_ANALYSIS, props.analysisId!],
+    () =>  getAnalysisByIdFn(props.analysisId!),
+    { enabled: isDefined(props.analysisId) }
+  );
+
+  return {
+    analysis,
+    loadingAnalysis,
+    errorLoading,
+  }
+}
+
+export const useAnalysisDtoListQuery = () => {
 
   const { isLoading: loadingAnalysis, isError, data: analysis, refetch: reloadAnalysis } = useQuery(
     QueryKeys.Keys.FETCH_ANALYSIS_DTO_LIST,
@@ -114,7 +120,7 @@ export const useAnalysisDtoListController = () => {
   
 }
 
-export const useAnalysisTableController = (props: {analysisId?: number}) => {
+export const useAnalysisTableQuery = (props: {analysisId?: number}) => {
 
   const { isLoading: loadingAnalysisResult, isError, data: analysisResult, refetch: reloadAnalysisResult, isFetching:  fetchingAnalysisResult} = useQuery(
     [QueryKeys.Keys.FETCH_ANALYSIS_TABLE, props.analysisId],

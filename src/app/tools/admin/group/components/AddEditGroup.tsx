@@ -1,4 +1,4 @@
-import { useUserGroupController } from '@/hooks/controllers/group';
+import { useUserGroupMutation } from '@/hooks/controllers/group';
 import enumToOptions from '@/lib/helpers/enumToOptions';
 import { isDefined } from '@/lib/helpers/safe-navigation';
 import { RoleCode, UserGroup } from '@/lib/types/Group';
@@ -25,7 +25,7 @@ const AddEditGroup = (props: IAddEditGroupProps) => {
     isAddingUserGroup,
     editUserGroup,
     isEditingUserGroup
-  } = useUserGroupController({})
+  } = useUserGroupMutation()
 
   const [form] = useForm()
 

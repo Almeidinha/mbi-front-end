@@ -4,17 +4,24 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { addUsersGroupFn, deleteUsersGroupFn, getAllUsersGroupsFn, getUsersGroupByIdFn, patchUsersGroupFn } from "./queryes";
 import * as QueryKeys from "@/lib/types/QueryKeys";
 
+export const useUserGroupQuery = (props: {userGroupId?: number}) => {
 
-
-export const useUserGroupController = (props: {userGroupId?: number}) => {
-
-  const queryClient = useQueryClient();
-  
   const {data: userGroup, isLoading: loadingUserGroup} = useQuery(
     [QueryKeys.Keys.FETCH_USER, props.userGroupId!],
     () =>  getUsersGroupByIdFn(props.userGroupId!),
     { enabled: isDefined(props.userGroupId) }
   );
+
+  return {
+    userGroup,
+    loadingUserGroup,
+  }
+
+} 
+
+export const useUserGroupMutation = () => {
+
+  const queryClient = useQueryClient();
   
   const { mutate: addUserGroup, isLoading: isAddingUserGroup } =  useMutation(
     QueryKeys.Keys.ADD_USER_GROUP,
@@ -59,11 +66,9 @@ export const useUserGroupController = (props: {userGroupId?: number}) => {
   );
 
   return {
-    userGroup,
     isAddingUserGroup,
     isEditingUserGroup,
     addUserGroup,
-    loadingUserGroup,
     editUserGroup,
     deleteUserGroup,
     isDeletingUserGroup,
@@ -71,9 +76,7 @@ export const useUserGroupController = (props: {userGroupId?: number}) => {
 
 }
 
-
-
-export const useUserGroupListController = () => {
+export const useUserGroupListQuery = () => {
 
   const { isLoading: loadingUserGroups, isError, data: userGroups, refetch: reloadUserGroups } = useQuery(
     QueryKeys.Keys.FETCH_USER_GROUPS,

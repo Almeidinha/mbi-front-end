@@ -1,6 +1,6 @@
 "use client"
-import { useInterfaceListController } from "@/hooks/controllers/biInterface"
-import { useUserListController } from "@/hooks/controllers/user"
+import { useInterfaceListQuery } from "@/hooks/controllers/biInterface"
+import { useUserListQuery } from "@/hooks/controllers/user"
 import { isDefined, isNil } from "@/lib/helpers/safe-navigation"
 import { BIInterface, BIInterfaceAction, BIUserInterface } from "@/lib/types/Interface"
 import { Card, Select, Space, Switch, TableColumnsType } from "antd"
@@ -41,12 +41,12 @@ export const BIUserInterfacesPermissions: React.FC  = () => {
     biInterfaces,
     loadingInterfaces,
     reloadInterfaces
-  } = useInterfaceListController()
+  } = useInterfaceListQuery()
 
   const {
     users,
     loadingUsers
-  } = useUserListController()
+  } = useUserListQuery()
 
   const [selectedUserId, setSelectedUserId] = useState<number | undefined>(undefined)
   

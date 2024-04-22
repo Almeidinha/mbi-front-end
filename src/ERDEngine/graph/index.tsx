@@ -294,6 +294,7 @@ export const ERDGraph: React.FC = () => {
     setTableDict(state => ({ ...state, ...tableDictTemp }));    
     checkForRelations()
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

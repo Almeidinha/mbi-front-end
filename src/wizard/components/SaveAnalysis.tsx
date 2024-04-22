@@ -1,5 +1,5 @@
-import { useAnalysisController } from '@/hooks/controllers/analysis'
-import { useAreaListController } from '@/hooks/controllers/area'
+import { useAnalysisMutation } from '@/hooks/controllers/analysis'
+import { useAreaListQuery } from '@/hooks/controllers/area'
 import { Button, Card, Col, Form, Input, Modal, Row, Select } from 'antd'
 import { useForm } from 'antd/es/form/Form'
 import React, { useEffect } from 'react'
@@ -20,7 +20,7 @@ const SaveAnalysis = () => {
     areas,
     loadingAreas,
     isError
-  } = useAreaListController();
+  } = useAreaListQuery();
 
   const {
     addAnalysis,
@@ -31,7 +31,7 @@ const SaveAnalysis = () => {
     indicatorUpdated,
     updatedIndicator,
     indicatorCreated,
-  } = useAnalysisController({})
+  } = useAnalysisMutation()
 
   const {
     areaId,

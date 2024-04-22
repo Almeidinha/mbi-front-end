@@ -1,8 +1,8 @@
-import { useUserGroupListController } from '@/hooks/controllers/group'
-import { useUserListController } from '@/hooks/controllers/user'
+import { useUserGroupListQuery } from '@/hooks/controllers/group'
+import { useUserListQuery } from '@/hooks/controllers/user'
 import { defaultTo, isEmpty, isNil } from '@/lib/helpers/safe-navigation'
 import { FastBackwardOutlined, FastForwardOutlined, StepBackwardOutlined, StepForwardOutlined } from '@ant-design/icons'
-import { Button, Card, Col, Divider, Row, Space, Table, Typography } from 'antd'
+import { Button, Card, Col, Divider, Row, Space, Table } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 import useWizardState from '../hooks/use-wizard-state'
 import { PermissionLevel, PermissionType } from '../types'
@@ -39,12 +39,12 @@ const SelectPermissions = () => {
   const {
     users,
     loadingUsers
-  } = useUserListController()
+  } = useUserListQuery()
 
   const {
     userGroups,
     loadingUserGroups
-  } = useUserGroupListController()
+  } = useUserGroupListQuery()
 
   const {
     permissions,

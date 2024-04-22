@@ -4,7 +4,7 @@ import { addAreaFn, deleteAreaFn, getAllAreasFn, getAreaByIdFn, putAreaFn } from
 import { isDefined } from "@/lib/helpers/safe-navigation";
 import { BIArea } from "@/lib/types/Area";
 
-export const useAreaListController = () => {
+export const useAreaListQuery = () => {
 
   const { isLoading: loadingAreas, isError, data: areas, refetch: reloadAreas } = useQuery(
     QueryKeys.Keys.FETCH_AREA_LIST,
@@ -20,15 +20,23 @@ export const useAreaListController = () => {
   }
 }
 
-export const useAreaController = (props: {areaId?: number}) => {
-  
-  const queryClient = useQueryClient();
+export const useAreaQuery = (props: {areaId?: number}) => {
 
   const {data: biArea, isLoading: loadingArea} = useQuery(
     [QueryKeys.Keys.FETCH_AREA, props.areaId!],
     () =>  getAreaByIdFn(props.areaId!),
     { enabled: isDefined(props.areaId) }
   );
+
+  return {
+    biArea,
+    loadingArea,
+  }
+}
+
+export const useAreaMutation = () => {
+  
+  const queryClient = useQueryClient();
   
   const { mutate: addArea, isLoading: isAddingArea } =  useMutation(
     QueryKeys.Keys.ADD_AREA,
@@ -72,8 +80,6 @@ export const useAreaController = (props: {areaId?: number}) => {
   );
 
   return {
-    biArea,
-    loadingArea,
     editArea,
     isEditingArea,
     addArea,

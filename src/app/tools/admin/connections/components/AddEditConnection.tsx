@@ -1,5 +1,5 @@
 
-import { useConnectionMutationController } from "@/hooks/controllers/connections";
+import { useConnectionMutation } from "@/hooks/controllers/connections";
 import { isDefined, isEmpty, isNil } from "@/lib/helpers/safe-navigation";
 import { Connection, DatabaseTypes, DecimalSeparator, JdbcUrl } from "@/lib/types/Connection";
 import { Button, Checkbox, Divider, Form, Input, InputNumber, Radio, Select, Typography } from "antd";
@@ -26,7 +26,7 @@ const AddEditConnection = (props: IAddEditConnection) => {
     editConnection,
     isAddingConnection,
     isEditingConnection,
-  } = useConnectionMutationController()
+  } = useConnectionMutation()
 
   const [form] = useForm()
   const [passwordVisible, setPasswordVisible] = useState(false);

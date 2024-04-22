@@ -9,7 +9,7 @@ export const getTestFn = async (id: string) => {
   return response.data;
 };
 
-export const useTestDataController = (props: {id?: string}) => {
+export const useTestDataQuery = (props: {id?: string}) => {
 
   const { isLoading: loadingTestData, isError, data: testData, refetch: reloadTestData } = useQuery(
     "TESTE_QUERY",

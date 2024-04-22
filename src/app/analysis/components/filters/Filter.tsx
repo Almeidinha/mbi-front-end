@@ -3,7 +3,7 @@ import { Button, Card, Space, Tooltip, Tree, TreeDataNode, Typography } from 'an
 
 import { CubeStackIcon, DatabaseIcon, SetSquareIcon } from '@/lib/icons/customIcons';
 import { CloseCircleOutlined, DeleteOutlined, DownOutlined, EditOutlined, PlusOutlined, SaveOutlined } from '@ant-design/icons';
-import { useIndFilterController, useIndFilterMutationController } from '@/hooks/controllers/filters';
+import { useIndFiltersQuery, useIndFiltersMutation } from '@/hooks/controllers/filters';
 import { DimensionFilterDTO, FilterAction, FilterBuilderInput, FiltersDTO, MetricFiltersDTO, MetricSqlFiltersDTO } from '@/lib/types/Filter';
 import { isDefined, isEmpty, isNil, safeArray, validStrValue } from '@/lib/helpers/safe-navigation';
 import { FilterType } from './types';
@@ -164,14 +164,14 @@ const AnalysisFilter = (props: {indicatorId: number, onFinish?: () => void}) => 
     indFilters,
     loadingIndFilters,
     inFiltersError,
-  } = useIndFilterController({indicatorId})
+  } = useIndFiltersQuery({indicatorId})
 
   const {
     updateIndFilter,
     updatingFilter,
     removeFilterMutation,
     filtersAfterRemove,
-  } = useIndFilterMutationController()
+  } = useIndFiltersMutation()
 
   useEffect(() => {
     

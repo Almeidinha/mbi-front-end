@@ -1,10 +1,10 @@
 import * as QueryKeys from "@/lib/types/QueryKeys";
-import { deleteMetricRestrictionFn, getMetricRestrictionsByIndFn, removeDimensionMetricRestrictionFn, saveAllMetricRestrictionFn } from "./query";
+import { getMetricRestrictionsByIndFn, removeDimensionMetricRestrictionFn, saveAllMetricRestrictionFn } from "./query";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { isDefined } from "@/lib/helpers/safe-navigation";
 import { MetricRestriction } from "@/app/analysis/components/manage-analysis-type/types";
 
-export const useMetricRestrictionsController = (props: {indicatorId?: number}) => {
+export const useMetricRestrictionsQuery = (props: {indicatorId?: number}) => {
 
   const { isLoading: loadingMetricRestrictions, isError, data: metricRestrictions, refetch: reloadMetricRestrictions } = useQuery(
     [QueryKeys.Keys.FETCH_METRIC_RESTRICTIONS, props.indicatorId],
@@ -20,7 +20,7 @@ export const useMetricRestrictionsController = (props: {indicatorId?: number}) =
   }
 }
 
-export const useMetricRestrictionsActionsController = () => {
+export const useMetricRestrictionsActionsMutation = () => {
   
   const queryClient = useQueryClient();
 

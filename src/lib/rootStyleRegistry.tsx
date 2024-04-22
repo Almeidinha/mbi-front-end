@@ -7,6 +7,7 @@ import React from 'react'
 
 const StyledComponentsRegistry = ({ children }: { children: React.ReactNode }) => {
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const cache = React.useMemo<Entity>(() => createCache(), [createCache])
 
   useServerInsertedHTML(() => (

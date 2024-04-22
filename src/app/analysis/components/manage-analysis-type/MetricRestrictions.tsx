@@ -4,7 +4,7 @@ import { ColumnsType } from 'antd/es/table';
 import React, { useEffect, useState } from 'react'
 import useAnalysisState from '../../hooks/use-analysis-state';
 import { defaultTo, isDefined } from '@/lib/helpers/safe-navigation';
-import { useMetricRestrictionsActionsController, useMetricRestrictionsController } from '@/hooks/controllers/metricRestrictions';
+import { useMetricRestrictionsActionsMutation, useMetricRestrictionsQuery } from '@/hooks/controllers/metricRestrictions';
 import { FieldTypes } from '@/lib/types/Filter';
 import { MetricRestriction } from './types';
 import CustomTableHeader from '@/components/custom/custom-table-header';
@@ -38,12 +38,12 @@ const MetricRestrictions = (props: MetricRestrictionsProps) => {
   const {
     metricRestrictions,
     loadingMetricRestrictions,
-  } = useMetricRestrictionsController({indicatorId: indicator?.code})
+  } = useMetricRestrictionsQuery({indicatorId: indicator?.code})
 
   const {
     saveRestrictions,
     savingRestrictions
-  } = useMetricRestrictionsActionsController()
+  } = useMetricRestrictionsActionsMutation()
 
   const dimensions = defaultTo(indicator?.fields.filter((field) => field.fieldType === FieldTypes.DIMENSION), [])
   const metrics = defaultTo(indicator?.fields.filter((field) => field.fieldType === FieldTypes.METRIC), [])
