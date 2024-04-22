@@ -1,4 +1,4 @@
-import { Card } from 'antd'
+import { Card, Modal, Typography } from 'antd'
 import React, { useState } from 'react'
 import useAnalysisState from '../../hooks/use-analysis-state'
 import MultiDimensionalAnalysisTransfer from './MultiDimensionalAnalysisTransfer'
@@ -6,6 +6,8 @@ import DefaultAnalysisTransfer from './DefaultAnalysisTransfer'
 import { is, isNil } from '@/lib/helpers/safe-navigation'
 import { FieldDTO } from '@/lib/types/Analysis'
 import { useAnalysisController } from '@/hooks/controllers/analysis'
+import { CloseCircleOutlined } from '@ant-design/icons'
+import MetricRestrictions from './MetricRestrictions'
 
 interface IProps {
   onFinish?: () => void
@@ -23,6 +25,7 @@ const ManageAnalysis = (props: IProps) => {
   } = useAnalysisController({})
 
   const [multidimensional, setMultidimensional] = useState<boolean>(is(indicator?.multidimensional)) 
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   const title = multidimensional ? 'MultiDimensional' : 'Padrão'
   
@@ -42,7 +45,7 @@ const ManageAnalysis = (props: IProps) => {
     })
     editAnalysis({
       analysis: {
-        id: indicator.code,
+        code: indicator.code,
         fields: fields,
         tableType: multidimensional ? 2 : 1,
       }
@@ -50,16 +53,36 @@ const ManageAnalysis = (props: IProps) => {
     props.onFinish?.()
   }
 
-  return <Card 
-    title={`Análise ${title}`} 
-    style={{ width: '750px' }}
+  const onMetricClick = () => {
+    setModalOpen(true)
+  }
+
+  return <React.Fragment>
+    <Card 
+      title={`Análise ${title}`} 
+      style={{ width: '750px' }}
+      >
+        {
+          multidimensional 
+            ? <MultiDimensionalAnalysisTransfer onOk={handleOkClick} onMetricClick={onMetricClick} onTypeChange={handleTypeChange} onCancel={props.onFinish}/> 
+            : <DefaultAnalysisTransfer onOk={handleOkClick} onMetricClick={onMetricClick} onTypeChange={handleTypeChange} onCancel={props.onFinish}/>
+        }      
+    </Card>
+    <Modal
+      width="auto"
+      maskClosable={false}
+      centered
+      title={<Typography.Text type='secondary'>Manage Metrics Visualization</Typography.Text>}
+      open={modalOpen}
+      onCancel={() => setModalOpen(false)}
+      destroyOnClose
+      closeIcon={<CloseCircleOutlined />}
+      footer={null}
+      style={{minWidth: '600px'}}
     >
-      {
-        multidimensional 
-          ? <MultiDimensionalAnalysisTransfer onOk={handleOkClick} onTypeChange={handleTypeChange} onCancel={props.onFinish}/> 
-          : <DefaultAnalysisTransfer onOk={handleOkClick} onTypeChange={handleTypeChange} onCancel={props.onFinish}/>
-      }      
-  </Card>
+      <MetricRestrictions onCancel={() => setModalOpen(false)} onOk={() => setModalOpen(false)}/>
+    </Modal>  
+  </React.Fragment>
 }
 
 export default ManageAnalysis

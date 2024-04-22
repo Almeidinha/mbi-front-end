@@ -52,7 +52,7 @@ const SaveAnalysis = () => {
 
   useEffect(() => {
 
-    const shouldRedirect = (id: number) => {
+    const shouldRedirect = (code: number) => {
       modal.confirm({
         title: 'indicvador Criado!',
         icon: <QuestionCircleOutlined />,
@@ -65,7 +65,7 @@ const SaveAnalysis = () => {
           </>
         ),
         okText: 'Abrir',
-        onOk: () => navigate(`analysis/${id}`),
+        onOk: () => navigate(`analysis/${code}`),
       });
     }
 
@@ -78,7 +78,7 @@ const SaveAnalysis = () => {
     }
 
     if (is(indicatorUpdated) || is(indicatorCreated)) {
-      shouldRedirect(newIndicator?.id! || updatedIndicator?.id!)  
+      shouldRedirect(newIndicator?.code! || updatedIndicator?.code!)  
     }
     
     
@@ -110,7 +110,7 @@ const SaveAnalysis = () => {
       }).join(" AND "))
 
       const analysis: AnalysisInput = {
-        id: dbAnalysis?.id,
+        code: dbAnalysis?.code,
         biAreaByArea: {
           ...dbAnalysis?.biAreaByArea,
           id: formFields.areaId
@@ -142,11 +142,11 @@ const SaveAnalysis = () => {
 
   const saveOrUpdateIndicator = (analysis: AnalysisInput) => {
     
-    isDefined(analysis?.id ) 
+    isDefined(analysis?.code ) 
       ? editAnalysis({
         analysis: {
           ...analysis,
-          id: analysis.id
+          code: analysis.code
         }}
       ) 
       : addAnalysis({analysis: analysis}) 
@@ -192,7 +192,7 @@ const SaveAnalysis = () => {
   const getFields = (rawFields: FieldType[]): FieldDTO[] => {
     return rawFields.map((field) => ({
       fieldId: searchForFieldId(field),
-      indicatorId: dbAnalysis?.id,
+      indicatorId: dbAnalysis?.code,
       name: field.name,
       title: field.title!,
       fieldType: field.analyticType === AnalyticType.DIMENSION ? 'D' : "M",

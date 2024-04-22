@@ -168,7 +168,7 @@ const SelectPermissions = () => {
           <CustomTableHeader title='Usuarios Disponíveis'>
             <Table  
               {...tableProps}
-              rootClassName='source-table'
+              rootClassName='select-permissions-source-table'
               columns={columns}
               dataSource={data}
               loading={loadingUsers || loadingUserGroups}
@@ -203,7 +203,7 @@ const SelectPermissions = () => {
             <CustomTableHeader title='Permissão de Leitura'>
               <Table 
                 {...tableProps}
-                rootClassName='selected-permissions-table dimension-table'
+                rootClassName='selected-permissions-table'
                 columns={columns}
                 dataSource={permissions.filter(permission => permission.level === PermissionLevel.READ).map(permission => ({
                   key: `${permission.type}-${permission.id}`,
@@ -221,7 +221,7 @@ const SelectPermissions = () => {
             <CustomTableHeader title='Permissão de Escrita'>
               <Table
                 {...tableProps}
-                rootClassName='selected-permissions-table metric-table'
+                rootClassName='selected-permissions-table'
                 columns={columns}
                 dataSource={permissions.filter(permission => permission.level === PermissionLevel.WRITE).map(permission => ({
                   key: `${permission.type}-${permission.id}`,

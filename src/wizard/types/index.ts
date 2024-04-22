@@ -64,7 +64,7 @@ export enum PermissionType {
 }
 
 export type AnalysisInput = {  
-  id?: number,
+  code?: number,
   userId: number,
   connectionId: string,
   name: string,

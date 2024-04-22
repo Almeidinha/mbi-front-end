@@ -18,6 +18,7 @@ import { mapOrder } from '@/lib/helpers/arrays'
 
 interface MultiDimensionalAnalysisTransferProps {
   onTypeChange?: () => void
+  onMetricClick: () => void
   onOk?: (fields: FieldDTO[]) => void
   onCancel?: () => void
 }
@@ -189,7 +190,7 @@ const MultiDimensionalAnalysisTransfer = (props: MultiDimensionalAnalysisTransfe
     <Card type="inner">
       <Col span={24}>
         <Row>
-          <Col span={10}>
+          <Col span={11}>
             <CustomTableHeader title='Campos Disponíveis'>
                 <Table
                   {...tableProps}
@@ -205,7 +206,7 @@ const MultiDimensionalAnalysisTransfer = (props: MultiDimensionalAnalysisTransfe
                 />
               </CustomTableHeader>
           </Col>
-          <Col span={4} style={{textAlign: 'center'}}>
+          <Col span={2} style={{textAlign: 'center'}}>
             <Space split={<Divider type="horizontal" />} direction='vertical' align='center' style={{height: '100%', justifyContent: 'center'}}>
               <Space split={<Divider type="horizontal" />} direction='vertical' align='center' style={{height: '100%', justifyContent: 'center'}}>
                 <Button onClick={() => moveFieldIn(DisplayLocation.COLUMN)} type='text' shape="round" icon={<StepForwardOutlined color='#1677ff' />}/>              
@@ -217,7 +218,7 @@ const MultiDimensionalAnalysisTransfer = (props: MultiDimensionalAnalysisTransfe
               </Space>
             </Space>
           </Col>
-          <Col span={10}>
+          <Col span={11}>
             <ReactDragListView {...lineDragProps}>
               <CustomTableHeader title='Linhas'>
                 <Table
@@ -256,7 +257,7 @@ const MultiDimensionalAnalysisTransfer = (props: MultiDimensionalAnalysisTransfe
         </Row>
       </Col>
     </Card>
-    <ActionButtons onOk={handleOk} onCancel={props.onCancel} onMetricClick={() => null} onTypeChange={props.onTypeChange} typeChangeTitle='Padrão'/>
+    <ActionButtons onOk={handleOk} onCancel={props.onCancel} onMetricClick={props.onMetricClick} onTypeChange={props.onTypeChange} typeChangeTitle='Padrão'/>
   </Space>
 }
 

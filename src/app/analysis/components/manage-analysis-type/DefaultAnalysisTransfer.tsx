@@ -25,6 +25,7 @@ const tableProps = {
 
 interface DefaultAnalysisTransferProps {
   onTypeChange?: () => void
+  onMetricClick: () => void
   onOk?: (fields: FieldDTO[]) => void
   onCancel?: () => void
 }
@@ -167,7 +168,7 @@ const DefaultAnalysisTransfer = (props: DefaultAnalysisTransferProps) => {
     <Card type="inner">
       <Col span={24}>
         <Row>
-          <Col span={10}>
+          <Col span={11}>
             <CustomTableHeader title='Dimensões'>
               <Table
                 {...tableProps}
@@ -199,18 +200,18 @@ const DefaultAnalysisTransfer = (props: DefaultAnalysisTransferProps) => {
               />
             </CustomTableHeader>  
           </Col>
-          <Col span={4} style={{textAlign: 'center'}}>
+          <Col span={2} style={{textAlign: 'center'}}>
             <Space split={<Divider type="horizontal" />} direction='vertical' align='center' style={{height: '100%', justifyContent: 'center'}}>
               <Button onClick={moveFieldIn} type='text' shape="round" icon={<StepForwardOutlined color='#1677ff' />}/>              
               <Button onClick={moveFieldOut} type='text' shape="round" icon={<StepBackwardOutlined color='#1677ff' />}/>          
             </Space>
           </Col>
-          <Col span={10}>
+          <Col span={11}>
             <CustomTableHeader title='Campos Selecionados'>
               <ReactDragListView {...dragProps}>
                 <Table
                   {...tableProps}
-                  rootClassName='selected-fields-table'
+                  rootClassName='analysis-type-selected-fields-table'
                   onRow={onSelectedFieldsRowClick}
                   columns={destineColumns}
                   dataSource={fields.filter((field) => field.defaultField === 'S')
@@ -226,7 +227,7 @@ const DefaultAnalysisTransfer = (props: DefaultAnalysisTransferProps) => {
         </Row>
       </Col>
     </Card>
-    <ActionButtons onOk={handleOk} onCancel={props.onCancel} onMetricClick={() => null} onTypeChange={props.onTypeChange} typeChangeTitle='MultiDimensional'/>
+    <ActionButtons onOk={handleOk} onCancel={props.onCancel} onMetricClick={props.onMetricClick} onTypeChange={props.onTypeChange} typeChangeTitle='MultiDimensional'/>
   </Space>
 }
 

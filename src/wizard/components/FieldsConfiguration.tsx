@@ -49,13 +49,8 @@ const FieldsConfiguration: React.FC = () => {
    useEffect(() => {
 
     setDimensions((previous) => previous.map((data, index) => ({
-        key: data.key,
-        name: data.name,
-        type: data.type,
-        analyticType: data.analyticType,
+        ...data,
         title: data.title || data.name,
-        userDataType: data.analyticType === AnalyticType.DIMENSION ? data.userDataType || UserDataType.STRING : undefined,
-        tableName: data.tableName,
         nickname: data.nickname || data.name,
         visualizationOrder: (index + 1),
         drillDownLevel: (index + 1),
@@ -65,10 +60,7 @@ const FieldsConfiguration: React.FC = () => {
     ))
 
     setMetrics((previous) => previous.map((data, index) => ({
-        key: data.key,
-        name: data.name,
-        type: data.type,
-        analyticType: data.analyticType,
+        ...data,
         title: data.title || data.name,
         tableName: data.tableName,
         nickname: data.nickname || data.name,
@@ -118,7 +110,7 @@ const FieldsConfiguration: React.FC = () => {
       <Col span={12} style={{padding: '0 48px'}}>
         <CustomTableHeader title='Fields'>
           <Table
-            className='fields-table'
+            className='fields-configuration-fields-table'
             columns={columns}
             dataSource={dataSource}
             showHeader={false}

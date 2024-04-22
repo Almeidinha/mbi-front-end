@@ -34,8 +34,8 @@ export const useAnalysisController = (props: {analysisId?: number}) => {
       {
         onSuccess: async (_, variables) => {
           await Promise.all([
-            queryClient.invalidateQueries({queryKey: [QueryKeys.Keys.FETCH_ANALYSIS, variables.analysis?.id]}),
-            queryClient.invalidateQueries({queryKey: [QueryKeys.Keys.FETCH_ANALYSIS_TABLE, variables.analysis?.id]}),
+            queryClient.invalidateQueries({queryKey: [QueryKeys.Keys.FETCH_ANALYSIS, variables.analysis?.code]}),
+            queryClient.invalidateQueries({queryKey: [QueryKeys.Keys.FETCH_ANALYSIS_TABLE, variables.analysis?.code]}),
           ]);
           variables.onSuccess?.(); 
         },

@@ -5,3 +5,9 @@ export enum DisplayLocation {
   COLUMN = 2,
   NONE = 0
 }
+
+export interface MetricRestriction {
+  indicatorId: number
+  metricId : number
+  dimensionId : number
+}

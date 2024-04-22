@@ -28,7 +28,7 @@
   min-width: 100%;
 }
 
-.ant-pagination { 
+.analysis-table .ant-pagination { 
   border: 1px solid rgb(51, 119, 204);
   border-top: 0;
   margin: 0 !important;

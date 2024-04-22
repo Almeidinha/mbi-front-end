@@ -75,7 +75,7 @@ const AnalysisView = (params: IAnalysisView) => {
     setIndicator
   } = useAnalysisState.useContainer()
 
-  const [modalTitle, setModalTitle] = useState<string>('');
+  const [modalTitle, setModalTitle] = useState<ReactNode>('');
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [modalContent, setModalContent] = useState<ReactNode | undefined>(undefined);
   
@@ -167,7 +167,7 @@ const AnalysisView = (params: IAnalysisView) => {
   }
 
   const handleAnalysisTypeChange = () => {
-    setModalTitle('')
+    setModalTitle(<div style={{height: '20px'}}/>)
     setModalContent(<ManageAnalysis onFinish={() => setModalOpen(false)} />)
     setModalOpen(true)
   }

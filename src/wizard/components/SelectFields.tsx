@@ -4,7 +4,7 @@ import { Button, Card, Col, Divider, Flex, Row, Space, Table, Tooltip, Typograph
 import { ColumnsType } from 'antd/es/table'
 import { DeleteRowOutlined, FastBackwardOutlined, FastForwardOutlined, MenuOutlined, MinusOutlined, StepBackwardOutlined, StepForwardOutlined, TableOutlined } from '@ant-design/icons'
 import { defaultTo, isNil } from 'lodash'
-import { AnalyticType, FieldType } from '@/ERDEngine/types'
+import { AnalyticType, FieldType, UserDataType } from '@/ERDEngine/types'
 import { MessageType, getMessageIcon } from '@/lib/helpers/alerts'
 import ReactDragListView from 'react-drag-listview';
 import CustomTableHeader from '@/components/custom/custom-table-header'
@@ -94,6 +94,23 @@ const SelectFields: React.FC = () => {
     });
   }
 
+  const getUserDataType = (dataBaseFieldType?: string) => {
+    if (isNil(dataBaseFieldType)) {
+      return UserDataType.STRING
+    }
+
+    if (dataBaseFieldType.toLocaleLowerCase() === 'datetime') {
+      return UserDataType.DATE
+    }
+
+    if ((/^(.*INT.*|DEC.*|NUM.*|ID.*|REAL|DOUBLE|FLOAT|BIT)$/.test(dataBaseFieldType.toUpperCase()))) {
+      return UserDataType.NUMBER
+    }
+
+    return UserDataType.STRING
+    
+  }
+
   const copyItem = (setItem: React.Dispatch<React.SetStateAction<FieldType[]>>, type: ColumnType) => {
     
     if (isNil(selectedRow)) return
@@ -120,6 +137,7 @@ const SelectFields: React.FC = () => {
       name: selectedRow.name,
       type: selectedRow.type,
       tableName: selectedRow.tableName,
+      userDataType: getUserDataType(selectedRow.fieldType),
       analyticType: type === ColumnType.DIMENSION ? AnalyticType.DIMENSION : AnalyticType.METRIC,
     }])
 
@@ -150,7 +168,9 @@ const SelectFields: React.FC = () => {
     return {
       onClick:  () => {
         
-        if (data.type === 'table') return;
+        if (data.type === 'table') {
+          return;
+        }
 
         setSourceKeys(() => [data.key])
         setSelectedRow(() => data)
@@ -227,7 +247,7 @@ const SelectFields: React.FC = () => {
             <CustomTableHeader title='Available Columns'>
               <Table
                   {...tableProps}
-                  rootClassName='source-table'
+                  rootClassName='select-fields-source-table'
                   expandable={{ 
                     defaultExpandAllRows: true,
                     expandRowByClick: true,
