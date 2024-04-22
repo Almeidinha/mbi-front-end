@@ -10,6 +10,7 @@ import "./analysisList.css"
 import { OpenFolderIcon } from '@/lib/icons/customIcons'
 import { useRouter } from 'next/navigation'
 import { MessageType, getMessageIcon } from '@/lib/helpers/alerts'
+import { useAppSelector } from '@/app/redux/hooks'
 
 type DataType = {
   key: string,
@@ -38,6 +39,7 @@ const AnalysisList = () => {
   const [api, contextHolder] = notification.useNotification();
   const [selectedKey, setSelectedKey] = React.useState<string>('')
 
+  const user = useAppSelector((state) => state.currentUser.user)
   
   const columns: ColumnsType<DataType> = [
     {
@@ -74,7 +76,7 @@ const AnalysisList = () => {
         checked={favorite}
         loading={updatingUserIndFavorite} 
         onChange={() => updateUserIndFavorite({
-          userId: 1,  // TODO Get user id from Redux
+          userId: user?.id!,
           indicatorId: record.id,
           onSuccess: reloadAnalysis
         })} 
@@ -89,10 +91,10 @@ const AnalysisList = () => {
       areaId: ana.areaId,
       name: ana.name,
       areaName: ana.areaName,
-      canEdit: is(ana?.biUserIndDtoList.find(u => u.userId === 1)?.canChange) || is(ana?.biUserGroupIndDtoList.find(u => u.userGroupId === 1)?.canEdit), // TODO Get user / group id from Redux
-      favorite: is(ana?.biUserIndDtoList.find(u => u.userId === 1)?.favorite) // TODO Get user id from Redux
+      canEdit: is(ana?.biUserIndDtoList.find(u => u.userId === user?.id)?.canChange) || is(ana?.biUserGroupIndDtoList.find(u => u.userGroupId === user?.userGroupId)?.canEdit),
+      favorite: is(ana?.biUserIndDtoList.find(u => u.userId === user?.id)?.favorite)
     }))
-  }, [analysis])
+  }, [analysis, user])
 
   
   const handleOpenAnalysis = () => {
