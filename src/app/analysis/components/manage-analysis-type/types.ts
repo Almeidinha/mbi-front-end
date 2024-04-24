@@ -6,7 +6,7 @@ export enum DisplayLocation {
   NONE = 0
 }
 
-export interface MetricRestriction {
+export interface MetricRestrictionEntity {
   indicatorId: number
   metricId : number
   dimensionId : number

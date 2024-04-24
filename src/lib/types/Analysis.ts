@@ -86,7 +86,7 @@ export interface IndicatorDTO {
   partialTotalizations: PartialTotalizationsDTO;
   usesSequence: boolean;
   tableType: number;
-  // metricDimensionRestrictions: MetricDimensionRestrictions; // TODO: MAP THIS WHEN IMPLEMENTING metricDimensionRestrictions
+  metricDimensionRestrictions: MetricDimensionRestrictionDTO[]; 
   colorAlerts: ColorsAlertDTO;
   panelIndex: number;
   hasData: boolean;
@@ -95,6 +95,11 @@ export interface IndicatorDTO {
   inheritsRestrictions: boolean;
   inheritsFields: boolean;
   replicateChanges: boolean;
+}
+
+export interface MetricDimensionRestrictionDTO {
+  metricId: number;
+  dimensionIds: number[];
 }
 
 export interface FieldDTO {

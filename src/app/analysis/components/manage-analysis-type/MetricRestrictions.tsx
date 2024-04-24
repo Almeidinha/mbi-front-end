@@ -1,12 +1,11 @@
-import { FieldDTO } from '@/lib/types/Analysis';
+import { FieldDTO, MetricDimensionRestrictionDTO } from '@/lib/types/Analysis';
 import { Button, Card, Col, Row, Space, Table } from 'antd'
 import { ColumnsType } from 'antd/es/table';
 import React, { useEffect, useState } from 'react'
 import useAnalysisState from '../../hooks/use-analysis-state';
-import { defaultTo, isDefined } from '@/lib/helpers/safe-navigation';
-import { useMetricRestrictionsActionsMutation, useMetricRestrictionsQuery } from '@/hooks/controllers/metricRestrictions';
+import { defaultTo } from '@/lib/helpers/safe-navigation';
+import { useMetricRestrictionsActionsMutation } from '@/hooks/controllers/metricRestrictions';
 import { FieldTypes } from '@/lib/types/Filter';
-import { MetricRestriction } from './types';
 import CustomTableHeader from '@/components/custom/custom-table-header';
 
 const tableProps = {
@@ -36,11 +35,6 @@ const MetricRestrictions = (props: MetricRestrictionsProps) => {
   } = useAnalysisState.useContainer()
 
   const {
-    metricRestrictions,
-    loadingMetricRestrictions,
-  } = useMetricRestrictionsQuery({indicatorId: indicator?.code})
-
-  const {
     saveRestrictions,
     savingRestrictions
   } = useMetricRestrictionsActionsMutation()
@@ -48,7 +42,7 @@ const MetricRestrictions = (props: MetricRestrictionsProps) => {
   const dimensions = defaultTo(indicator?.fields.filter((field) => field.fieldType === FieldTypes.DIMENSION), [])
   const metrics = defaultTo(indicator?.fields.filter((field) => field.fieldType === FieldTypes.METRIC), [])
   
-  const [restrictions, setRestrictions] = useState<MetricRestriction[]>(defaultTo(metricRestrictions, []))
+  const [restrictions, setRestrictions] = useState<MetricDimensionRestrictionDTO[]>(defaultTo(indicator?.metricDimensionRestrictions, []))
   const [metricKey, setMetricKey] = useState<React.Key>(metrics[0].fieldId!)
 
   const [dimensionKeys, setDimensionKeys] = useState<React.Key[]>([])
@@ -57,36 +51,61 @@ const MetricRestrictions = (props: MetricRestrictionsProps) => {
     
     setDimensionKeys(
       dimensions
-      .filter((dimension) => !metricRestrictions?.some((restriction) => 
-        restriction.metricId === metricKey && restriction.dimensionId === dimension.fieldId
+      .filter((dimension) => !restrictions.some((restriction) => 
+        restriction.metricId === metricKey && restriction.dimensionIds.includes(Number(dimension.fieldId))
       ))
-      .map((dimension) => dimension.fieldId!!)
+      .map((dimension) => Number(dimension.fieldId))
     )
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [metricKey, metricRestrictions])
+  }, [metricKey, restrictions])
 
   const handleVisibleDimensionChange = (selectedRowKeys: React.Key[], selectedRows: FieldDTO[]) => {
-    setRestrictions((prev) => [
-      ...prev.filter((rest) => !selectedRowKeys.some((key) => rest.dimensionId === key && rest.metricId === Number(metricKey))),
-      ...dimensions.filter((dim) => dim.fieldId && !selectedRowKeys.includes(dim.fieldId)).map((dim) => ({
-        indicatorId: indicator?.code!,
-        metricId : Number(metricKey),
-        dimensionId : dim.fieldId!
-      }))
-    ])
-    setDimensionKeys(selectedRowKeys)
+
+    const restrictedKeys = dimensions
+      .filter((dim) => !selectedRowKeys.includes(Number(dim.fieldId)))
+      .map((dim) => Number(dim.fieldId))
+    
+    const existingRestrictionIndex = restrictions.findIndex(
+      (restriction) => restriction.metricId === Number(metricKey)
+    );
+
+    if (existingRestrictionIndex !== -1) {
+      const updatedRestrictions = [...restrictions];
+      updatedRestrictions[existingRestrictionIndex].dimensionIds = restrictedKeys;
+  
+      if (restrictedKeys.length === 0) {
+        updatedRestrictions.splice(existingRestrictionIndex, 1);
+      }
+  
+      setRestrictions(updatedRestrictions);
+    } else if (restrictedKeys.length > 0) {
+      const newRestriction: MetricDimensionRestrictionDTO = {
+        metricId: Number(metricKey),
+        dimensionIds: restrictedKeys,
+      };
+  
+      setRestrictions([...restrictions, newRestriction]);
+    }
   }
 
   const handleRestrictionsChange = () => {
     saveRestrictions({
-      restrictions,
+      restrictions: restrictions.flatMap((restriction) =>
+        restriction.dimensionIds.map((dimensionId) => ({
+          indicatorId: indicator?.code!, 
+          metricId: restriction.metricId,
+          dimensionId: dimensionId,
+        }))
+      ),
       onSuccess: () => props.onOk?.()
     })
   }
 
+
+
   return <Space direction='vertical' style={{width: '100%'}}>
-    <Card type='inner' loading={loadingMetricRestrictions || savingRestrictions}>
+    <Card type='inner' loading={savingRestrictions}>
       <Col span={24}>
         <Row>
           <Col span={11}>
