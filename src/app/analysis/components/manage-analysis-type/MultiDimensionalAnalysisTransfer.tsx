@@ -1,7 +1,7 @@
-import { Button, Card, Col, Divider, Row, Space, Table } from 'antd'
+import { Button, Card, Col, Divider, Modal, Row, Space, Table, Typography } from 'antd'
 import React, { useLayoutEffect, useState } from 'react'
 import ActionButtons from './ActionButtons'
-import { MenuOutlined, StepBackwardOutlined, StepForwardOutlined } from '@ant-design/icons'
+import { ExclamationCircleOutlined, MenuOutlined, StepBackwardOutlined, StepForwardOutlined } from '@ant-design/icons'
 import CustomTableHeader from '@/components/custom/custom-table-header'
 import { ColumnsType } from 'antd/es/table'
 import { FieldDTO } from '@/lib/types/Analysis'
@@ -48,7 +48,13 @@ const destineColumns: ColumnsType<FieldDTO> = [
   {
     key: 'name',
     dataIndex: 'name',
-    render: (text, record) => record.fieldType === FieldTypes.DIMENSION ? <><CubeStackIcon/> {text}</> : <><SetSquareIcon/> {text}</>
+    render: (text, record) => record.fieldType === FieldTypes.DIMENSION 
+      ? <Space direction='horizontal' size={4}>
+          <CubeStackIcon/><Typography.Text type={record.defaultField === 'T' ? 'danger': undefined}>{text}</Typography.Text>
+        </Space> 
+      : <Space direction='horizontal' size={4}>
+          <SetSquareIcon/><Typography.Text type={record.defaultField === 'T' ? 'danger': undefined}>{text}</Typography.Text>
+        </Space>
   },
 ]
 
@@ -64,6 +70,8 @@ const MultiDimensionalAnalysisTransfer = (props: MultiDimensionalAnalysisTransfe
   const [columnsKeys, setColumnsKeys] = useState<number[]>([])
   
   const [fields, setFields] = useState<FieldDTO[]>()
+
+  const [modal, modalContext] = Modal.useModal();
 
   useLayoutEffect(() => {
     if (isDefined(indicator)) {
@@ -135,6 +143,19 @@ const MultiDimensionalAnalysisTransfer = (props: MultiDimensionalAnalysisTransfe
 
   const moveFieldIn = (displayLocation: DisplayLocation) => {
     const data = [...fields];
+    
+    const hasInvalidMetrics = data
+      .filter((field) => sourceFieldKeys.includes(field.fieldId!))
+      .some((field) => displayLocation === DisplayLocation.COLUMN && field.fieldType === FieldTypes.METRIC)
+    
+    if (hasInvalidMetrics) {
+      modal.warning({
+        title: "Not allowed!",
+        icon: <ExclamationCircleOutlined />,
+        content: "Métricas não podem estar nas Linhas!"
+      })
+    }
+
     data.forEach((field) => {
       if (displayLocation === DisplayLocation.COLUMN && field.fieldType === FieldTypes.METRIC) {
         return
@@ -151,7 +172,21 @@ const MultiDimensionalAnalysisTransfer = (props: MultiDimensionalAnalysisTransfe
   const moveFieldOut = (displayLocation: DisplayLocation) => {
     const data = [...fields];
     const keys = displayLocation === DisplayLocation.LINE ? lineKeys : columnsKeys
+
+    const invalidMetrics = data.filter((field) => keys.includes(field.fieldId!)).some((field) => field.fieldType === FieldTypes.METRIC && field.defaultField === 'T')
+
+    if (invalidMetrics) {
+      modal.warning({
+        title: "Not allowed!",
+        icon: <ExclamationCircleOutlined />,
+        content: "Uma métrica 'somente cálculo' não pode ser removida da visualização."
+      })
+    }
+
     data.forEach((field) => {
+      if (field.fieldType === FieldTypes.METRIC && field.defaultField === 'T') {
+        return
+      }
       if([...keys].includes(field.fieldId!)) {
         field.displayLocation = DisplayLocation.NONE;
         field.defaultField = 'N'
@@ -210,11 +245,11 @@ const MultiDimensionalAnalysisTransfer = (props: MultiDimensionalAnalysisTransfe
             <Space split={<Divider type="horizontal" />} direction='vertical' align='center' style={{height: '100%', justifyContent: 'center'}}>
               <Space split={<Divider type="horizontal" />} direction='vertical' align='center' style={{height: '100%', justifyContent: 'center'}}>
                 <Button onClick={() => moveFieldIn(DisplayLocation.COLUMN)} type='text' shape="round" icon={<StepForwardOutlined color='#1677ff' />}/>              
-                <Button onClick={() => moveFieldOut(DisplayLocation.COLUMN)} type='text' shape="round" icon={<StepBackwardOutlined color='#1677ff' />}/>          
+                <Button onClick={() => moveFieldOut(DisplayLocation.LINE)} type='text' shape="round" icon={<StepBackwardOutlined color='#1677ff' />}/>          
               </Space>
               <Space split={<Divider type="horizontal" />} direction='vertical' align='center' style={{height: '100%', justifyContent: 'center'}}>
                 <Button onClick={() => moveFieldIn(DisplayLocation.LINE)} type='text' shape="round" icon={<StepForwardOutlined color='#1677ff' />}/>              
-                <Button onClick={() => moveFieldOut(DisplayLocation.LINE)} type='text' shape="round" icon={<StepBackwardOutlined color='#1677ff' />}/>          
+                <Button onClick={() => moveFieldOut(DisplayLocation.COLUMN)} type='text' shape="round" icon={<StepBackwardOutlined color='#1677ff' />}/>          
               </Space>
             </Space>
           </Col>
@@ -256,6 +291,7 @@ const MultiDimensionalAnalysisTransfer = (props: MultiDimensionalAnalysisTransfe
           </Col>
         </Row>
       </Col>
+      {modalContext}
     </Card>
     <ActionButtons onOk={handleOk} onCancel={props.onCancel} onMetricClick={props.onMetricClick} onTypeChange={props.onTypeChange} typeChangeTitle='Padrão'/>
   </Space>

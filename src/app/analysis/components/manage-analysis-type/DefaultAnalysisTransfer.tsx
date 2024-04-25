@@ -1,7 +1,7 @@
-import { Button, Card, Col, Divider, Row, Space, Table } from 'antd'
+import { Button, Card, Col, Divider, Modal, Row, Space, Table, Typography } from 'antd'
 import React, { useLayoutEffect, useState } from 'react'
 
-import { MenuOutlined, StepBackwardOutlined, StepForwardOutlined } from '@ant-design/icons'
+import { ExclamationCircleOutlined, MenuOutlined, StepBackwardOutlined, StepForwardOutlined } from '@ant-design/icons'
 import { FieldDTO } from '@/lib/types/Analysis';
 import { ColumnsType } from 'antd/es/table';
 import useAnalysisState from '../../hooks/use-analysis-state';
@@ -49,7 +49,13 @@ const destineColumns: ColumnsType<FieldDTO> = [
     title: '',
     key: 'name',
     dataIndex: 'name',
-    render: (text, record) => record.fieldType === FieldTypes.DIMENSION ? <><CubeStackIcon/> {text}</> : <><SetSquareIcon/> {text}</>
+    render: (text, record) => record.fieldType === FieldTypes.DIMENSION 
+      ? <Space direction='horizontal' size={4}>
+          <CubeStackIcon/><Typography.Text type={record.defaultField === 'T' ? 'danger': undefined}>{text}</Typography.Text>
+        </Space> 
+      : <Space direction='horizontal' size={4}>
+          <SetSquareIcon/><Typography.Text type={record.defaultField === 'T' ? 'danger': undefined}>{text}</Typography.Text>
+        </Space>
   },
 ]
 
@@ -64,6 +70,8 @@ const DefaultAnalysisTransfer = (props: DefaultAnalysisTransferProps) => {
   const [metricKeys, setMetricKeys] = useState<number[]>([])
   const [selectedFieldKeys, setSelectedFieldKeys] = useState<number[]>([])
   const [fields, setFields] = useState<FieldDTO[]>()
+
+  const [modal, modalContext] = Modal.useModal();
 
   useLayoutEffect(() => {
     if (isDefined(indicator)) {
@@ -142,7 +150,23 @@ const DefaultAnalysisTransfer = (props: DefaultAnalysisTransferProps) => {
 
   const moveFieldOut = () => {
     const data = [...fields];
+
+    const invalidMetrics = data
+      .filter((field) => selectedFieldKeys.includes(field.fieldId!))
+      .some((field) => field.fieldType === FieldTypes.METRIC && field.defaultField === 'T')
+
+    if (invalidMetrics) {
+      modal.warning({
+        title: "Not allowed!",
+        icon: <ExclamationCircleOutlined />,
+        content: "Uma métrica 'somente cálculo' não pode ser removida da visualização."
+      })
+    }
+
     data.forEach((field) => {
+      if (field.fieldType === FieldTypes.METRIC && field.defaultField === 'T') {
+        return
+      }
       if(selectedFieldKeys.includes(field.fieldId!)) {
         field.defaultField = 'N';
       }
@@ -214,7 +238,7 @@ const DefaultAnalysisTransfer = (props: DefaultAnalysisTransferProps) => {
                   rootClassName='analysis-type-selected-fields-table'
                   onRow={onSelectedFieldsRowClick}
                   columns={destineColumns}
-                  dataSource={fields.filter((field) => field.defaultField === 'S')
+                  dataSource={fields.filter((field) => ['S', 'T'].includes(field.defaultField))
                     .map((field) => ({...field, key: field.fieldId})) || []}
                   rowSelection={{
                     type: 'checkbox',
@@ -226,6 +250,7 @@ const DefaultAnalysisTransfer = (props: DefaultAnalysisTransferProps) => {
           </Col>
         </Row>
       </Col>
+      {modalContext}
     </Card>
     <ActionButtons onOk={handleOk} onCancel={props.onCancel} onMetricClick={props.onMetricClick} onTypeChange={props.onTypeChange} typeChangeTitle='MultiDimensional'/>
   </Space>
