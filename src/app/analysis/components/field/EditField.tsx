@@ -5,13 +5,14 @@ import { useForm } from 'antd/es/form/Form'
 import React from 'react'
 import useAnalysisState from '../../hooks/use-analysis-state'
 import { FieldDTO } from '@/lib/types/Analysis'
-import { isNil } from '@/lib/helpers/safe-navigation'
+import { is, isNil } from '@/lib/helpers/safe-navigation'
 import { SaveOutlined } from '@ant-design/icons'
 import { useFieldsMutation } from '@/hooks/controllers/fields'
 
 interface IProps {
   fieldId: string
   onFinish?: () => void
+  onCancel?: () => void
 }
 
 const EditFieldComponent = (props: IProps) => {
@@ -41,21 +42,31 @@ const EditFieldComponent = (props: IProps) => {
     columnWidth: field.columnWidth,
     columnAlignment: field.columnAlignment,
     dateMask: field.dateMask,
-
+    delegateOrder: field.delegateOrder,
   }
 
   const handleFormSubmit = (values: any) => {
     
     form.validateFields().then(fields => {
       editField({
-        ...fields,
-        fieldId: field.fieldId
+        field: {
+          ...fields,
+          fieldId: field.fieldId
+        },
+        onSuccess: () => props.onFinish?.()
       })
     })
   }
 
+  const getDelegateOrderFields = () => {
+    return indicator?.fields
+      .filter((f) => f.fieldId !== field.fieldId && isNil(f.delegateOrder)).map((f) => ({
+        value: f.fieldId,
+        label: f.title
+      }))
+  }
 
-  return <Card type='inner' loading={isEditingField}>    
+  return <Card type='inner'>    
     <Form
       form = {form}
       preserve={false}
@@ -63,8 +74,8 @@ const EditFieldComponent = (props: IProps) => {
       autoComplete="off"
       onFinish={handleFormSubmit}
       initialValues={initialValues}
-      labelCol={{ span: 8 }}
-      wrapperCol={{ span: 16 }}
+      labelCol={{ span: 10 }}
+      wrapperCol={{ span: 14 }}
     >
       <Form.Item 
         label="Título"
@@ -117,15 +128,29 @@ const EditFieldComponent = (props: IProps) => {
         >
           <Input type="text" allowClear />
       </Form.Item>
-      <Form.Item wrapperCol={{ offset: 20 }}>
-        <Button
-          type="primary"
-          loading={false}
-          icon={<SaveOutlined />}
-          htmlType="submit"
+      {
+        is(indicator?.multidimensional) ? (
+        <Form.Item 
+          label="Aggregate and Order by"
+          name="delegateOrder"
+          labelAlign="left"
         >
-          Ok
-        </Button>
+          <Select options={getDelegateOrderFields()} placeholder="Sem configuraçao" allowClear />
+        </Form.Item>
+        ) : null
+      }
+      <Form.Item wrapperCol={{ offset: 16 }}>
+        <Space direction='horizontal'>
+          <Button type='default' onClick={props.onCancel}>Cancelar</Button>   
+          <Button
+            type="primary"
+            loading={isEditingField}
+            icon={<SaveOutlined />}
+            htmlType="submit"
+          >
+            Ok
+          </Button>
+        </Space>
       </Form.Item>
     </Form>
     

@@ -248,6 +248,7 @@ const AnalysisFilter = (props: {indicatorId: number, onFinish?: () => void}) => 
         treeData={treeData(stateFilters || indFilters, filterAction)}
       />
       <Button 
+        type='primary'
         icon={<SaveOutlined/>} 
         style={{float: 'right'}} 
         onClick={() => updateIndFilter({indicatorId, dto: stateFilters!, onSuccess: props.onFinish})}>Save</Button>

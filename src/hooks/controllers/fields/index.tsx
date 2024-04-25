@@ -23,13 +23,12 @@ export const useFieldsMutation = () => {
 
   const queryClient = useQueryClient();
 
-
-
   const { mutate: editField, isLoading: isEditingField } = useMutation(
     QueryKeys.Keys.PUT_FIELD,
-    (field: BIAnalysisFieldDTO) =>  putFieldFn(field),
+    (variables: {field: BIAnalysisFieldDTO, onSuccess?: () => void}) =>  putFieldFn(variables.field),
       {
-        onSuccess: () => {
+        onSuccess: (_, variables) => {
+          variables.onSuccess?.();
           //queryClient.invalidateQueries({queryKey: QueryKeys.Keys.})
         },
         onError: (error) => {

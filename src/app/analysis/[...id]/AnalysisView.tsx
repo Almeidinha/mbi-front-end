@@ -108,7 +108,11 @@ const AnalysisView = (params: IAnalysisView) => {
       
       if (isDefined(fieldId)) {
         setModalTitle('Edit Field Properties')
-        setModalContent(<EditFieldComponent fieldId={fieldId} onFinish={() => setModalOpen(false)} />)
+        setModalContent(<EditFieldComponent 
+          fieldId={fieldId} 
+          onFinish={() => {setModalOpen(false), reloadAnalysisResult()}} 
+          onCancel={() => setModalOpen(false)}/>
+        )
         setModalOpen(true)
       } 
     }
@@ -223,7 +227,7 @@ const AnalysisView = (params: IAnalysisView) => {
       destroyOnClose
       closeIcon={<CloseCircleOutlined />}
       footer={null}
-      style={{minWidth: '520px'}}
+      style={{minWidth: '600px'}}
 
     >
       {modalContent}
