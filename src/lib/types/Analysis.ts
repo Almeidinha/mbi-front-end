@@ -8,7 +8,7 @@ export interface IAnalysisResult {
 
 export interface ITableResult {
   headers: IHeader[];
-  rows: IResultTableRow[];
+  rows: ITableRow[];
   styles: ITableStyles[];
   title: {
     drillup: any[],
@@ -26,10 +26,14 @@ export interface IStyle {
   [property: string]: string | boolean | Number | undefined;
 }
 
-export interface IResultTableRow {
-  className: string;
-  values: string;
+export interface ITableCell {
+  colspan?: number
+  rowspan?: number
+  className: string
+  value: string
 }
+
+export type ITableRow = ITableCell[]
 
 export interface IHeader {
   title: string;

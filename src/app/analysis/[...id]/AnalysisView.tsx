@@ -1,8 +1,8 @@
 "use client"
 
 import { useAnalysisMutation, useAnalysisTableQuery } from '@/hooks/controllers/analysis'
-import { chunkArray, defaultTo, is, isDefined, isNil } from '@/lib/helpers/safe-navigation'
-import { Card, Modal, Space, Table, Typography } from 'antd'
+import { chunkArray, defaultTo, is, isDefined } from '@/lib/helpers/safe-navigation'
+import { Card, Modal, Table } from 'antd'
 
 import "./analysisView.css"
 import { AddFilterIcon, AddSequenceIcon, InsertColumnIcon, RefreshIcon } from '@/lib/icons/customIcons'
@@ -14,19 +14,12 @@ import { nanoid } from '@reduxjs/toolkit'
 import { convertToStyleTag, extractPropValue } from '@/lib/helpers/doomHelper'
 import EditFieldComponent from '../components/field/EditField'
 import DangerousElement from '@/lib/helpers/DangerousElement'
-import { IHeader, IResultTableRow } from '@/lib/types/Analysis'
+import { IHeader, ITableCell, ITableRow } from '@/lib/types/Analysis'
 import ManageAnalysis from '../components/manage-analysis-type/ManageAnalysis'
 import CustomTableHeader from '@/components/custom/custom-table-header'
 
 interface IAnalysisView {
   indicatorId: number
-}
-
-interface IRow {
-  colspan: number
-  rowspan: number
-  className: string
-  value: string
 }
 
 
@@ -88,7 +81,7 @@ const AnalysisView = (params: IAnalysisView) => {
 
   const table = analysisResult?.table;
 
-  const rows: IResultTableRow[][]  = chunkArray(defaultTo(table?.rows, []), getHeaderSize(defaultTo(table?.headers, [])));
+  const rows: ITableRow[]  = table?.rows || [];
   const title = table?.title;
   
   const getHeaders = useCallback(() => {
@@ -124,8 +117,8 @@ const AnalysisView = (params: IAnalysisView) => {
         key: `${header.title}-${index}`,
         dataIndex: header.title,
         width: header.title === "Seq" ? 30 : undefined,
-        render: (row: IRow) => {
-          if (!isDefined(row)) {
+        render: (cell: ITableCell) => {
+          if (!isDefined(cell)) {
             return {
               props: {
                 colSpan: 0,
@@ -134,14 +127,14 @@ const AnalysisView = (params: IAnalysisView) => {
             };
           }
           return {
-            children: <div className={row?.className} dangerouslySetInnerHTML={{__html: row?.value}}/>,
+            children: <div className={cell?.className} dangerouslySetInnerHTML={{__html: cell?.value}}/>,
             props: {
-              colSpan: defaultTo(row?.colspan, 1),
-              rowSpan: defaultTo(row?.rowspan, 1)
+              colSpan: defaultTo(cell?.colspan, 1),
+              rowSpan: defaultTo(cell?.rowspan, 1)
             }
           }
         },
-        onCell: (row: IResultTableRow, i: number| undefined) => {
+        onCell: (row: ITableRow, i: number| undefined) => {
           return {
             onClick: () => {
               console.log('row clicked: ', row)
@@ -156,13 +149,13 @@ const AnalysisView = (params: IAnalysisView) => {
     return <Card type='inner' loading={loadingAnalysisResult} />
   }
 
-  const data: IResultTableRow[] = rows.map((row: IResultTableRow[]) =>  {
-    return getHeaders().reduce((acc: IResultTableRow, header: IHeader, index: number) => ({ 
+  const data: ITableRow[] = rows.map((row: ITableRow) =>  {
+    return getHeaders().reduce((acc: ITableRow, header: IHeader, index: number) => ({ 
       ...acc, 
       [header.title]: row[index],
       key: nanoid()
-    }), {} as IResultTableRow) 
-  }).filter(Boolean) as IResultTableRow[];
+    }), {} as ITableRow) 
+  }).filter(Boolean) as ITableRow[];
 
   const handleFilterClick = () => {
     setModalTitle('Add Filter')
@@ -204,6 +197,7 @@ const AnalysisView = (params: IAnalysisView) => {
     >
       <Table
         className='analysis-table'
+        scroll={{ x: "max-content" }}
         bordered
         loading={loadingAnalysisResult || fetchingAnalysisResult || isTogglingSequenceSequence}
         size='small'
