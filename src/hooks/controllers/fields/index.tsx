@@ -1,6 +1,6 @@
 import * as QueryKeys from "@/lib/types/QueryKeys";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { getFieldByIdFn, putFieldFn } from "./query";
+import { getFieldByIdFn, putFieldFn, putFieldsFn } from "./query";
 import { isDefined } from "@/lib/helpers/safe-navigation";
 import { BIAnalysisFieldDTO } from "@/lib/types/Filter";
 
@@ -37,9 +37,25 @@ export const useFieldsMutation = () => {
       }
   );
 
+  const { mutate: editFields, isLoading: isEditingFields } = useMutation(
+    QueryKeys.Keys.PUT_FIELD,
+    (variables: {fields: BIAnalysisFieldDTO[], onSuccess?: () => void}) =>  putFieldsFn(variables.fields),
+      {
+        onSuccess: (_, variables) => {
+          variables.onSuccess?.();
+          //queryClient.invalidateQueries({queryKey: QueryKeys.Keys.})
+        },
+        onError: (error) => {
+          // handle error
+        },
+      }
+  );
+
 
   return {
     editField,
-    isEditingField
+    isEditingField,
+    editFields,
+    isEditingFields
   }
 }

@@ -29,6 +29,8 @@ div:hover::-webkit-scrollbar-thumb {
 
 ::-webkit-scrollbar {
   width: 0.6em;
+  height: 0.6em;
+  border-bottom: 1px solid #3377cc;
 }
  
 ::-webkit-scrollbar-track {
@@ -38,8 +40,6 @@ div:hover::-webkit-scrollbar-thumb {
 ::-webkit-scrollbar-thumb {
   border-radius: 4px;
   background-color: #e4e3e3;
-  outline: 1px solid #e4e3e3;
-
 }
 
 .drag-handle {

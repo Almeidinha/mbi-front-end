@@ -42,6 +42,7 @@ const destineColumns: ColumnsType<FieldDTO> = [
   {
     title: "Operates",
     key: "operate",
+    width: 15,
     render: (text, record, index) =>
     <MenuOutlined className="drag-handle"/>
   },
@@ -62,8 +63,7 @@ const destineColumns: ColumnsType<FieldDTO> = [
 const DefaultAnalysisTransfer = (props: DefaultAnalysisTransferProps) => {
 
   const {
-    indicator, 
-    setIndicator
+    indicator
   } = useAnalysisState.useContainer()
 
   const [dimensionKeys, setDimensionKeys] = useState<number[]>([])
@@ -76,8 +76,7 @@ const DefaultAnalysisTransfer = (props: DefaultAnalysisTransferProps) => {
   useLayoutEffect(() => {
     if (isDefined(indicator)) {
       const fields = cloneDeep(indicator.fields)
-      fields.forEach((field) => field.displayLocation = 0)
-      setFields(fields)
+      setFields(fields.sort((a, b) => a.visualizationSequence - b.visualizationSequence))
     }
   }, [indicator])
 
@@ -88,7 +87,7 @@ const DefaultAnalysisTransfer = (props: DefaultAnalysisTransferProps) => {
   const handleOk = () => {
     if (isDefined(fields)) {
       fields.forEach((field, i) => {
-        field.visualizationSequence = field.defaultField === 'S' ? i+1 : 0
+        field.visualizationSequence = field.defaultField !== 'N' ? i+1 : 0
       })
       props.onOk?.(fields)
     }
@@ -177,7 +176,7 @@ const DefaultAnalysisTransfer = (props: DefaultAnalysisTransferProps) => {
 
   const dragProps = {
     onDragEnd(fromIndex: number, toIndex: number) {
-      const data = [...fields.filter((field) => field.defaultField === 'S')];
+      const data = [...fields.filter((field) => ['S', 'T'].includes(field.defaultField))];
       const item = data.splice(fromIndex, 1)[0];
       data.splice(toIndex, 0, item);
       const ordered = mapOrder(fields, data.map((d) => d.fieldId), "fieldId")

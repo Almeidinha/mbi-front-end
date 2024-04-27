@@ -42,6 +42,7 @@ const sourceColumns: ColumnsType<FieldDTO> = [
 const destineColumns: ColumnsType<FieldDTO> = [
   {
     key: "operate",
+    width: 15,
     render: (text, record, index) =>
     <MenuOutlined className="drag-handle"/>
   },
@@ -82,14 +83,14 @@ const MultiDimensionalAnalysisTransfer = (props: MultiDimensionalAnalysisTransfe
         }
         field.displayLocation = field.fieldType === FieldTypes.DIMENSION ?  DisplayLocation.COLUMN : DisplayLocation.LINE
       })
-      setFields(fields)
+      setFields(fields.sort((a, b) => a.visualizationSequence - b.visualizationSequence))
     }
   }, [indicator])
 
   const handleOk = () => {
     if (isDefined(fields)) {
       fields.forEach((field, i) => {  
-        field.visualizationSequence = field.defaultField === 'S' ? i+1 : 0
+        field.visualizationSequence = field.defaultField !== 'N' ? i+1 : 0
       })
       props.onOk?.(fields)
     }
@@ -254,8 +255,8 @@ const MultiDimensionalAnalysisTransfer = (props: MultiDimensionalAnalysisTransfe
             </Space>
           </Col>
           <Col span={11}>
-            <ReactDragListView {...lineDragProps}>
-              <CustomTableHeader title='Linhas'>
+            <CustomTableHeader title='Linhas'>
+              <ReactDragListView {...lineDragProps}>
                 <Table
                   {...tableProps}
                   style={{width: '100%', overflow: 'auto'}}
@@ -269,10 +270,10 @@ const MultiDimensionalAnalysisTransfer = (props: MultiDimensionalAnalysisTransfe
                     selectedRowKeys: lineKeys
                   }}
                 />
-              </CustomTableHeader>
-            </ReactDragListView>
-            <ReactDragListView {...columnDragProps}>
-              <CustomTableHeader title='Colunas'>
+              </ReactDragListView>
+            </CustomTableHeader>            
+            <CustomTableHeader title='Colunas'>
+              <ReactDragListView {...columnDragProps}>
                 <Table
                   {...tableProps}
                   style={{width: '100%', overflow: 'auto'}}
@@ -286,8 +287,8 @@ const MultiDimensionalAnalysisTransfer = (props: MultiDimensionalAnalysisTransfe
                     selectedRowKeys: columnsKeys
                   }}
                 />
-              </CustomTableHeader>
-            </ReactDragListView>
+              </ReactDragListView>
+            </CustomTableHeader>
           </Col>
         </Row>
       </Col>

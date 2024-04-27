@@ -113,6 +113,19 @@ const InsertColumnSvg = () => (
   </svg>
 );
 
+const ViewSequenceSvg = () => (
+  <svg focusable="false" aria-hidden="true" viewBox="0 0 512 512" width="1em" height="1em">
+    <path fill-opacity="0" pointerEvents="none" d="M0 0h512v512H0z"/>
+    <g fill="#4182bc">
+      <path d="M300 386l1 17-255 1c-21 0-39 8-39 18l1 36c0 9 17 17 38 17l255-1v19c0 5 5 9 13 11s18 2 28-2l150-52c8-3 13-7 13-12 0-4-5-8-13-11l-151-51c-9-3-19-4-28-2-8 2-13 6-13 12zM169 8L19 60c-8 3-13 7-13 12 0 4 5 9 13 11l151 51c9 3 19 4 28 2 8-2 13-6 13-12l-1-18 255-1c21 0 39-8 38-18V52c0-10-17-18-38-18l-255 1V17c0-5-5-9-13-11s-18-1-28 2z"/>
+    </g>
+    <g fill="#4182bc">
+      <path className="st16" d="M475 235c-198-204-371-48-416 1-7 8-7 18 0 26 45 49 218 205 416 0 8-8 8-19 0-27zM267 343c-59 0-106-39-106-87s47-87 106-87 107 39 107 87-48 87-107 87z"/>
+      <path className="st17" d="M331 235c-5 6-13 10-23 10-15 0-28-11-28-23 0-7 3-13 9-17l-18-2c-37 0-66 24-66 54s29 53 66 53 65-24 65-53c0-8-2-15-5-22z"/>
+    </g>
+  </svg>
+);
+
 export const KeyIcon = (props: Partial<CustomIconComponentProps>) => (
   <Icon component={KeySvg} {...props} />
 );
@@ -163,4 +176,8 @@ export const RefreshIcon = (props: Partial<CustomIconComponentProps>) => (
 
 export const InsertColumnIcon = (props: Partial<CustomIconComponentProps>) => (
   <Icon component={InsertColumnSvg} {...props} />
+);
+
+export const ViewSequenceIcon = (props: Partial<CustomIconComponentProps>) => (
+  <Icon component={ViewSequenceSvg} {...props} />
 );

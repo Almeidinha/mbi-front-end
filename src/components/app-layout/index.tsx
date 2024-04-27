@@ -24,7 +24,6 @@ const AppLayout: React.FC<{children?: React.ReactNode}> = ({ children }) => {
   const { data: session } = useSession();
 
   const {
-    user,
     reloadUsers,
   } =  useUserSessionQuery(session?.user.email)
 
@@ -39,7 +38,7 @@ const AppLayout: React.FC<{children?: React.ReactNode}> = ({ children }) => {
       })
     }
     
-  }, [dispatch, reloadUsers, session?.user.email, user])
+  }, [dispatch, reloadUsers, session?.user.email])
 
   return (
     <React.Fragment>

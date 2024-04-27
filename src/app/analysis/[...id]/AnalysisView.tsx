@@ -1,11 +1,11 @@
 "use client"
 
 import { useAnalysisMutation, useAnalysisTableQuery } from '@/hooks/controllers/analysis'
-import { chunkArray, defaultTo, is, isDefined } from '@/lib/helpers/safe-navigation'
-import { Card, Modal, Table } from 'antd'
+import { defaultTo, is, isDefined } from '@/lib/helpers/safe-navigation'
+import { Card, Modal, Table, Typography } from 'antd'
 
 import "./analysisView.css"
-import { AddFilterIcon, AddSequenceIcon, InsertColumnIcon, RefreshIcon } from '@/lib/icons/customIcons'
+import { AddFilterIcon, AddSequenceIcon, InsertColumnIcon, RefreshIcon, ViewSequenceIcon } from '@/lib/icons/customIcons'
 import { CloseCircleOutlined } from '@ant-design/icons'
 import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
 import AnalysisFilter from '../components/filters/Filter'
@@ -17,11 +17,11 @@ import DangerousElement from '@/lib/helpers/DangerousElement'
 import { IHeader, ITableCell, ITableRow } from '@/lib/types/Analysis'
 import ManageAnalysis from '../components/manage-analysis-type/ManageAnalysis'
 import CustomTableHeader from '@/components/custom/custom-table-header'
+import ViewSequence from '../components/viewSequence/ViewSequence'
 
 interface IAnalysisView {
   indicatorId: number
 }
-
 
 const getHeaderTitle = (header: IHeader, clickAction: () => void) => {
   if (isDefined(header.properties?.html)) {
@@ -34,12 +34,6 @@ const getHeaderTitle = (header: IHeader, clickAction: () => void) => {
   }
 
   return header.title;
-}
-
-const getHeaderSize = (headers: IHeader[]) => {
-  return defaultTo(headers.reduce(
-    (total, header) => total + defaultTo(header.properties?.colspan, 1), 0), 0
-  )
 }
 
 const AnalysisView = (params: IAnalysisView) => {
@@ -82,7 +76,6 @@ const AnalysisView = (params: IAnalysisView) => {
   const table = analysisResult?.table;
 
   const rows: ITableRow[]  = table?.rows || [];
-  const title = table?.title;
   
   const getHeaders = useCallback(() => {
     const tableHeaders = defaultTo(table?.headers, []);
@@ -100,7 +93,7 @@ const AnalysisView = (params: IAnalysisView) => {
       const fieldId = extractPropValue(header.properties.html, 'data-code-col');
       
       if (isDefined(fieldId)) {
-        setModalTitle('Edit Field Properties')
+        setModalTitle(<Typography.Text type='secondary'>Edit Field Properties</Typography.Text>)
         setModalContent(<EditFieldComponent 
           fieldId={fieldId} 
           onFinish={() => {setModalOpen(false), reloadAnalysisResult()}} 
@@ -158,7 +151,7 @@ const AnalysisView = (params: IAnalysisView) => {
   }).filter(Boolean) as ITableRow[];
 
   const handleFilterClick = () => {
-    setModalTitle('Add Filter')
+    setModalTitle(<Typography.Text type='secondary'>Add Filter</Typography.Text>)
     setModalContent(<AnalysisFilter indicatorId={indicatorId} onFinish={() => setModalOpen(false)} />)
     setModalOpen(true)
   }
@@ -174,9 +167,17 @@ const AnalysisView = (params: IAnalysisView) => {
       analysisId: indicatorId,
       add: !is(indicator?.usesSequence)
     })
-    if (sequenceChanged) {
-      console.log('sequence changed, data: ', sequenceData)
-    }
+  }
+
+  const handleViewSequenceClick = () => {
+    setModalTitle(<Typography.Text type='secondary'>View Sequence</Typography.Text>)
+    setModalContent(<ViewSequence 
+      onCancel={() => setModalOpen(false)} 
+      onFinish={() => {
+        setModalOpen(false)
+        reloadAnalysisResult()
+      }}/>)
+    setModalOpen(true)
   }
 
   const refreshAnalysis = () => {
@@ -191,6 +192,7 @@ const AnalysisView = (params: IAnalysisView) => {
       actions={[
         {onClick: handleAnalysisTypeChange, icon: <InsertColumnIcon/>},
         {onClick: handleFilterClick, icon: <AddFilterIcon/>},
+        {onClick: handleViewSequenceClick, icon: <ViewSequenceIcon/>},
         {onClick: handleSequenceClick, icon: <AddSequenceIcon/>},
         {onClick: refreshAnalysis, icon: <RefreshIcon/>}
       ]}  

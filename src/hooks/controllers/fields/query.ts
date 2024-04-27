@@ -6,6 +6,11 @@ export const putFieldFn = async (field: Partial<BIAnalysisFieldDTO>) => {
   return response.data;
 };
 
+export const putFieldsFn = async (fields: Partial<BIAnalysisFieldDTO>[]) => {
+  const response = await AxiosClient.put<BIAnalysisFieldDTO[]>('/field/list', fields)
+  return response.data;
+};
+
 export const getFieldByIdFn = async (fieldId: number) => {
   const response = await AxiosClient.get<BIAnalysisFieldDTO>(`/field/${fieldId}`)
   return response.data;
