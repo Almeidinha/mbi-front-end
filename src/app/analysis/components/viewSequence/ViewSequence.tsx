@@ -4,11 +4,10 @@ import { Button, Card, Space, Table, Typography } from 'antd'
 import { ColumnsType } from 'antd/es/table';
 import ReactDragListView from 'react-drag-listview';
 import useAnalysisState from '../../hooks/use-analysis-state';
-import { cloneDeep } from 'lodash';
 import CustomTableHeader from '@/components/custom/custom-table-header';
 import { CubeStackIcon, SetSquareIcon } from '@/lib/icons/customIcons';
 import { FieldTypes } from '@/lib/types/Filter';
-import { is, isDefined } from '@/lib/helpers/safe-navigation';
+import { cloneDeep, is, isDefined } from '@/lib/helpers/safe-navigation';
 import { mapOrder } from '@/lib/helpers/arrays';
 import { MenuOutlined } from '@ant-design/icons';
 import { useFieldsMutation } from '@/hooks/controllers/fields';

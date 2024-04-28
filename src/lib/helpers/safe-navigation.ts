@@ -3,6 +3,10 @@ import isString from 'lodash/isString.js'
 import isFunction from 'lodash/isFunction.js'
 import uniqueId from 'lodash/uniqueId.js'
 import debounce from 'lodash/debounce.js'
+import cloneDeep from 'lodash/cloneDeep.js'
+import toNumber from 'lodash/toNumber.js'
+import startCase from 'lodash/startCase.js'
+import toLower from 'lodash/toLower.js'
 import { Params } from 'next/dist/shared/lib/router/utils/route-matcher'
 
 export {
@@ -11,6 +15,10 @@ export {
   isFunction,
   uniqueId,
   debounce,
+  cloneDeep,
+  toNumber,
+  startCase, 
+  toLower,
 }
 
 export function isNil<T>(value: T | undefined | null): value is undefined | null {

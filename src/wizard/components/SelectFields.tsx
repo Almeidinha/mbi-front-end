@@ -3,12 +3,12 @@ import useWizardState from '../hooks/use-wizard-state'
 import { Button, Card, Col, Divider, Flex, Row, Space, Table, Tooltip, Typography, notification } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 import { DeleteRowOutlined, FastBackwardOutlined, FastForwardOutlined, MenuOutlined, MinusOutlined, StepBackwardOutlined, StepForwardOutlined, TableOutlined } from '@ant-design/icons'
-import { defaultTo, isNil } from 'lodash'
 import { AnalyticType, FieldType, UserDataType } from '@/ERDEngine/types'
 import { MessageType, getMessageIcon } from '@/lib/helpers/alerts'
 import ReactDragListView from 'react-drag-listview';
 import CustomTableHeader from '@/components/custom/custom-table-header'
 import "./SelectFields.css"
+import { defaultTo, isNil } from '@/lib/helpers/safe-navigation'
 
 interface DataType {
   key: string;

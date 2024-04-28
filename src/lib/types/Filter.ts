@@ -58,7 +58,7 @@ export interface BIAnalysisFieldDTO {
   delegateOrder?: number;
   tableNickname: string;
   orderDirection: string;
-  numDecimalPositions?: number;
+  decimalPositions?: number;
   totalizingField: boolean;
   verticalAnalysis?: boolean;
   verticalAnalysisType: string;

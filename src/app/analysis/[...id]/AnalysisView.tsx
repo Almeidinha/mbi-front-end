@@ -5,7 +5,7 @@ import { defaultTo, is, isDefined } from '@/lib/helpers/safe-navigation'
 import { Card, Modal, Table, Typography } from 'antd'
 
 import "./analysisView.css"
-import { AddFilterIcon, AddSequenceIcon, InsertColumnIcon, RefreshIcon, ViewSequenceIcon } from '@/lib/icons/customIcons'
+import { AddFilterIcon, AddSequenceIcon, DecimalPositionsIcon, InsertColumnIcon, RefreshIcon, ViewSequenceIcon } from '@/lib/icons/customIcons'
 import { CloseCircleOutlined } from '@ant-design/icons'
 import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
 import AnalysisFilter from '../components/filters/Filter'
@@ -18,6 +18,7 @@ import { IHeader, ITableCell, ITableRow } from '@/lib/types/Analysis'
 import ManageAnalysis from '../components/manage-analysis-type/ManageAnalysis'
 import CustomTableHeader from '@/components/custom/custom-table-header'
 import ViewSequence from '../components/viewSequence/ViewSequence'
+import DecimalPositions from '../components/decilal-positions/DecimalPositions'
 
 interface IAnalysisView {
   indicatorId: number
@@ -180,6 +181,17 @@ const AnalysisView = (params: IAnalysisView) => {
     setModalOpen(true)
   }
 
+  const handleDecimalPositionsClick = () => {
+    setModalTitle(<Typography.Text type='secondary'>Decimal Positions</Typography.Text>)
+    setModalContent(<DecimalPositions 
+      onCancel={() => setModalOpen(false)} 
+      onFinish={() => {
+        setModalOpen(false)
+        reloadAnalysisResult()
+      }}/>)
+    setModalOpen(true)
+  }
+
   const refreshAnalysis = () => {
     reloadAnalysisResult()
   }
@@ -194,6 +206,7 @@ const AnalysisView = (params: IAnalysisView) => {
         {onClick: handleFilterClick, icon: <AddFilterIcon/>},
         {onClick: handleViewSequenceClick, icon: <ViewSequenceIcon/>},
         {onClick: handleSequenceClick, icon: <AddSequenceIcon/>},
+        {onClick: handleDecimalPositionsClick, icon: <DecimalPositionsIcon/>},
         {onClick: refreshAnalysis, icon: <RefreshIcon/>}
       ]}  
     >

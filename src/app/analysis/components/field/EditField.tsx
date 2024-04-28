@@ -110,9 +110,11 @@ const EditFieldComponent = (props: IProps) => {
         label="Largura Coluna"
         name="columnWidth"
         labelAlign="left"
-        rules={[{ required: true, message: 'Digite um valor' }]}
+        rules={[
+          { required: true, message: 'Digite um valor' }
+        ]}
       >
-        <InputNumber/>
+        <InputNumber min={1} max={250}/>
       </Form.Item>
       <Form.Item 
         label="Alinhamento Coluna"

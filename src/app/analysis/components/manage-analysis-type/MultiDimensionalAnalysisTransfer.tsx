@@ -6,11 +6,10 @@ import CustomTableHeader from '@/components/custom/custom-table-header'
 import { ColumnsType } from 'antd/es/table'
 import { FieldDTO } from '@/lib/types/Analysis'
 import useAnalysisState from '../../hooks/use-analysis-state'
-import { cloneDeep, isNil } from 'lodash'
 import { CubeStackIcon, SetSquareIcon } from '@/lib/icons/customIcons'
 import { FieldTypes } from '@/lib/types/Filter'
 import ReactDragListView from 'react-drag-listview';
-import { isDefined } from '@/lib/helpers/safe-navigation'
+import { cloneDeep, isDefined, isNil } from '@/lib/helpers/safe-navigation'
 
 import './manage-analysis.type.css'
 import { DisplayLocation } from './types'

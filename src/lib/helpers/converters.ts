@@ -5,6 +5,7 @@ export const convertToBIAnalysisFieldDTO = (field: FieldDTO): BIAnalysisFieldDTO
   return {
     ...field,
     columnAlignmentPosition: field.columnAlignment,
+    decimalPositions: field.numDecimalPositions,
     dependentCalculatedFields: field.dependentCalculatedFields ?
         field.dependentCalculatedFields.map(convertToBIAnalysisFieldDTO) :
         undefined,
@@ -17,7 +18,7 @@ export const convertToFieldDTO = (field: BIAnalysisFieldDTO): FieldDTO => {
     columnAlignmentPosition, 
     dependentCalculatedFields, 
     isNavigableUpwards, 
-    numDecimalPositions, 
+    decimalPositions, 
     displayLocation, 
     sumLine, 
     partialTotalization, 
@@ -32,7 +33,7 @@ export const convertToFieldDTO = (field: BIAnalysisFieldDTO): FieldDTO => {
           dependentCalculatedFields.map(convertToFieldDTO) :
           undefined,
       navigableUpwards: isNavigableUpwards || false,
-      numDecimalPositions: numDecimalPositions !== undefined ? numDecimalPositions : 0,
+      numDecimalPositions: decimalPositions !== undefined ? decimalPositions : 0,
       displayLocation: displayLocation !== undefined ? displayLocation : 0,
       sumLine: sumLine !== undefined ? sumLine : false,
       partialTotalization: partialTotalization !== undefined ? partialTotalization : false,

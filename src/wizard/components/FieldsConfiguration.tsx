@@ -4,8 +4,7 @@ import { Card, Col, Form, Input, Row, Select, Space, Switch, Table, Typography }
 import { ColumnsType } from 'antd/es/table'
 import { AggregationType, AnalyticType, FieldType, UserDataType } from '@/ERDEngine/types'
 import { useForm } from 'antd/es/form/Form'
-import { debounce } from 'lodash'
-import { isDefined, isNil } from '@/lib/helpers/safe-navigation'
+import { debounce, isDefined, isNil } from '@/lib/helpers/safe-navigation'
 import enumToOptions from '@/lib/helpers/enumToOptions'
 import CustomTableHeader from '@/components/custom/custom-table-header'
 import "./FieldsConfiguration.css"

@@ -3,8 +3,7 @@
 import React from 'react'
 import AnalysisView from './AnalysisView'
 import { useParams } from 'next/navigation'
-import { getIdFromParameters } from '@/lib/helpers/safe-navigation'
-import { toNumber } from 'lodash'
+import { getIdFromParameters, toNumber } from '@/lib/helpers/safe-navigation'
 import { Card } from 'antd'
 import AnalysisContainer from '../hooks/use-analysis-state'
 

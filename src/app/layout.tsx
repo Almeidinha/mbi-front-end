@@ -1,13 +1,13 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { App } from 'antd'
-import { isNil } from 'lodash'
 import { redirect } from 'next/navigation'
 import AppLayout from '@/components/app-layout'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import StyledComponentsRegistry from '@/lib/rootStyleRegistry'
 import './globals.css'
+import { isNil } from '@/lib/helpers/safe-navigation'
 
 const inter = Inter({ subsets: ['latin'] })
 

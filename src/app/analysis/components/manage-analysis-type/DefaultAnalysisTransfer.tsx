@@ -8,12 +8,11 @@ import useAnalysisState from '../../hooks/use-analysis-state';
 import { FieldTypes } from '@/lib/types/Filter';
 import CustomTableHeader from '@/components/custom/custom-table-header';
 import ReactDragListView from 'react-drag-listview';
-import { cloneDeep, isNil } from 'lodash';
 import { CubeStackIcon, SetSquareIcon } from '@/lib/icons/customIcons';
 import ActionButtons from './ActionButtons';
 
 import './manage-analysis.type.css'
-import { isDefined } from '@/lib/helpers/safe-navigation';
+import { cloneDeep, isDefined, isNil } from '@/lib/helpers/safe-navigation';
 import { mapOrder } from '@/lib/helpers/arrays';
 
 const tableProps = {

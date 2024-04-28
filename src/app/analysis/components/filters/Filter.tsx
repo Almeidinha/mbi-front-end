@@ -5,12 +5,11 @@ import { CubeStackIcon, DatabaseIcon, SetSquareIcon } from '@/lib/icons/customIc
 import { CloseCircleOutlined, DeleteOutlined, DownOutlined, EditOutlined, PlusOutlined, SaveOutlined } from '@ant-design/icons';
 import { useIndFiltersQuery, useIndFiltersMutation } from '@/hooks/controllers/filters';
 import { DimensionFilterDTO, FilterAction, FilterBuilderInput, FiltersDTO, MetricFiltersDTO, MetricSqlFiltersDTO } from '@/lib/types/Filter';
-import { isDefined, isEmpty, isNil, safeArray, validStrValue } from '@/lib/helpers/safe-navigation';
+import { isDefined, isEmpty, isNil, safeArray, startCase, toLower, validStrValue } from '@/lib/helpers/safe-navigation';
 import { FilterType } from './types';
 import useAnalysisState from '../../hooks/use-analysis-state';
 import AddFilterModal from './AddFilterModal';
 import { findMetricFilter } from './helper';
-import { startCase, toLower } from 'lodash';
 
 import './filter.css'
 
