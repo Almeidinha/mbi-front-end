@@ -1,12 +1,12 @@
 import type { InputRef } from 'antd';
-import { Form, Input, Table, Tooltip } from "antd"
+import { Form, Input, Table } from "antd"
 import React, { useEffect, useRef, useState } from "react"
 import { isEmpty } from '@/lib/helpers/safe-navigation';
 
-import './editable-cell.css'
+import './editable-number-cell.css'
 
 
-interface EditableCellProps<T> {
+interface EditableNumberCellProps<T> {
   title: React.ReactNode
   editable: boolean
   children: React.ReactNode
@@ -22,7 +22,7 @@ export type ColumnTypes = Exclude<EditableTableProps['columns'], undefined>
 Add this to your table:
 rowClassName={() => 'editable-row'}
 */
-export const EditableCell = <T,>(props: EditableCellProps<T>) => {
+export const EditableNumberCell = <T,>(props: EditableNumberCellProps<T>) => {
 
   const {
     title,

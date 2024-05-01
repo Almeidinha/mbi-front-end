@@ -1,4 +1,8 @@
 
+.analysis-table, .analysis-table .ant-pagination {
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
 .analysis-table .ant-table-tbody .ant-table-row .ant-table-cell {
   padding: 0!important;
   height: 0!important;
@@ -7,7 +11,7 @@
 .analysis-table .ant-table-cell {
   border-color: rgb(51, 119, 204)!important;
   border-inline-end-color: rgb(51, 119, 204)!important;
-  border-inline-start-color: rgb(51, 119, 204)!important;
+  border-inline-start-color: rgb(51, 119, 204)!important;  
 }
 
 .analysis-table .ant-table-container {

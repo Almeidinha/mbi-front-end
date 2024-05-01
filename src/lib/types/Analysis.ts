@@ -1,5 +1,4 @@
-import { FiltersDTO, GenericFilter, OperatorDTO } from "./Filter";
-import { BIUserGroupIndDTO, BIUserIndDTO } from "./User";
+import { FiltersDTO, OperatorDTO } from "./Filter";
 
 export interface IAnalysisResult {
   table: ITableResult;
@@ -203,4 +202,9 @@ interface PartialTotalizationDTO {
   values: any[][];
   partialTotalization: number;
   sequence: number;
+}
+
+export enum OrderTypes {
+  ASC =  'ASC',
+  DESC = 'DESC'
 }

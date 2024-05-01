@@ -1,9 +1,18 @@
 import { FieldDTO } from "../types/Analysis";
 import { BIAnalysisFieldDTO } from "../types/Filter";
+import { is } from "./safe-navigation";
 
 export const convertToBIAnalysisFieldDTO = (field: FieldDTO): BIAnalysisFieldDTO => {
   return {
     ...field,
+    direction: field.orderDirection,
+    fieldOrder: field.order,
+    lineFieldTotalization: field.sumLine,
+    usesMediaLine: field.mediaLine,
+    accumulatedLineField: field.accumulatedLine,
+    vertical: field.verticalAnalysisType,
+    horizontal: field.horizontalAnalysisType,
+    fieldTotalization: field.applyTotalizationExpression ? 'E' : (field.totalizingField ? 'S' : 'N'),
     columnAlignmentPosition: field.columnAlignment,
     decimalPositions: field.numDecimalPositions,
     dependentCalculatedFields: field.dependentCalculatedFields ?
@@ -14,29 +23,24 @@ export const convertToBIAnalysisFieldDTO = (field: FieldDTO): BIAnalysisFieldDTO
 }
 
 export const convertToFieldDTO = (field: BIAnalysisFieldDTO): FieldDTO => {
-  const { 
-    columnAlignmentPosition, 
-    dependentCalculatedFields, 
-    isNavigableUpwards, 
-    decimalPositions, 
-    displayLocation, 
-    sumLine, 
-    partialTotalization, 
-    horizontalParticipationAccumulated, 
-    ...rest 
-  } = field;
-  
   return {
-      ...rest,
-      columnAlignment: columnAlignmentPosition || "",
-      dependentCalculatedFields: dependentCalculatedFields ?
-          dependentCalculatedFields.map(convertToFieldDTO) :
-          undefined,
-      navigableUpwards: isNavigableUpwards || false,
-      numDecimalPositions: decimalPositions !== undefined ? decimalPositions : 0,
-      displayLocation: displayLocation !== undefined ? displayLocation : 0,
-      sumLine: sumLine !== undefined ? sumLine : false,
-      partialTotalization: partialTotalization !== undefined ? partialTotalization : false,
-      horizontalParticipationAccumulated: horizontalParticipationAccumulated !== undefined ? horizontalParticipationAccumulated : false
+      ...field,
+      order: field.fieldOrder,
+      orderDirection: field.direction,
+      mediaLine: field.usesMediaLine,
+      accumulatedLine: field.accumulatedLineField,
+      verticalAnalysisType: field.vertical,
+      horizontalAnalysisType: field.horizontal,
+      totalizingField: field.fieldTotalization !== 'N',
+      applyTotalizationExpression: field.fieldTotalization === 'E',
+      columnAlignment: field.columnAlignmentPosition || "",
+      dependentCalculatedFields: field.dependentCalculatedFields ?
+        field.dependentCalculatedFields.map(convertToFieldDTO) : undefined,
+      navigableUpwards: is(field.isNavigableUpwards),
+      numDecimalPositions: field.decimalPositions !== undefined ? field.decimalPositions : 0,
+      displayLocation: field.displayLocation !== undefined ? field.displayLocation : 0,
+      sumLine: is(field.lineFieldTotalization),
+      partialTotalization: field.partialTotalization !== undefined ? field.partialTotalization : false,
+      horizontalParticipationAccumulated: is(field.horizontalParticipationAccumulated)
   }
 }

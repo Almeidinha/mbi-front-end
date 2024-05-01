@@ -48,8 +48,6 @@ const sourceColumns: ColumnsType<FieldDTO> = [
 
 const ViewSequence = (props: IProps) => {
 
-  const [fields, setFields] = useState<FieldDTO[]>([])
-
   const {
     editFields,
     isEditingFields,
@@ -58,6 +56,8 @@ const ViewSequence = (props: IProps) => {
   const {
     indicator,
   } = useAnalysisState.useContainer()
+
+  const [fields, setFields] = useState<FieldDTO[]>([])
 
   useLayoutEffect(() => {
     if (isDefined(indicator)) {

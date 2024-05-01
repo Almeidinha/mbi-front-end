@@ -1,8 +1,8 @@
 import * as QueryKeys from "@/lib/types/QueryKeys";
-import { getMetricRestrictionsByIndFn, removeDimensionMetricRestrictionFn, saveAllMetricRestrictionFn } from "./query";
+import { deleteIndicatorMetricRestrictionFn, getMetricRestrictionsByIndFn, removeDimensionMetricRestrictionFn, saveAllMetricRestrictionFn } from "./query";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { isDefined } from "@/lib/helpers/safe-navigation";
-import { MetricRestriction } from "@/app/analysis/components/manage-analysis-type/types";
+import { MetricRestrictionEntity } from "@/app/analysis/components/manage-analysis-type/types";
 
 export const useMetricRestrictionsQuery = (props: {indicatorId?: number}) => {
 
@@ -26,11 +26,11 @@ export const useMetricRestrictionsActionsMutation = () => {
 
   const { mutate: removeRestriction, isLoading: removingRestriction } = useMutation(
     QueryKeys.Keys.DELETE_METRIC_RESTRICTIONS,
-    (variables: {restriction: MetricRestriction}) =>  removeDimensionMetricRestrictionFn(variables.restriction),
+    (variables: {restriction: MetricRestrictionEntity}) =>  removeDimensionMetricRestrictionFn(variables.restriction),
     {
-      onSuccess: () => {  
+      onSuccess: (_, variables) => {  
         queryClient.invalidateQueries({
-          queryKey: [QueryKeys.Keys.FETCH_METRIC_RESTRICTIONS]
+          queryKey: [QueryKeys.Keys.FETCH_METRIC_RESTRICTIONS, variables.restriction.indicatorId]
         });
       },
       onError: (error) => {
@@ -39,13 +39,28 @@ export const useMetricRestrictionsActionsMutation = () => {
     }
   );
 
+  const { mutate: removeAllRestriction, isLoading: removingAllRestriction } = useMutation(
+    QueryKeys.Keys.DELETE_ALL_RESTRICTIONS,
+    (variables: {indicatorId: number, onSuccess?: () => void}) =>  deleteIndicatorMetricRestrictionFn(variables.indicatorId),
+    {
+      onSuccess: (_, variables) => {  
+        queryClient.invalidateQueries({queryKey: [QueryKeys.Keys.FETCH_METRIC_RESTRICTIONS, variables.indicatorId]});
+        variables.onSuccess?.()
+      },
+      onError: (error) => {
+        // handle error
+      },
+    }
+  );
+
+
 
   const { mutate: saveRestrictions, isLoading: savingRestrictions } = useMutation(
     QueryKeys.Keys.SAVE_RESTRICTIONS,
-    (variables: {restrictions: MetricRestriction[], onSuccess?: () => void}) =>  saveAllMetricRestrictionFn(variables.restrictions),
+    (variables: {restrictions: MetricRestrictionEntity[], onSuccess?: () => void}) =>  saveAllMetricRestrictionFn(variables.restrictions),
     {
       onSuccess: (_, variables) => {  
-        queryClient.invalidateQueries({queryKey: [QueryKeys.Keys.FETCH_METRIC_RESTRICTIONS]})
+        queryClient.invalidateQueries({queryKey: [QueryKeys.Keys.FETCH_METRIC_RESTRICTIONS, variables.restrictions[0].indicatorId]})
         //queryClient.invalidateQueries({queryKey: [QueryKeys.Keys.FETCH_ANALYSIS_TABLE, variables.restrictions[0].indicatorId]});
         variables.onSuccess?.() 
       },
@@ -60,7 +75,9 @@ export const useMetricRestrictionsActionsMutation = () => {
     saveRestrictions,
     savingRestrictions,
     removeRestriction,
-    removingRestriction
+    removingRestriction,
+    removeAllRestriction,
+    removingAllRestriction
   }
 
 }

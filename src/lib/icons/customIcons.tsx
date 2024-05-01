@@ -134,6 +134,40 @@ const DecimalPositionsSvg = () => (
   </svg>
 );
 
+const OrderSvg = () => (
+  <svg focusable="false" aria-hidden="true" viewBox="0 0 512 512" width="1em" height="1em">
+     <path fillOpacity="0" pointerEvents="none" d="M0 0h512v512H0z"/>
+    <g fill="#4183bc">
+      <path d="M46 90h186c23 0 41-18 41-41S255 7 232 7H46C23 7 5 26 5 49s18 41 41 41zm0-57c9 0 16 7 16 16s-7 16-16 16-16-7-16-16 7-16 16-16zM233 144H47c-23 0-41 18-41 41s18 42 41 42h186c23 0 41-19 41-42s-18-41-41-41zM47 201c-9 0-16-7-16-16s7-17 16-17 16 8 16 17-7 16-16 16z"/>
+    </g>
+    <path d="M234 419H48c-23 0-41 19-41 42s18 41 41 41h186a41 41 0 1 0 0-83zM48 477c-9 0-17-7-17-16s8-16 17-16 16 7 16 16-8 16-16 16z" fill="#4183bc"/>
+    <g fill="#4183bc">
+      <path d="M370 300h-17V45c0-21-8-38-18-38h-36c-10 0-18 17-18 38v255h-18c-6 0-10 5-12 13s-1 18 2 28l51 150c3 9 8 14 12 14 5 0 9-5 12-14l51-150c3-9 4-20 2-28s-6-13-11-13zM505 170L454 20c-3-9-8-14-12-14-5 0-9 5-12 14l-51 150c-4 10-4 20-2 28s6 13 11 13h18v255c0 21 8 38 18 38h36c9 0 17-17 17-38V211h18c6 0 10-5 12-13s1-18-2-28z"/>
+    </g>
+    <path d="M208 279H42c-20 0-36 19-36 42 0 22 16 41 36 41h166c20 0 36-19 36-41 0-23-16-42-36-42zM42 337c-8 0-14-8-14-17s6-16 14-16 14 7 14 16-6 17-14 17z" fill="#4183bc"/>
+  </svg>
+);
+
+const VerticalAnalysisSvg = () => (
+  <svg focusable="false" aria-hidden="true" viewBox="0 0 512 512" width="1em" height="1em">
+    <path fillOpacity="0" pointerEvents="none" d="M0 0h512v512H0z"/>
+    <path d="M507 266c-2-6-8-10-15-10h-78V22c0-9-7-16-16-16H117c-9 0-16 7-16 16v234H23a16 16 0 0 0-11 27l235 219a16 16 0 0 0 21 0l235-219c5-4 6-11 4-17z" fill="#4183bc"/>
+    <g fill="#FAFAFA">
+      <path d="M204 215a59 59 0 1 1 0-119 59 59 0 0 1 0 119zm0-79a20 20 0 1 0 0 40 20 20 0 0 0 0-40zM322 374a59 59 0 1 1 1-119 59 59 0 0 1-1 119zm0-80a20 20 0 1 0 1 40 20 20 0 0 0-1-40zM164 374c-4 0-9-2-13-5-8-7-9-20-2-28l198-238c7-8 19-9 28-2 8 7 9 19 2 28L179 366c-4 5-9 8-15 8z"/>
+    </g>
+  </svg>
+);
+
+const HorizontalAnalysisSvg = () => (
+  <svg focusable="false" aria-hidden="true" viewBox="0 0 512 512" width="1em" height="1em">
+    <path fillOpacity="0" pointerEvents="none" d="M0 0h512v512H0z"/>
+    <path d="M267 7c-6 2-10 8-10 15v78H23c-9 0-16 7-16 16l1 282c0 8 7 15 15 15h235v78a16 16 0 0 0 27 11l219-236a16 16 0 0 0 0-21L284 11c-4-5-11-6-17-4z" fill="#4183bc"/>
+    <g fill="#FAFAFA">
+      <path d="M182 235a59 59 0 1 1 0-119 59 59 0 0 1 0 119zm0-79a20 20 0 1 0 0 40 20 20 0 0 0 0-40zM301 394a59 59 0 1 1 0-119 59 59 0 0 1 0 119zm0-79a20 20 0 1 0 0 39 20 20 0 0 0 0-39zM143 394c-5 0-9-2-13-5-8-7-10-19-3-28l198-237c7-9 20-10 28-3 9 7 10 20 3 28L158 387c-4 4-10 7-15 7z"/>
+    </g>
+  </svg>
+);
+
 export const KeyIcon = (props: Partial<CustomIconComponentProps>) => (
   <Icon component={KeySvg} {...props} />
 );
@@ -192,4 +226,16 @@ export const ViewSequenceIcon = (props: Partial<CustomIconComponentProps>) => (
 
 export const DecimalPositionsIcon = (props: Partial<CustomIconComponentProps>) => (
   <Icon component={DecimalPositionsSvg} {...props} />
+);
+
+export const OrderIcon = (props: Partial<CustomIconComponentProps>) => (
+  <Icon component={OrderSvg} {...props} />
+);
+
+export const VerticalAnalysisIcon = (props: Partial<CustomIconComponentProps>) => (
+  <Icon component={VerticalAnalysisSvg} {...props} />
+);
+
+export const HorizontalAnalysisIcon = (props: Partial<CustomIconComponentProps>) => (
+  <Icon component={HorizontalAnalysisSvg} {...props} />
 );

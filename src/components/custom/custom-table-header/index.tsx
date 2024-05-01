@@ -4,7 +4,7 @@ import React, { MouseEventHandler, ReactNode } from 'react'
 import './custom-table-header.css'
 
 interface Props {
-  title: string
+  title: ReactNode
   style?: React.CSSProperties 
   titleStyle?: React.CSSProperties 
   actions?: Action[]

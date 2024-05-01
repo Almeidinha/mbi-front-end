@@ -103,7 +103,7 @@ const SelectFields: React.FC = () => {
       return UserDataType.DATE
     }
 
-    if ((/^(.*INT.*|DEC.*|NUM.*|ID.*|REAL|DOUBLE|FLOAT|BIT)$/.test(dataBaseFieldType.toUpperCase()))) {
+    if ((/^(.*INT.*|DEC.*|NUM.*|ID.*|REAL|DOUBLE|FLOAT)$/.test(dataBaseFieldType.toUpperCase()))) {
       return UserDataType.NUMBER
     }
 
@@ -116,7 +116,7 @@ const SelectFields: React.FC = () => {
     if (isNil(selectedRow)) return
 
     if (type === ColumnType.METRIC) {
-      if ((!/^(.*INT.*|DEC.*|NUM.*|ID.*|REAL|DOUBLE|FLOAT|BIT|.*MONEY)$/.test(defaultTo(selectedRow.fieldType, '').toUpperCase()))){
+      if ((!/^(.*INT.*|DEC.*|NUM.*|ID.*|REAL|DOUBLE|FLOAT|.*MONEY)$/.test(defaultTo(selectedRow.fieldType, '').toUpperCase()))){
         showMessage('No can do!', 'Campo não é uma métrica válida.', MessageType.ALERT)
         return;
       }

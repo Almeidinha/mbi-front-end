@@ -5,7 +5,7 @@ import { defaultTo, is, isDefined } from '@/lib/helpers/safe-navigation'
 import { Card, Modal, Table, Typography } from 'antd'
 
 import "./analysisView.css"
-import { AddFilterIcon, AddSequenceIcon, DecimalPositionsIcon, InsertColumnIcon, RefreshIcon, ViewSequenceIcon } from '@/lib/icons/customIcons'
+import { AddFilterIcon, AddSequenceIcon, DecimalPositionsIcon, HorizontalAnalysisIcon, InsertColumnIcon, OrderIcon, RefreshIcon, VerticalAnalysisIcon, ViewSequenceIcon } from '@/lib/icons/customIcons'
 import { CloseCircleOutlined } from '@ant-design/icons'
 import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
 import AnalysisFilter from '../components/filters/Filter'
@@ -19,6 +19,9 @@ import ManageAnalysis from '../components/manage-analysis-type/ManageAnalysis'
 import CustomTableHeader from '@/components/custom/custom-table-header'
 import ViewSequence from '../components/viewSequence/ViewSequence'
 import DecimalPositions from '../components/decilal-positions/DecimalPositions'
+import AnalysisTypeConfiguration from '../components/analysis-type-configuration'
+import { AnalysisType } from '@/lib/types/Filter'
+import OrderFields from '../components/order-fields/OrderFields'
 
 interface IAnalysisView {
   indicatorId: number
@@ -192,6 +195,41 @@ const AnalysisView = (params: IAnalysisView) => {
     setModalOpen(true)
   }
 
+  const handleOrderClick = () => {
+    setModalTitle(<Typography.Text type='secondary'>Set Fields Order</Typography.Text>)
+    setModalContent(<OrderFields
+      onCancel={() => setModalOpen(false)} 
+      onFinish={() => {
+        setModalOpen(false)
+        reloadAnalysisResult()
+      }}/>)
+    setModalOpen(true)
+  }
+
+  const handleVerticalAnalysisClick = () => {
+    setModalTitle(<Typography.Text type='secondary'>Vertical Analysis Configuration</Typography.Text>)
+    setModalContent(<AnalysisTypeConfiguration
+      analysisType={AnalysisType.VERTICAL} 
+      onCancel={() => setModalOpen(false)} 
+      onFinish={() => {
+        setModalOpen(false)
+        reloadAnalysisResult()
+      }}/>)
+    setModalOpen(true)
+  }
+
+  const handleHorizontalAnalysisClick = () => {
+    setModalTitle(<Typography.Text type='secondary'>Horizontal Analysis Configuration</Typography.Text>)
+    setModalContent(<AnalysisTypeConfiguration
+      analysisType={AnalysisType.HORIZONTAL} 
+      onCancel={() => setModalOpen(false)} 
+      onFinish={() => {
+        setModalOpen(false)
+        reloadAnalysisResult()
+      }}/>)
+    setModalOpen(true)
+  }
+
   const refreshAnalysis = () => {
     reloadAnalysisResult()
   }
@@ -206,6 +244,9 @@ const AnalysisView = (params: IAnalysisView) => {
         {onClick: handleFilterClick, icon: <AddFilterIcon/>},
         {onClick: handleViewSequenceClick, icon: <ViewSequenceIcon/>},
         {onClick: handleSequenceClick, icon: <AddSequenceIcon/>},
+        {onClick: handleVerticalAnalysisClick, icon: <VerticalAnalysisIcon/>},
+        {onClick: handleHorizontalAnalysisClick, icon: <HorizontalAnalysisIcon/>},
+        {onClick: handleOrderClick, icon: <OrderIcon/>},
         {onClick: handleDecimalPositionsClick, icon: <DecimalPositionsIcon/>},
         {onClick: refreshAnalysis, icon: <RefreshIcon/>}
       ]}  

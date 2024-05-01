@@ -70,15 +70,3 @@ export const getValueByKey = <T extends object>(value: string, type: T)  => {
   return key;
 }
 
-export const getAnalysisFieldFromFieldDto = (analysisField: FieldDTO):BIAnalysisFieldDTO  => {
-  return {
-    ...analysisField,
-    orderDirection: analysisField.orderDirection,
-    totalizingField: analysisField.partialTotalization,
-    verticalAnalysisType: analysisField.verticalAnalysisType,
-    horizontalAnalysisType: analysisField.horizontalAnalysisType,
-    drillDownSequence: analysisField.drillDownSequence, 
-    visualizationSequence: analysisField.visualizationSequence, 
-    order: analysisField.order,
-  }
-}

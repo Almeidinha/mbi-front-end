@@ -8,6 +8,7 @@ import { FieldDTO } from '@/lib/types/Analysis'
 import { is, isNil } from '@/lib/helpers/safe-navigation'
 import { SaveOutlined } from '@ant-design/icons'
 import { useFieldsMutation } from '@/hooks/controllers/fields'
+import { convertToBIAnalysisFieldDTO } from '@/lib/helpers/converters'
 
 interface IProps {
   fieldId: string
@@ -45,14 +46,11 @@ const EditFieldComponent = (props: IProps) => {
     delegateOrder: field.delegateOrder,
   }
 
-  const handleFormSubmit = (values: any) => {
-    
-    form.validateFields().then(fields => {
+  const handleFormSubmit = (values: any) => {    
+    form.validateFields().then(formFields => {
+      const analysisField =  convertToBIAnalysisFieldDTO({...field,...formFields})
       editField({
-        field: {
-          ...fields,
-          fieldId: field.fieldId
-        },
+        field: analysisField,
         onSuccess: () => props.onFinish?.()
       })
     })
@@ -64,6 +62,12 @@ const EditFieldComponent = (props: IProps) => {
         value: f.fieldId,
         label: f.title
       }))
+  }
+
+  const handleTypeChange = (value: string) => {
+    if (value !== 'N') {
+      form.setFieldsValue({fieldType: 'D'})
+    }
   }
 
   return <Card type='inner'>    
@@ -85,19 +89,23 @@ const EditFieldComponent = (props: IProps) => {
       >
         <Input type="text" allowClear />          
       </Form.Item>
-      <Form.Item 
-        label="Tipo do Campo"
-        name="fieldType"
-        labelAlign="left"
-      >
-        <Select options={enumToOptions(FieldTypes)} />
+      <Form.Item dependencies={['dataType']} noStyle>
+      {({getFieldValue}) => (
+        <Form.Item 
+          label="Tipo do Campo"
+          name="fieldType"
+          labelAlign="left"
+        >
+          <Select options={enumToOptions(FieldTypes)} disabled={getFieldValue('dataType') !== 'N' } />
+        </Form.Item>
+      )}
       </Form.Item>
       <Form.Item 
         label="Tipo Dado"
         name="dataType"
         labelAlign="left"
       >
-        <Select options={enumToOptions(FieldDataTypes)} />
+        <Select options={enumToOptions(FieldDataTypes)} onChange={handleTypeChange} />
       </Form.Item>
       <Form.Item 
         label="Mostrar"

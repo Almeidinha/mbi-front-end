@@ -10,10 +10,9 @@ import CustomTableHeader from '@/components/custom/custom-table-header';
 import ReactDragListView from 'react-drag-listview';
 import { CubeStackIcon, SetSquareIcon } from '@/lib/icons/customIcons';
 import ActionButtons from './ActionButtons';
-
-import './manage-analysis.type.css'
 import { cloneDeep, isDefined, isNil } from '@/lib/helpers/safe-navigation';
 import { mapOrder } from '@/lib/helpers/arrays';
+import './manage-analysis.type.css'
 
 const tableProps = {
   size: "small" as const,
@@ -33,7 +32,7 @@ const sourceColumns: ColumnsType<FieldDTO> = [
   {
     title: 'Available Fields',
     key: 'name',
-    dataIndex: 'name'
+    dataIndex: 'name',
   },
 ]
 
@@ -42,7 +41,7 @@ const destineColumns: ColumnsType<FieldDTO> = [
     title: "Operates",
     key: "operate",
     width: 15,
-    render: (text, record, index) =>
+    render: () =>
     <MenuOutlined className="drag-handle"/>
   },
   {

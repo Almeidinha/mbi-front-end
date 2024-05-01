@@ -36,7 +36,9 @@ const MetricRestrictions = (props: MetricRestrictionsProps) => {
 
   const {
     saveRestrictions,
-    savingRestrictions
+    savingRestrictions,
+    removeAllRestriction,
+    removingAllRestriction
   } = useMetricRestrictionsActionsMutation()
 
   const dimensions = defaultTo(indicator?.fields.filter((field) => field.fieldType === FieldTypes.DIMENSION), [])
@@ -90,22 +92,29 @@ const MetricRestrictions = (props: MetricRestrictionsProps) => {
   }
 
   const handleRestrictionsChange = () => {
-    saveRestrictions({
-      restrictions: restrictions.flatMap((restriction) =>
-        restriction.dimensionIds.map((dimensionId) => ({
-          indicatorId: indicator?.code!, 
-          metricId: restriction.metricId,
-          dimensionId: dimensionId,
-        }))
-      ),
-      onSuccess: () => props.onOk?.()
-    })
+    if (restrictions.length === 0) {
+      removeAllRestriction({
+        indicatorId: indicator?.code!,
+        onSuccess: () => props.onOk?.()
+      })
+    } else {
+      saveRestrictions({
+        restrictions: restrictions.flatMap((restriction) =>
+          restriction.dimensionIds.map((dimensionId) => ({
+            indicatorId: indicator?.code!, 
+            metricId: restriction.metricId,
+            dimensionId: dimensionId,
+          }))
+        ),
+        onSuccess: () => props.onOk?.()
+      })
+    }
   }
 
 
 
   return <Space direction='vertical' style={{width: '100%'}}>
-    <Card type='inner' loading={savingRestrictions}>
+    <Card type='inner' loading={savingRestrictions || removingAllRestriction }>
       <Col span={24}>
         <Row>
           <Col span={11}>

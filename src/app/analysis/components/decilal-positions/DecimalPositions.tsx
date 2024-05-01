@@ -6,7 +6,7 @@ import { Button, Card, Space, Table } from 'antd'
 import { cloneDeep, defaultTo, isDefined } from '@/lib/helpers/safe-navigation'
 import { convertToBIAnalysisFieldDTO } from '@/lib/helpers/converters'
 import { FieldTypes } from '@/lib/types/Filter'
-import { ColumnTypes, EditableCell } from '@/components/custom/editableCell'
+import { ColumnTypes, EditableNumberCell } from '@/components/custom/editableCell/editable-number-cell'
 
 const tableProps = {
   size: "small" as const,
@@ -76,7 +76,7 @@ const DecimalPositions = (props: IProps) => {
 
   const components = {
     body: {
-      cell: EditableCell,
+      cell: EditableNumberCell,
     },
   };
 

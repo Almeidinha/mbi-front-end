@@ -35,6 +35,11 @@ export enum FieldColumnAlignment {
   CENTER = "C",
 }
 
+export enum AnalysisType {
+  HORIZONTAL = "H",
+  VERTICAL = "V",
+}
+
 export interface FilterBuilderInput {
   filters: FiltersDTO;
   field?: BIAnalysisFieldDTO;
@@ -54,16 +59,14 @@ export interface BIAnalysisFieldDTO {
   drillDownSequence: number;
   visualizationSequence: number;
   defaultField: string;
-  order: number;
+  fieldOrder: number;
   delegateOrder?: number;
   tableNickname: string;
-  orderDirection: string;
+  direction: string;
   decimalPositions?: number;
-  totalizingField: boolean;
-  verticalAnalysis?: boolean;
-  verticalAnalysisType: string;
-  horizontalAnalysis?: boolean;
-  horizontalAnalysisType: string;
+  fieldTotalization: string;
+  vertical: string;
+  horizontal: string;
   aggregationType: string;
   accumulatedParticipation?: boolean;
   accumulatedValue?: boolean;
@@ -73,8 +76,8 @@ export interface BIAnalysisFieldDTO {
   displayLocation?: number;
   columnWidth: number;
   columnAlignmentPosition?: string;
-  sumLine?: boolean;
-  accumulatedLine?: string;
+  lineFieldTotalization?: boolean;
+  accumulatedLineField?: string;
   dateMask?: string;
   partialTotalization?: boolean;
   partialMedia?: boolean;
@@ -87,7 +90,7 @@ export interface BIAnalysisFieldDTO {
   horizontalParticipationAccumulated?: boolean;
   accumulatedOrder: number;
   accumulatedOrderDirection: string;
-  mediaLine?: boolean;
+  usesMediaLine?: boolean;
   childField?: boolean;
   fixedValue: boolean;
   calculatorPerRestriction?: boolean;
@@ -132,7 +135,7 @@ export interface ConditionDTO {
   operator: OperatorDTO;
   value: string;
   title: string;
-  SQLValue: string;
+  sqlValue: string;
 }
 
 export interface BIMacroDTO {
