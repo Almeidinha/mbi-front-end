@@ -4,7 +4,7 @@ import axios from "axios";
 import { getSession } from "next-auth/react";
 
 const defaultOptions = {
-  baseURL: process.env.BASE_URL,
+  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL || process.env.BACKEND_URL,
   headers: {
     "Content-type": "application/json",
   }
