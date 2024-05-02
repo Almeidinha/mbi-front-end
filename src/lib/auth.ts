@@ -72,6 +72,6 @@ export const authOptions: AuthOptions = {
   }
 
   const autenticateUserFn = async (username: string, password: string) => {
-    const response = await axios.post<JwtAuthenticationResponse>(`${process.env.BASE_URL}/auth/signin`, {email: username, password})
+    const response = await axios.post<JwtAuthenticationResponse>(`${process.env.BACKEND_URL}/auth/signin`, {email: username, password})
     return response.data;
   }
