@@ -13,7 +13,7 @@ module.exports = (phase, { defaultConfig }) => {
     },
     env: {
       NEXTAUTH_URL: process.env.NEXTAUTH_URL,
-      BASE_URL: process.env.BACKEND_URL
+      BACKEND_URL: process.env.BACKEND_URL
     },
     output: 'standalone',
   };
