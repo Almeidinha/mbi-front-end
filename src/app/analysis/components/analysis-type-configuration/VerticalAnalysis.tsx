@@ -6,6 +6,7 @@ import { analysisTypeTableProps } from '.'
 import { ColumnType } from 'antd/es/table'
 import enumToOptions from '@/lib/helpers/enumToOptions'
 import { VerticalAnalysisTypes, VertycalTotalization } from './types'
+import './pages.css'
 
 
 interface IProps {
@@ -86,7 +87,6 @@ const VerticalAnalysis = (props: IProps) => {
     <Card type='inner'>
       <Table
         {...analysisTypeTableProps}
-        style={{width: '100%', overflow: 'auto'}}
         rootClassName='vertical-analysis-table'
         rowClassName={() => 'editable-row'}
         columns={getColumns(handleSave)}

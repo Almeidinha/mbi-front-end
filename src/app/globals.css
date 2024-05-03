@@ -5,27 +5,6 @@
 body {
   margin: 0;
 }
-/*
-div::-webkit-scrollbar-thumb {
-  background-color: #E5E7EB;
-}
-div:hover::-webkit-scrollbar-thumb {
-  background-color: #E5E7EB;
-}
-
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-thumb {
-  min-height: 50px;
-  border: 0;
-  background-clip: padding-box;
-  border-radius: 1em;
-}
-::-webkit-scrollbar-corner {
-  background-color: transparent;
-}*/
 
 ::-webkit-scrollbar {
   width: 0.6em;

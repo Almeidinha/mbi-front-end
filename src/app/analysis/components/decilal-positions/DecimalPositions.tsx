@@ -7,6 +7,7 @@ import { cloneDeep, defaultTo, isDefined } from '@/lib/helpers/safe-navigation'
 import { convertToBIAnalysisFieldDTO } from '@/lib/helpers/converters'
 import { FieldTypes } from '@/lib/types/Filter'
 import { ColumnTypes, EditableNumberCell } from '@/components/custom/editableCell/editable-number-cell'
+import './decimal-positions.css'
 
 const tableProps = {
   size: "small" as const,
@@ -84,7 +85,6 @@ const DecimalPositions = (props: IProps) => {
     <Card type='inner' loading={isEditingFields}>
       <Table
         {...tableProps}
-        style={{width: '100%', overflow: 'auto'}}
         rootClassName='decimal-positions-table'
         rowClassName={() => 'editable-row'}
         columns={columns}

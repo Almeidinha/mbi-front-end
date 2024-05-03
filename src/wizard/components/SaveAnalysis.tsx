@@ -223,7 +223,7 @@ const SaveAnalysis = () => {
       mediaLine: false,
       fixedValue: false,
       originalAnalysisField: 0,
-      drillDown: field.analyticType === AnalyticType.DIMENSION ? true : false,
+      drillDown: field.analyticType === AnalyticType.DIMENSION,
       generalFilter: 0,
       mandatoryFilter: false,
     }))

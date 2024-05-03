@@ -10,14 +10,6 @@
   display: none;
 }
 
-.available-fields-table .ant-table-cell,
-.destine-table .ant-table-cell,
-.default-source-table .ant-table-cell,
-.analysis-type-selected-fields-table .ant-table-cell {
-  padding: 4px 8px !important;
-}
-
-
 .default-source-table, .analysis-type-selected-fields-table, .available-fields-table, .destine-table {
   width: 100%;
   overflow: auto;
@@ -26,11 +18,13 @@
   border-bottom: 1px solid #f0f0f0;
   border-left: 1px solid #f0f0f0;
   border-right: 1px solid #f0f0f0;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
 }
 
 .analysis-type-selected-fields-table, .available-fields-table {
-  max-height: 335px;
-  min-height: 335px;
+  max-height: 358px;
+  min-height: 358px;
 }
 
 .available-fields-table .ant-table-container, 
@@ -40,8 +34,8 @@
   border-inline-start: 0 !important;
 }
 
-.available-fields-table .ant-table-cell
-.destine-table .ant-table-cell
+.available-fields-table .ant-table-cell,
+.destine-table .ant-table-cell,
 .default-source-table .ant-table-cell,
 .analysis-type-selected-fields-table .ant-table-cell {
   border-inline-end: 0 !important;

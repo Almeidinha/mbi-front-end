@@ -40,7 +40,7 @@ const useAnalysisState = (): AnalysisState => {
         const {childFilter, parentFilter} = dimensionsHierarchy
         setEditingFilter({
           connector: getKeyByValue(defaultTo(parentFilter?.connector, "AND"), ConnectorType) as ConnectorType, 
-          field: childFilter.condition.field.fieldId, 
+          field: childFilter.condition.field.id.fieldId, 
           operator: childFilter.condition.operator.symbol as OperatorTypeValues, 
           value: childFilter.condition.value
         })
@@ -50,7 +50,7 @@ const useAnalysisState = (): AnalysisState => {
       const filter = findMetricFilter(filters, link)
       setEditingFilter({
         connector: ConnectorType.AND,
-        field: filter?.condition.field.fieldId, 
+        field: filter?.condition.field.id.fieldId, 
         operator: getValueByKey(filter?.condition.operator.symbol!, OperatorTypeValues) as OperatorTypeValues, 
         value: filter?.condition.value
       })

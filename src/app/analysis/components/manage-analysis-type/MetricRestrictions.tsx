@@ -7,6 +7,7 @@ import { defaultTo } from '@/lib/helpers/safe-navigation';
 import { useMetricRestrictionsActionsMutation } from '@/hooks/controllers/metricRestrictions';
 import { FieldTypes } from '@/lib/types/Filter';
 import CustomTableHeader from '@/components/custom/custom-table-header';
+import './metric-restrictions.css'
 
 const tableProps = {
   size: "small" as const,

@@ -1,0 +1,7 @@
+
+.decimal-positions-table {
+  width: 100%;
+  overflow: auto;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+}

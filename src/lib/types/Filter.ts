@@ -43,15 +43,20 @@ export enum AnalysisType {
 export interface FilterBuilderInput {
   filters: FiltersDTO;
   field?: BIAnalysisFieldDTO;
-  operator?: String;
-  value?: String;
-  link: String;
-  connector?: String;
+  operator?: string;
+  value?: string;
+  link: string;
+  connector?: string;
 }
 
 
+export interface BiAnalysisFieldIdDTO {
+  fieldId: number;
+  indicatorId: number
+}
+
 export interface BIAnalysisFieldDTO {
-  fieldId?: number;
+  id: BiAnalysisFieldIdDTO;
   name: string;
   title: string;
   nickname: string;

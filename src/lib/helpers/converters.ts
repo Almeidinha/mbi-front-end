@@ -5,6 +5,10 @@ import { is } from "./safe-navigation";
 export const convertToBIAnalysisFieldDTO = (field: FieldDTO): BIAnalysisFieldDTO => {
   return {
     ...field,
+    id: {
+      fieldId: field.fieldId!,
+      indicatorId: field.indicatorId!
+    },
     direction: field.orderDirection,
     fieldOrder: field.order,
     lineFieldTotalization: field.sumLine,
@@ -25,6 +29,8 @@ export const convertToBIAnalysisFieldDTO = (field: FieldDTO): BIAnalysisFieldDTO
 export const convertToFieldDTO = (field: BIAnalysisFieldDTO): FieldDTO => {
   return {
       ...field,
+      fieldId: field.id.fieldId,
+      indicatorId: field.id.indicatorId,
       order: field.fieldOrder,
       orderDirection: field.direction,
       mediaLine: field.usesMediaLine,
@@ -33,14 +39,14 @@ export const convertToFieldDTO = (field: BIAnalysisFieldDTO): FieldDTO => {
       horizontalAnalysisType: field.horizontal,
       totalizingField: field.fieldTotalization !== 'N',
       applyTotalizationExpression: field.fieldTotalization === 'E',
-      columnAlignment: field.columnAlignmentPosition || "",
+      columnAlignment: field.columnAlignmentPosition ?? "",
       dependentCalculatedFields: field.dependentCalculatedFields ?
         field.dependentCalculatedFields.map(convertToFieldDTO) : undefined,
       navigableUpwards: is(field.isNavigableUpwards),
-      numDecimalPositions: field.decimalPositions !== undefined ? field.decimalPositions : 0,
-      displayLocation: field.displayLocation !== undefined ? field.displayLocation : 0,
+      numDecimalPositions: field.decimalPositions ?? 0,
+      displayLocation: field.displayLocation ?? 0,
       sumLine: is(field.lineFieldTotalization),
-      partialTotalization: field.partialTotalization !== undefined ? field.partialTotalization : false,
+      partialTotalization: field.partialTotalization ?? false,
       horizontalParticipationAccumulated: is(field.horizontalParticipationAccumulated)
   }
 }

@@ -9,14 +9,14 @@
 }
 
 .analysis-table .ant-table-cell {
-  border-color: rgb(51, 119, 204)!important;
-  border-inline-end-color: rgb(51, 119, 204)!important;
-  border-inline-start-color: rgb(51, 119, 204)!important;  
+  border-color: #3377cc!important;
+  border-inline-end-color: #3377cc!important;
+  border-inline-start-color: #3377cc!important;  
 }
 
 .analysis-table .ant-table-container {
-  border-inline-start-color: rgb(51, 119, 204)!important;
-  border-top-color: rgb(51, 119, 204)!important;
+  border-inline-start-color: #3377cc!important;
+  border-top-color: #3377cc!important;
 } 
 
 .analysis-table .header {
@@ -33,7 +33,7 @@
 }
 
 .analysis-table .ant-pagination { 
-  border: 1px solid rgb(51, 119, 204);
+  border: 1px solid #3377cc;
   border-top: 0;
   margin: 0 !important;
   padding: 16px 8px;

@@ -2,7 +2,7 @@
 
 import { useAnalysisMutation, useAnalysisTableQuery } from '@/hooks/controllers/analysis'
 import { defaultTo, is, isDefined } from '@/lib/helpers/safe-navigation'
-import { Card, Modal, Table, Typography } from 'antd'
+import { Card, Modal, Row, Table, Tooltip, Typography } from 'antd'
 
 import "./analysisView.css"
 import { AddFilterIcon, AddSequenceIcon, DecimalPositionsIcon, HorizontalAnalysisIcon, InsertColumnIcon, OrderIcon, RefreshIcon, VerticalAnalysisIcon, ViewSequenceIcon } from '@/lib/icons/customIcons'
@@ -20,7 +20,7 @@ import CustomTableHeader from '@/components/custom/custom-table-header'
 import ViewSequence from '../components/viewSequence/ViewSequence'
 import DecimalPositions from '../components/decilal-positions/DecimalPositions'
 import AnalysisTypeConfiguration from '../components/analysis-type-configuration'
-import { AnalysisType } from '@/lib/types/Filter'
+import { AnalysisType, FieldTypes } from '@/lib/types/Filter'
 import OrderFields from '../components/order-fields/OrderFields'
 
 interface IAnalysisView {
@@ -29,7 +29,7 @@ interface IAnalysisView {
 
 const getHeaderTitle = (header: IHeader, clickAction: () => void) => {
   if (isDefined(header.properties?.html)) {
-    return <div 
+    return <Row 
       onClick={clickAction}  
       className='header' 
       style={{cursor: 'pointer'}} 
@@ -47,7 +47,6 @@ const AnalysisView = (params: IAnalysisView) => {
   } = params
 
   const {
-    isError,
     analysisResult,
     loadingAnalysisResult,
     reloadAnalysisResult, 
@@ -56,9 +55,7 @@ const AnalysisView = (params: IAnalysisView) => {
 
   const  {
     toggleSequence,
-    sequenceData,
     isTogglingSequenceSequence,
-    sequenceChanged
   } = useAnalysisMutation()
 
   const {
@@ -70,7 +67,6 @@ const AnalysisView = (params: IAnalysisView) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [modalContent, setModalContent] = useState<ReactNode | undefined>(undefined);
   
-
   useEffect(() => {
     if (isDefined(analysisResult?.indicator)) {
       setIndicator(analysisResult?.indicator);
@@ -78,6 +74,7 @@ const AnalysisView = (params: IAnalysisView) => {
   }, [analysisResult, setIndicator])
 
   const table = analysisResult?.table;
+  const hasNumericFields = indicator?.fields?.some(field => field.defaultField === 'S' && field.fieldType === FieldTypes.METRIC);
 
   const rows: ITableRow[]  = table?.rows || [];
   
@@ -100,7 +97,10 @@ const AnalysisView = (params: IAnalysisView) => {
         setModalTitle(<Typography.Text type='secondary'>Edit Field Properties</Typography.Text>)
         setModalContent(<EditFieldComponent 
           fieldId={fieldId} 
-          onFinish={() => {setModalOpen(false), reloadAnalysisResult()}} 
+          onFinish={() => {
+            setModalOpen(false) 
+            reloadAnalysisResult()
+          }} 
           onCancel={() => setModalOpen(false)}/>
         )
         setModalOpen(true)
@@ -140,7 +140,7 @@ const AnalysisView = (params: IAnalysisView) => {
         }
       }
     })
-  }, [getHeaders, indicator?.multidimensional, table])
+  }, [getHeaders, indicator?.multidimensional, reloadAnalysisResult, table])
 
   if (loadingAnalysisResult) {
     return <Card type='inner' loading={loadingAnalysisResult} />
@@ -152,7 +152,7 @@ const AnalysisView = (params: IAnalysisView) => {
       [header.title]: row[index],
       key: nanoid()
     }), {} as ITableRow) 
-  }).filter(Boolean) as ITableRow[];
+  }).filter(Boolean);
 
   const handleFilterClick = () => {
     setModalTitle(<Typography.Text type='secondary'>Add Filter</Typography.Text>)
@@ -185,6 +185,9 @@ const AnalysisView = (params: IAnalysisView) => {
   }
 
   const handleDecimalPositionsClick = () => {
+    if (!hasNumericFields) {
+      return
+    }
     setModalTitle(<Typography.Text type='secondary'>Decimal Positions</Typography.Text>)
     setModalContent(<DecimalPositions 
       onCancel={() => setModalOpen(false)} 
@@ -207,6 +210,9 @@ const AnalysisView = (params: IAnalysisView) => {
   }
 
   const handleVerticalAnalysisClick = () => {
+    if (!indicator?.multidimensional) {
+      return;
+    }
     setModalTitle(<Typography.Text type='secondary'>Vertical Analysis Configuration</Typography.Text>)
     setModalContent(<AnalysisTypeConfiguration
       analysisType={AnalysisType.VERTICAL} 
@@ -219,6 +225,9 @@ const AnalysisView = (params: IAnalysisView) => {
   }
 
   const handleHorizontalAnalysisClick = () => {
+    if (!indicator?.multidimensional) {
+      return;
+    }
     setModalTitle(<Typography.Text type='secondary'>Horizontal Analysis Configuration</Typography.Text>)
     setModalContent(<AnalysisTypeConfiguration
       analysisType={AnalysisType.HORIZONTAL} 
@@ -237,18 +246,18 @@ const AnalysisView = (params: IAnalysisView) => {
   return <Card type='inner'>
     <DangerousElement markup={convertToStyleTag(defaultTo(table?.styles, []))}/> 
     <CustomTableHeader
-      style={{borderColor: 'rgb(51, 119, 204)'}} 
-      title={indicator?.name || 'Indicator'}
+      style={{borderColor: '#3377cc'}} 
+      title={indicator?.name ?? 'Indicator'}
       actions={[
-        {onClick: handleAnalysisTypeChange, icon: <InsertColumnIcon/>},
-        {onClick: handleFilterClick, icon: <AddFilterIcon/>},
-        {onClick: handleViewSequenceClick, icon: <ViewSequenceIcon/>},
-        {onClick: handleSequenceClick, icon: <AddSequenceIcon/>},
-        {onClick: handleVerticalAnalysisClick, icon: <VerticalAnalysisIcon/>},
-        {onClick: handleHorizontalAnalysisClick, icon: <HorizontalAnalysisIcon/>},
-        {onClick: handleOrderClick, icon: <OrderIcon/>},
-        {onClick: handleDecimalPositionsClick, icon: <DecimalPositionsIcon/>},
-        {onClick: refreshAnalysis, icon: <RefreshIcon/>}
+        {onClick: handleAnalysisTypeChange, icon: <Tooltip title="Change Type"><InsertColumnIcon className='active'/></Tooltip>},
+        {onClick: handleFilterClick, icon: <Tooltip title="Filter"><AddFilterIcon className='active'/></Tooltip>},
+        {onClick: handleViewSequenceClick, icon: <Tooltip title="Change View Order"><ViewSequenceIcon className='active'/></Tooltip>},
+        {onClick: handleSequenceClick, icon: <Tooltip title="Add Sequence"><AddSequenceIcon className='active'/></Tooltip>},
+        {onClick: handleVerticalAnalysisClick, icon: <Tooltip title="Vertical Analysis"><VerticalAnalysisIcon className={indicator?.multidimensional ? 'active' : ''}/></Tooltip>},
+        {onClick: handleHorizontalAnalysisClick, icon: <Tooltip title="Horizontal Analysis"><HorizontalAnalysisIcon className={indicator?.multidimensional ? 'active' : ''}/></Tooltip>},
+        {onClick: handleOrderClick, icon: <Tooltip title="Fields Order"><OrderIcon className='active'/></Tooltip>},
+        {onClick: handleDecimalPositionsClick, icon: <Tooltip title="Decimal Positions"><DecimalPositionsIcon className={hasNumericFields ? 'active' : ''}/></Tooltip>},
+        {onClick: refreshAnalysis, icon: <Tooltip title="Reload"><RefreshIcon className='active'/></Tooltip>},
       ]}  
     >
       <Table

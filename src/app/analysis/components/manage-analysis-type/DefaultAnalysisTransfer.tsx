@@ -50,10 +50,10 @@ const destineColumns: ColumnsType<FieldDTO> = [
     dataIndex: 'name',
     render: (text, record) => record.fieldType === FieldTypes.DIMENSION 
       ? <Space direction='horizontal' size={4}>
-          <CubeStackIcon/><Typography.Text type={record.defaultField === 'T' ? 'danger': undefined}>{text}</Typography.Text>
+          <CubeStackIcon style={{color:'#3377cc'}}/><Typography.Text type={record.defaultField === 'T' ? 'danger': undefined}>{text}</Typography.Text>
         </Space> 
       : <Space direction='horizontal' size={4}>
-          <SetSquareIcon/><Typography.Text type={record.defaultField === 'T' ? 'danger': undefined}>{text}</Typography.Text>
+          <SetSquareIcon style={{color:'#3377cc'}}/><Typography.Text type={record.defaultField === 'T' ? 'danger': undefined}>{text}</Typography.Text>
         </Space>
   },
 ]
@@ -249,7 +249,14 @@ const DefaultAnalysisTransfer = (props: DefaultAnalysisTransferProps) => {
       </Col>
       {modalContext}
     </Card>
-    <ActionButtons onOk={handleOk} onCancel={props.onCancel} onMetricClick={props.onMetricClick} onTypeChange={props.onTypeChange} typeChangeTitle='MultiDimensional'/>
+    <ActionButtons 
+      onOk={handleOk} 
+      onCancel={props.onCancel} 
+      onMetricClick={props.onMetricClick} 
+      onTypeChange={props.onTypeChange} 
+      typeChangeTitle='MultiDimensional'
+      hasMetrics={fields.filter((field) => field.fieldType === FieldTypes.METRIC).length > 0}
+    />
   </Space>
 }
 

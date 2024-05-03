@@ -3,7 +3,7 @@
 import { useAnalysisDtoListQuery } from '@/hooks/controllers/analysis'
 import { useUserIndQuery } from '@/hooks/controllers/user'
 import { defaultTo, is, isEmpty, isNil } from '@/lib/helpers/safe-navigation'
-import { Card, Space, Switch, Tag, Tooltip, Typography, notification } from 'antd'
+import { Card, Flex, Space, Switch, Tag, Tooltip, Typography, notification } from 'antd'
 import Table, { ColumnsType } from 'antd/es/table'
 import React, { useMemo } from 'react'
 import "./analysisList.css"
@@ -117,12 +117,12 @@ const AnalysisList = () => {
     <Space.Compact direction='vertical' className='analysis-table-list-wrapper'>
       
       <div className='custom-table-header'>
-        <Typography.Text type='secondary'>
+        <Typography.Text type='secondary' strong>
           Available Analysis
         </Typography.Text>
         <Space.Compact style={{float: "right", gap: "4px"}}>
           <Tooltip title="Open Analysis">
-            <span onClick={handleOpenAnalysis}><OpenFolderIcon fill='green' style={{fontSize: "24px", cursor: "pointer"}}/></span>
+            <Flex onClick={handleOpenAnalysis}><OpenFolderIcon style={{fontSize: "24px", cursor: "pointer", color:'#3377cc'}}/></Flex>
           </Tooltip>
         </Space.Compact>
       </div>

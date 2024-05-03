@@ -1,0 +1,12 @@
+ .vertical-analysis-table, .horizontal-analysis-table {
+  width: 100%;
+  overflow: auto;
+  border: 1px solid #f0f0f0;
+  border-radius: 6px;
+  border-bottom: none;
+ }
+
+.vertical-analysis-table .ant-table-placeholder .ant-table-cell,
+.horizontal-analysis-table .ant-table-placeholder .ant-table-cell {
+  border-bottom: 0;
+}

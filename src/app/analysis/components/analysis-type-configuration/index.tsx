@@ -22,8 +22,7 @@ interface IProps {
 const AnalysisTypeConfiguration = (props: IProps) => {
 
   const {
-    editFields,
-    isEditingFields,
+    editFields
   } = useFieldsMutation()
 
   const {

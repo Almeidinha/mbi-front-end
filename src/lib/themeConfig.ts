@@ -20,7 +20,7 @@ const customTheme: ThemeConfig = {
     },
     Table: {
       colorTextHeading: 'rgba(0, 0, 0, 0.45)',
-    }
+    },
   },
   
 };

@@ -34,7 +34,9 @@ const sourceColumns: ColumnsType<FieldDTO> = [
     title: 'Available Fields',
     key: 'name',
     dataIndex: 'name',
-    render: (text, record) => record.fieldType === FieldTypes.DIMENSION ? <><CubeStackIcon/> {text}</> : <><SetSquareIcon/> {text}</>
+    render: (text, record) => record.fieldType === FieldTypes.DIMENSION 
+      ? <><CubeStackIcon style={{color:'#3377cc'}}/> {text}</> 
+      : <><SetSquareIcon style={{color:'#3377cc'}}/> {text}</>
   },
 ]
 
@@ -50,10 +52,10 @@ const destineColumns: ColumnsType<FieldDTO> = [
     dataIndex: 'name',
     render: (text, record) => record.fieldType === FieldTypes.DIMENSION 
       ? <Space direction='horizontal' size={4}>
-          <CubeStackIcon/><Typography.Text type={record.defaultField === 'T' ? 'danger': undefined}>{text}</Typography.Text>
+          <CubeStackIcon style={{color:'#3377cc'}}/><Typography.Text type={record.defaultField === 'T' ? 'danger': undefined}>{text}</Typography.Text>
         </Space> 
       : <Space direction='horizontal' size={4}>
-          <SetSquareIcon/><Typography.Text type={record.defaultField === 'T' ? 'danger': undefined}>{text}</Typography.Text>
+          <SetSquareIcon style={{color:'#3377cc'}}/><Typography.Text type={record.defaultField === 'T' ? 'danger': undefined}>{text}</Typography.Text>
         </Space>
   },
 ]
@@ -61,8 +63,7 @@ const destineColumns: ColumnsType<FieldDTO> = [
 const MultiDimensionalAnalysisTransfer = (props: MultiDimensionalAnalysisTransferProps) => {
 
   const {
-    indicator, 
-    setIndicator
+    indicator,
   } = useAnalysisState.useContainer()
 
   const [sourceFieldKeys, setSourceFieldKeys] = useState<number[]>([])  
@@ -293,7 +294,14 @@ const MultiDimensionalAnalysisTransfer = (props: MultiDimensionalAnalysisTransfe
       </Col>
       {modalContext}
     </Card>
-    <ActionButtons onOk={handleOk} onCancel={props.onCancel} onMetricClick={props.onMetricClick} onTypeChange={props.onTypeChange} typeChangeTitle='Padrão'/>
+    <ActionButtons 
+      onOk={handleOk} 
+      onCancel={props.onCancel} 
+      onMetricClick={props.onMetricClick} 
+      onTypeChange={props.onTypeChange} 
+      typeChangeTitle='Padrão'
+      hasMetrics={fields.filter((field) => field.fieldType === FieldTypes.METRIC).length > 0}
+    />
   </Space>
 }
 

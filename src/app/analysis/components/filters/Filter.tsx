@@ -62,7 +62,7 @@ const getFilterIcon = (dimensionFilter: DimensionFilterDTO) => {
   if (validStrValue(dimensionFilter.connector)) {
     return null
   }
-  return <CubeStackIcon/>
+  return <CubeStackIcon style={{color:'#3377cc'}} />
 }
 
 const buildMetricTree = (metricFilters: MetricFiltersDTO | undefined, link: string, filterAction: Function): TreeDataNode[] => {
@@ -75,7 +75,7 @@ const buildMetricTree = (metricFilters: MetricFiltersDTO | undefined, link: stri
       const nodeLink = `${link}-${index + 1}`
       return {
         title: getNodeName(metricFilter as DimensionFilterDTO, nodeLink, FilterType.METRIC, filterAction),
-        icon: <SetSquareIcon/>,
+        icon: <SetSquareIcon style={{color:'#3377cc'}}/>,
         key: nodeLink,
         children: []
       }
@@ -241,7 +241,7 @@ const AnalysisFilter = (props: {indicatorId: number, onFinish?: () => void}) => 
         className='filter-tree'
         showLine
         showIcon
-        switcherIcon={<DownOutlined style={{color: "#4183bc"}} />}
+        switcherIcon={<DownOutlined style={{color: "#4182bc"}} />}
         defaultExpandAll={true}
         selectable={false}
         treeData={treeData(stateFilters || indFilters, filterAction)}

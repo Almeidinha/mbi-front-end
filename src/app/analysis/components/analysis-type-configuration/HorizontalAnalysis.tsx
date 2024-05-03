@@ -5,6 +5,7 @@ import Table, { ColumnType } from 'antd/es/table'
 import React from 'react'
 import { HorizontalAccTypes, HorizontalAnalysisTypes } from './types'
 import { analysisTypeTableProps } from '.'
+import './pages.css'
 
 interface IProps {
   onFinish?: () => void
@@ -105,8 +106,7 @@ const HorizontalAnalysis = (props: IProps) => {
     <Card type='inner'>
       <Table
         {...analysisTypeTableProps}
-        style={{width: '100%', overflow: 'auto'}}
-        rootClassName='vertical-analysis-table'
+        rootClassName='horizontal-analysis-table'
         rowClassName={() => 'editable-row'}
         columns={getColumns(handleSave)}
         dataSource={props.fields}

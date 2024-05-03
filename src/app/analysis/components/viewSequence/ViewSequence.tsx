@@ -12,6 +12,7 @@ import { mapOrder } from '@/lib/helpers/arrays';
 import { MenuOutlined } from '@ant-design/icons';
 import { useFieldsMutation } from '@/hooks/controllers/fields';
 import { convertToBIAnalysisFieldDTO } from '@/lib/helpers/converters';
+import './view-sequence.css';
 
 const tableProps = {
   size: "small" as const,
@@ -38,10 +39,10 @@ const sourceColumns: ColumnsType<FieldDTO> = [
     dataIndex: 'name',
     render: (text, record) => record.fieldType === FieldTypes.DIMENSION 
     ? <Space direction='horizontal' size={6}>
-        <CubeStackIcon/><Typography.Text>{text}</Typography.Text>
+        <CubeStackIcon style={{color:'#3377cc'}}/><Typography.Text>{text}</Typography.Text>
       </Space> 
     : <Space direction='horizontal' size={6}>
-        <SetSquareIcon/><Typography.Text>{text}</Typography.Text>
+        <SetSquareIcon style={{color:'#3377cc'}}/><Typography.Text>{text}</Typography.Text>
       </Space>
   },
 ]
