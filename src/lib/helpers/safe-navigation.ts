@@ -7,6 +7,7 @@ import cloneDeep from 'lodash/cloneDeep.js'
 import toNumber from 'lodash/toNumber.js'
 import startCase from 'lodash/startCase.js'
 import toLower from 'lodash/toLower.js'
+import unionBy from 'lodash/unionBy.js'
 import { Params } from 'next/dist/shared/lib/router/utils/route-matcher'
 
 export {
@@ -19,6 +20,7 @@ export {
   toNumber,
   startCase, 
   toLower,
+  unionBy
 }
 
 export function isNil<T>(value: T | undefined | null): value is undefined | null {

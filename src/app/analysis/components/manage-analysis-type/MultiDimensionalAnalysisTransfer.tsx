@@ -89,8 +89,8 @@ const MultiDimensionalAnalysisTransfer = (props: MultiDimensionalAnalysisTransfe
 
   const handleOk = () => {
     if (isDefined(fields)) {
-      fields.forEach((field, i) => {  
-        field.visualizationSequence = field.defaultField !== 'N' ? i+1 : 0
+      fields.filter((field) => field.defaultField !== 'N').forEach((field, index) => {
+        field.visualizationSequence =  ++index
       })
       props.onOk?.(fields)
     }

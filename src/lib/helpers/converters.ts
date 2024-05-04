@@ -9,6 +9,7 @@ export const convertToBIAnalysisFieldDTO = (field: FieldDTO): BIAnalysisFieldDTO
       fieldId: field.fieldId!,
       indicatorId: field.indicatorId!
     },
+    filterSequence: field.drillDownSequence,
     direction: field.orderDirection,
     fieldOrder: field.order,
     lineFieldTotalization: field.sumLine,
@@ -29,6 +30,7 @@ export const convertToBIAnalysisFieldDTO = (field: FieldDTO): BIAnalysisFieldDTO
 export const convertToFieldDTO = (field: BIAnalysisFieldDTO): FieldDTO => {
   return {
       ...field,
+      drillDownSequence: field.filterSequence,
       fieldId: field.id.fieldId,
       indicatorId: field.id.indicatorId,
       order: field.fieldOrder,

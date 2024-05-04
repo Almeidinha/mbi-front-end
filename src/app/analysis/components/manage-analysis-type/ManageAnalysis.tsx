@@ -22,6 +22,7 @@ const ManageAnalysis = (props: IProps) => {
 
   const {
     editAnalysis,
+    isEditingAnalysis
   } = useAnalysisMutation()
 
   const [multidimensional, setMultidimensional] = useState<boolean>(is(indicator?.multidimensional)) 
@@ -61,6 +62,7 @@ const ManageAnalysis = (props: IProps) => {
     <Card 
       title={`Análise ${title}`} 
       style={{ width: '750px' }}
+      loading={isEditingAnalysis}
       >
         {
           multidimensional 

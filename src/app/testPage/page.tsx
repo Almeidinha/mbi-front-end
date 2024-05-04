@@ -10,12 +10,14 @@ const TestPage = () => {
   const [id, setId] = useState<string | undefined>(undefined)
 
   const {
-    analysis
+    analysis, 
+    loadingAnalysis
   } = useAnalysisDtoListQuery()
   
   const {
     testData,
     reloadTestData,
+    loadingTestData,
   } = useTestDataQuery({id})
 
   const handleIdChange = (id: string) => {
@@ -37,7 +39,11 @@ const TestPage = () => {
       }))}
       style={{width: '250px'}}
       onChange={handleIdChange}
+      loading={loadingAnalysis}
       />
+      {
+        loadingTestData && <div>Loading...</div>
+      }
       {
         testData && <div dangerouslySetInnerHTML={{__html: testData}} style={{height:'450px', overflow: 'auto'}}/>
       }

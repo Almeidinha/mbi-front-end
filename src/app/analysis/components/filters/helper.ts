@@ -1,13 +1,12 @@
 import { isDefined } from "@/lib/helpers/safe-navigation";
-import { FieldDTO } from "@/lib/types/Analysis";
-import { DimensionFilterDTO, BIAnalysisFieldDTO, FiltersDTO, MetricFilterDTO } from "@/lib/types/Filter";
+import { DimensionFilterDTO, FiltersDTO, MetricFilterDTO } from "@/lib/types/Filter";
 import { isArray } from "lodash";
 
 export const findDimensionsHierarchy = (filters: FiltersDTO | undefined, link: string) => {
 
-  const dimensionFilter: DimensionFilterDTO = filters!.dimensionFilter!
+  const dimensionFilter: DimensionFilterDTO = filters!.dimensionFilter
 
-  if (link.charAt(0) === '1') {
+  if (link.startsWith('1')) {
       
       if (dimensionFilter !== null) {
         let childFilter: DimensionFilterDTO = dimensionFilter;
@@ -29,27 +28,27 @@ export const findDimensionsHierarchy = (filters: FiltersDTO | undefined, link: s
   }
 }
 
-const findMetricFilters = (metricFilters: MetricFilterDTO[], link: string) => {
+const findMetricFilters = (metricFilters: MetricFilterDTO[], link: string): MetricFilterDTO | undefined => {
   return metricFilterLookUp(metricFilters, link)
 }
 
 
-const findMetricSqlFilters = (metricSqlFilters: MetricFilterDTO[], link: string) => {  
+const findMetricSqlFilters = (metricSqlFilters: MetricFilterDTO[], link: string): MetricFilterDTO | undefined => {  
   return metricFilterLookUp(metricSqlFilters, link)
 }
 
-const metricFilterLookUp = (metricFilters: MetricFilterDTO[], link: string) => {
+const metricFilterLookUp = (metricFilters: MetricFilterDTO[], link: string): MetricFilterDTO | undefined => {
   if (isDefined(metricFilters) && isArray(metricFilters)) {
     return metricFilters[parseInt(link.slice(-1)) - 1]
   }
 }
 
-export const findMetricFilter = (filters: FiltersDTO | undefined, link: string) => {
-  if (link.charAt(0) === '2') {
-    return findMetricFilters(filters!.metricFilters!, link)
+export const findMetricFilter = (filters: FiltersDTO | undefined, link: string): MetricFilterDTO | undefined => {
+  if (link.startsWith('2')) {
+    return findMetricFilters(filters!.metricFilters, link)
   }
-  if (link.charAt(0) === '4') {
-    return findMetricSqlFilters(filters!.metricSqlFilter!, link)
+  if (link.startsWith('4')) {
+    return findMetricSqlFilters(filters!.metricSqlFilter, link)
   }
 
 }

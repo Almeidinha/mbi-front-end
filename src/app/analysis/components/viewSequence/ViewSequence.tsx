@@ -77,8 +77,8 @@ const ViewSequence = (props: IProps) => {
 
   const handleOk = () => {
     if (isDefined(fields)) {
-      fields.forEach((field, i) => {
-        field.visualizationSequence = field.defaultField !== 'N' ? i+1 : 0
+      fields.filter((field) => field.defaultField !== 'N').forEach((field, index) => {
+        field.visualizationSequence =  ++index
       })
       editFields({
         fields: fields.map((field) => convertToBIAnalysisFieldDTO(field)),
@@ -121,7 +121,7 @@ const ViewSequence = (props: IProps) => {
       </CustomTableHeader>
     </Card>
     <Space style={{width: '100%', flexDirection: 'row-reverse'}}>              
-      <Button onClick={handleOk} type='primary'>ok</Button>
+      <Button onClick={handleOk} type='primary' loading={isEditingFields}>ok</Button>
       <Button type='default' onClick={props.onCancel}>Cancelar</Button>
     </Space>
   </Space>

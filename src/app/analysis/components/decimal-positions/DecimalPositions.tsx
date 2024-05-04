@@ -82,7 +82,7 @@ const DecimalPositions = (props: IProps) => {
   };
 
   return <Space direction='vertical' style={{width: '100%'}}>
-    <Card type='inner' loading={isEditingFields}>
+    <Card type='inner'>
       <Table
         {...tableProps}
         rootClassName='decimal-positions-table'
@@ -93,7 +93,7 @@ const DecimalPositions = (props: IProps) => {
       />
     </Card>
     <Space style={{width: '100%', flexDirection: 'row-reverse'}}>              
-      <Button onClick={handleOk} type='primary'>ok</Button>
+      <Button onClick={handleOk} type='primary' loading={isEditingFields}>ok</Button>
       <Button type='default' onClick={props.onCancel}>Cancelar</Button>
     </Space>
   </Space>

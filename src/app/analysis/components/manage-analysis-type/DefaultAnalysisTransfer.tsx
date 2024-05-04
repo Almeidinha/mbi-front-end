@@ -84,8 +84,8 @@ const DefaultAnalysisTransfer = (props: DefaultAnalysisTransferProps) => {
 
   const handleOk = () => {
     if (isDefined(fields)) {
-      fields.forEach((field, i) => {
-        field.visualizationSequence = field.defaultField !== 'N' ? i+1 : 0
+      fields.filter((field) => field.defaultField !== 'N').forEach((field, index) => {
+        field.visualizationSequence =  ++index
       })
       props.onOk?.(fields)
     }
@@ -108,7 +108,6 @@ const DefaultAnalysisTransfer = (props: DefaultAnalysisTransferProps) => {
   const onMetricRowClick = (data: FieldDTO, index?: number) => {
     return {
       onClick:  () => {
-      
         const hasKey = metricKeys.includes(data.fieldId!)
         if (hasKey) {
           setMetricKeys((oldData) => oldData.filter((key) => key !== data.fieldId!))
@@ -182,8 +181,6 @@ const DefaultAnalysisTransfer = (props: DefaultAnalysisTransferProps) => {
     },
     handleSelector: "svg",
   };
-
-
 
   return <Space direction='vertical' style={{width: '100%'}}>
     <Card type="inner">

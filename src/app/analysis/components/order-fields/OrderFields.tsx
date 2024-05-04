@@ -4,9 +4,9 @@ import { useFieldsMutation } from '@/hooks/controllers/fields';
 import ReactDragListView from 'react-drag-listview';
 import useAnalysisState from '../../hooks/use-analysis-state';
 import { FieldDTO, OrderTypes } from '@/lib/types/Analysis';
-import { cloneDeep, defaultTo, isDefined } from '@/lib/helpers/safe-navigation';
+import { cloneDeep, defaultTo, unionBy } from '@/lib/helpers/safe-navigation';
 import { convertToBIAnalysisFieldDTO } from '@/lib/helpers/converters';
-import { Button, Card, Col, Divider, Flex, Row, Select, Space, Table, Typography } from 'antd';
+import { Button, Card, Col, Divider, Flex, Row, Select, Space, Table } from 'antd';
 import { DragOutlined, MenuOutlined, StepBackwardOutlined, StepForwardOutlined } from '@ant-design/icons';
 import { ColumnsType, ColumnType } from 'antd/es/table';
 import enumToOptions from '@/lib/helpers/enumToOptions';
@@ -81,8 +81,7 @@ const OrderFields = (props: IProps) => {
   const [destineKeys, setDestineKeys] = useState<number[]>([])
 
   const [fields, setFields] = useState<FieldDTO[]>(
-    cloneDeep(defaultTo(indicator?.fields, [])).filter((field) => field.order === 0)
-      .sort((a, b) => a.visualizationSequence - b.visualizationSequence)
+    cloneDeep(defaultTo(indicator?.fields, [])).sort((a, b) => a.visualizationSequence - b.visualizationSequence)
   )
   const [selectedFields, setSelectedFields] = useState<FieldDTO[]>(
     cloneDeep(defaultTo(indicator?.fields, [])).filter((field) => field.order !== 0)
@@ -97,6 +96,11 @@ const OrderFields = (props: IProps) => {
   }
 
   const moveFieldOut = () => {
+    fields.filter((field) => destineKeys.includes(Number(field.fieldId)))
+      .forEach((field) => {
+        field.orderDirection  = 'ASC'
+        field.order = 0
+    })
     setSelectedFields(selectedFields.filter((field) => !destineKeys.includes(Number(field.fieldId))))
     setDestineKeys([])
   }
@@ -117,7 +121,7 @@ const OrderFields = (props: IProps) => {
     })
     
     editFields({
-      fields: selectedFields.map((field) => convertToBIAnalysisFieldDTO(field)),
+      fields: unionBy(selectedFields, fields, 'fieldId').map((field) => convertToBIAnalysisFieldDTO(field)),
       onSuccess: () => props.onFinish?.()
     })
   }
@@ -207,7 +211,7 @@ const OrderFields = (props: IProps) => {
       </Col>
     </Card>
     <Space style={{width: '100%', flexDirection: 'row-reverse'}}>              
-      <Button onClick={handleOk} type='primary'>ok</Button>
+      <Button onClick={handleOk} type='primary' loading={isEditingFields}>ok</Button>
       <Button type='default' onClick={props.onCancel}>Cancelar</Button>
     </Space>
   </Space>

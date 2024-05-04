@@ -115,7 +115,7 @@ const MetricRestrictions = (props: MetricRestrictionsProps) => {
 
 
   return <Space direction='vertical' style={{width: '100%'}}>
-    <Card type='inner' loading={savingRestrictions || removingAllRestriction }>
+    <Card type='inner'>
       <Col span={24}>
         <Row>
           <Col span={11}>
@@ -153,7 +153,7 @@ const MetricRestrictions = (props: MetricRestrictionsProps) => {
       </Col>
     </Card>
     <Space style={{width: '100%', flexDirection: 'row-reverse'}}>
-      <Button onClick={handleRestrictionsChange} type='primary'>ok</Button>
+      <Button onClick={handleRestrictionsChange} type='primary' loading={savingRestrictions || removingAllRestriction}>ok</Button>
       <Button type='default' onClick={props.onCancel}>Cancelar</Button>      
     </Space>
   </Space>

@@ -2,10 +2,8 @@
 
 import { useAnalysisMutation, useAnalysisTableQuery } from '@/hooks/controllers/analysis'
 import { defaultTo, is, isDefined } from '@/lib/helpers/safe-navigation'
-import { Card, Modal, Row, Table, Tooltip, Typography } from 'antd'
-
-import "./analysisView.css"
-import { AddFilterIcon, AddSequenceIcon, DecimalPositionsIcon, HorizontalAnalysisIcon, InsertColumnIcon, OrderIcon, RefreshIcon, VerticalAnalysisIcon, ViewSequenceIcon } from '@/lib/icons/customIcons'
+import { Card, Flex, Modal, Row, Space, Table, Tooltip, Typography } from 'antd'
+import { AddFilterIcon, AddSequenceIcon, AggregationIcon, DecimalPositionsIcon, HorizontalAnalysisIcon, InsertColumnIcon, OrderIcon, RefreshIcon, VerticalAnalysisIcon, ViewSequenceIcon } from '@/lib/icons/customIcons'
 import { CloseCircleOutlined } from '@ant-design/icons'
 import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
 import AnalysisFilter from '../components/filters/Filter'
@@ -16,12 +14,14 @@ import EditFieldComponent from '../components/field/EditField'
 import DangerousElement from '@/lib/helpers/DangerousElement'
 import { IHeader, ITableCell, ITableRow } from '@/lib/types/Analysis'
 import ManageAnalysis from '../components/manage-analysis-type/ManageAnalysis'
-import CustomTableHeader from '@/components/custom/custom-table-header'
 import ViewSequence from '../components/viewSequence/ViewSequence'
-import DecimalPositions from '../components/decilal-positions/DecimalPositions'
+import DecimalPositions from '../components/decimal-positions/DecimalPositions'
 import AnalysisTypeConfiguration from '../components/analysis-type-configuration'
 import { AnalysisType, FieldTypes } from '@/lib/types/Filter'
 import OrderFields from '../components/order-fields/OrderFields'
+import Aggregation from '../components/aggregation/Aggregation'
+
+import "./analysisView.css"
 
 interface IAnalysisView {
   indicatorId: number
@@ -38,6 +38,24 @@ const getHeaderTitle = (header: IHeader, clickAction: () => void) => {
   }
 
   return header.title;
+}
+
+const renderCell = (cell: ITableCell) => {
+  if (!isDefined(cell)) {
+    return {
+      props: {
+        colSpan: 0,
+        rowSpan: 0
+      }
+    }
+  }
+  return {
+    children: <div className={cell?.className} dangerouslySetInnerHTML={{__html: cell?.value}}/>,
+    props: {
+      colSpan: defaultTo(cell?.colspan, 1),
+      rowSpan: defaultTo(cell?.rowspan, 1)
+    }
+  }
 }
 
 const AnalysisView = (params: IAnalysisView) => {
@@ -114,27 +132,11 @@ const AnalysisView = (params: IAnalysisView) => {
         key: `${header.title}-${index}`,
         dataIndex: header.title,
         width: header.title === "Seq" ? 30 : undefined,
-        render: (cell: ITableCell) => {
-          if (!isDefined(cell)) {
-            return {
-              props: {
-                colSpan: 0,
-                rowSpan: 0
-              }
-            };
-          }
-          return {
-            children: <div className={cell?.className} dangerouslySetInnerHTML={{__html: cell?.value}}/>,
-            props: {
-              colSpan: defaultTo(cell?.colspan, 1),
-              rowSpan: defaultTo(cell?.rowspan, 1)
-            }
-          }
-        },
-        onCell: (row: ITableRow, i: number| undefined) => {
+        render: (cell: ITableCell) => renderCell(cell),
+        onCell: (row: ITableRow, index: number| undefined) => {
           return {
             onClick: () => {
-              console.log('row clicked: ', row)
+              console.log('row clicked: ', `index = ${index}, row = ${JSON.stringify(row)}`)
             }
           }
         }
@@ -157,6 +159,15 @@ const AnalysisView = (params: IAnalysisView) => {
   const handleFilterClick = () => {
     setModalTitle(<Typography.Text type='secondary'>Add Filter</Typography.Text>)
     setModalContent(<AnalysisFilter indicatorId={indicatorId} onFinish={() => setModalOpen(false)} />)
+    setModalOpen(true)
+  }
+
+  const handAggregationClick = () => {
+    setModalTitle(<Typography.Text type='secondary'>Add Aggregation</Typography.Text>)
+    setModalContent(<Aggregation onCancel={() => setModalOpen(false)} onFinish={() => {
+      setModalOpen(false)
+      reloadAnalysisResult()
+    }} />)
     setModalOpen(true)
   }
 
@@ -243,39 +254,44 @@ const AnalysisView = (params: IAnalysisView) => {
     reloadAnalysisResult()
   }
 
+  const getTitle = () => {
+    return <Space className='analysis-table-title' direction='horizontal'>
+      <Flex>
+        <Typography.Text type='secondary' strong>{indicator?.name ?? 'Indicator'}</Typography.Text>
+      </Flex>
+      <Flex justify='flex-end' gap={4}>
+        <Flex onClick={handleAnalysisTypeChange}><Tooltip title="Change Type"><InsertColumnIcon className='active'/></Tooltip></Flex>
+        <Flex onClick={handleFilterClick}><Tooltip title="Filter"><AddFilterIcon className='active'/></Tooltip></Flex>
+        <Flex onClick={handAggregationClick}><Tooltip title="Aggregations"><AggregationIcon className={hasNumericFields ? 'active' : ''}/></Tooltip></Flex>
+        <Flex onClick={handleViewSequenceClick}><Tooltip title="Change View Order"><ViewSequenceIcon className='active'/></Tooltip></Flex>
+        <Flex onClick={handleSequenceClick}><Tooltip title="Add Sequence"><AddSequenceIcon className='active'/></Tooltip></Flex>
+        <Flex onClick={handleVerticalAnalysisClick}><Tooltip title="Vertical Analysis"><VerticalAnalysisIcon className={indicator?.multidimensional ? 'active' : ''}/></Tooltip></Flex>
+        <Flex onClick={handleHorizontalAnalysisClick}><Tooltip title="Horizontal Analysis"><HorizontalAnalysisIcon className={indicator?.multidimensional ? 'active' : ''}/></Tooltip></Flex>
+        <Flex onClick={handleOrderClick}><Tooltip title="Fields Order"><OrderIcon className='active'/></Tooltip></Flex>
+        <Flex onClick={handleDecimalPositionsClick}><Tooltip title="Decimal Positions"><DecimalPositionsIcon className={hasNumericFields ? 'active' : ''}/></Tooltip></Flex>
+        <Flex onClick={refreshAnalysis}><Tooltip title="Reload"><RefreshIcon className='active'/></Tooltip></Flex>
+      </Flex>
+    </Space>
+  } 
+
   return <Card type='inner'>
-    <DangerousElement markup={convertToStyleTag(defaultTo(table?.styles, []))}/> 
-    <CustomTableHeader
-      style={{borderColor: '#3377cc'}} 
-      title={indicator?.name ?? 'Indicator'}
-      actions={[
-        {onClick: handleAnalysisTypeChange, icon: <Tooltip title="Change Type"><InsertColumnIcon className='active'/></Tooltip>},
-        {onClick: handleFilterClick, icon: <Tooltip title="Filter"><AddFilterIcon className='active'/></Tooltip>},
-        {onClick: handleViewSequenceClick, icon: <Tooltip title="Change View Order"><ViewSequenceIcon className='active'/></Tooltip>},
-        {onClick: handleSequenceClick, icon: <Tooltip title="Add Sequence"><AddSequenceIcon className='active'/></Tooltip>},
-        {onClick: handleVerticalAnalysisClick, icon: <Tooltip title="Vertical Analysis"><VerticalAnalysisIcon className={indicator?.multidimensional ? 'active' : ''}/></Tooltip>},
-        {onClick: handleHorizontalAnalysisClick, icon: <Tooltip title="Horizontal Analysis"><HorizontalAnalysisIcon className={indicator?.multidimensional ? 'active' : ''}/></Tooltip>},
-        {onClick: handleOrderClick, icon: <Tooltip title="Fields Order"><OrderIcon className='active'/></Tooltip>},
-        {onClick: handleDecimalPositionsClick, icon: <Tooltip title="Decimal Positions"><DecimalPositionsIcon className={hasNumericFields ? 'active' : ''}/></Tooltip>},
-        {onClick: refreshAnalysis, icon: <Tooltip title="Reload"><RefreshIcon className='active'/></Tooltip>},
-      ]}  
-    >
-      <Table
-        className='analysis-table'
-        scroll={{ x: "max-content" }}
-        bordered
-        loading={loadingAnalysisResult || fetchingAnalysisResult || isTogglingSequenceSequence}
-        size='small'
-        dataSource={data}
-        columns={columns}
-        pagination={{
-          hideOnSinglePage: true,
-          showSizeChanger: true,
-          showQuickJumper: true,
-          showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`
-        }}
-      />
-    </CustomTableHeader>
+    <DangerousElement markup={convertToStyleTag(defaultTo(table?.styles, []))}/>    
+    <Table
+      title={getTitle}
+      className='analysis-table'
+      scroll={{ x: "max-content" }}
+      bordered
+      loading={loadingAnalysisResult || fetchingAnalysisResult || isTogglingSequenceSequence}
+      size='small'
+      dataSource={data}
+      columns={columns}
+      pagination={{
+        hideOnSinglePage: true,
+        showSizeChanger: true,
+        showQuickJumper: true,
+        showTotal: (total, range) => `${range[0]}-${range[1]} of ${total} items`
+      }}
+    />
     <Modal
       width="auto"
       maskClosable={false}

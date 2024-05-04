@@ -7,12 +7,13 @@ import { ColumnType } from 'antd/es/table'
 import enumToOptions from '@/lib/helpers/enumToOptions'
 import { VerticalAnalysisTypes, VertycalTotalization } from './types'
 import './pages.css'
+import { is } from '@/lib/helpers/safe-navigation'
 
 
 interface IProps {
   onFinish?: () => void
   onCancel?: () => void
-  fields: FieldDTO[],
+  fields: FieldDTO[]
   setFields: React.Dispatch<React.SetStateAction<FieldDTO[]>>
 }
 

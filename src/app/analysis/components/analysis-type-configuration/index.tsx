@@ -22,7 +22,8 @@ interface IProps {
 const AnalysisTypeConfiguration = (props: IProps) => {
 
   const {
-    editFields
+    editFields,
+    isEditingField
   } = useFieldsMutation()
 
   const {
@@ -45,7 +46,7 @@ const AnalysisTypeConfiguration = (props: IProps) => {
 
   return props.analysisType === AnalysisType.HORIZONTAL 
     ? <HorizontalAnalysis onCancel={props?.onCancel} onFinish={handleSave} fields={fields} setFields={setFields} /> 
-    : <VerticalAnalysis onCancel={props?.onCancel} onFinish={handleSave} fields={fields} setFields={setFields}/>
+    : <VerticalAnalysis onCancel={props?.onCancel} onFinish={handleSave} fields={fields} setFields={setFields} />
 }
 
 export default AnalysisTypeConfiguration

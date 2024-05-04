@@ -1,3 +1,4 @@
+import { FieldDTO } from "./Analysis";
 
 export enum FilterType {
   DIMENSION = "DIMENSION",
@@ -42,7 +43,7 @@ export enum AnalysisType {
 
 export interface FilterBuilderInput {
   filters: FiltersDTO;
-  field?: BIAnalysisFieldDTO;
+  field?: FieldDTO;
   operator?: string;
   value?: string;
   link: string;
@@ -61,7 +62,7 @@ export interface BIAnalysisFieldDTO {
   title: string;
   nickname: string;
   expression: boolean;
-  drillDownSequence: number;
+  filterSequence: number;
   visualizationSequence: number;
   defaultField: string;
   fieldOrder: number;
@@ -136,7 +137,7 @@ export interface MetricFilterDTO {
 export interface ConditionDTO {
   valuesMap: Map<number, any>;
   valueCount: number;
-  field: BIAnalysisFieldDTO;
+  field: FieldDTO;
   operator: OperatorDTO;
   value: string;
   title: string;

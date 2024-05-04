@@ -6,6 +6,7 @@ import React from 'react'
 import { HorizontalAccTypes, HorizontalAnalysisTypes } from './types'
 import { analysisTypeTableProps } from '.'
 import './pages.css'
+import { is } from '@/lib/helpers/safe-navigation'
 
 interface IProps {
   onFinish?: () => void

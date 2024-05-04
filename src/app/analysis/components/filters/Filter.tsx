@@ -92,7 +92,7 @@ const buildMetricSqlTree = (metricSqlFilters: MetricSqlFiltersDTO | undefined, l
     const nodeLink = `${link}-${index + 1}`
     return {
       title: getNodeName(metricSqlFilter as DimensionFilterDTO, nodeLink, FilterType.METRIC_SQL, filterAction),
-      icon: <DatabaseIcon/>,
+      icon: <DatabaseIcon style={{color:'#3377cc'}}/>,
       key: nodeLink,
       children: []
     }
@@ -116,7 +116,6 @@ const buildDimensionTree = (dimensionFilter: DimensionFilterDTO | undefined, lin
 
 const treeData = (filters: FiltersDTO | undefined, filterAction: Function): TreeDataNode[] => {
   if (isNil(filters)) {
-    console.log('No filters found.')
     return []
   }
   
@@ -143,10 +142,6 @@ const treeData = (filters: FiltersDTO | undefined, filterAction: Function): Tree
   ]
 }
 
-
-
-
-
 const AnalysisFilter = (props: {indicatorId: number, onFinish?: () => void}) => {
 
   const { indicatorId } = props
@@ -155,14 +150,12 @@ const AnalysisFilter = (props: {indicatorId: number, onFinish?: () => void}) => 
     indicator,
     filters: stateFilters,
     setFilters,
-    setSynchronized,
     updateEditingFilter
   } = useAnalysisState.useContainer()
 
   const {
     indFilters,
     loadingIndFilters,
-    inFiltersError,
   } = useIndFiltersQuery({indicatorId})
 
   const {
@@ -203,11 +196,12 @@ const AnalysisFilter = (props: {indicatorId: number, onFinish?: () => void}) => 
       if (filterType !== FilterType.DIMENSION) {
 
         const metricFilter = findMetricFilter(stateFilters, link)
-        
-        input.field = metricFilter?.condition.field;
-        input.operator = metricFilter?.condition.operator.symbol;
-        input.value = metricFilter?.condition.value;        
-
+        const condition = metricFilter?.condition
+        if (isDefined(condition)) {
+          input.field =  condition.field;
+          input.operator = condition.operator.symbol;
+          input.value = condition.value;        
+        }
       }
 
       removeFilterMutation({
@@ -232,11 +226,11 @@ const AnalysisFilter = (props: {indicatorId: number, onFinish?: () => void}) => 
     }))
   }
 
-  return <Card loading={loadingIndFilters || updatingFilter}
-    className='filter-card'
-    bodyStyle={{borderTopRightRadius: '8px', borderTopLeftRadius: '8px'}}
-  >
-    <Space direction='vertical' style={{width: '100%'}}>
+  return <Space direction='vertical' style={{width: '100%'}}>
+    <Card loading={loadingIndFilters}
+      className='filter-card'
+      bodyStyle={{borderTopRightRadius: '8px', borderTopLeftRadius: '8px'}}
+    >    
       <Tree
         className='filter-tree'
         showLine
@@ -246,11 +240,14 @@ const AnalysisFilter = (props: {indicatorId: number, onFinish?: () => void}) => 
         selectable={false}
         treeData={treeData(stateFilters || indFilters, filterAction)}
       />
-      <Button 
-        type='primary'
-        icon={<SaveOutlined/>} 
-        style={{float: 'right'}} 
-        onClick={() => updateIndFilter({indicatorId, dto: stateFilters!, onSuccess: props.onFinish})}>Save</Button>
+    </Card>
+    <Space style={{width: '100%', flexDirection: 'row-reverse'}}>              
+    <Button 
+      type='primary'
+      icon={<SaveOutlined/>} 
+      loading={loadingIndFilters || updatingFilter}
+      onClick={() => updateIndFilter({indicatorId, dto: stateFilters!, onSuccess: props.onFinish})}>Save
+    </Button>
     </Space>
     <AddFilterModal
       title={startCase(toLower(modalState.title))}
@@ -264,7 +261,7 @@ const AnalysisFilter = (props: {indicatorId: number, onFinish?: () => void}) => 
       link={modalAction.link}
       action={modalAction.action}
     />
-  </Card>
+  </Space>
 }
 
 export default AnalysisFilter

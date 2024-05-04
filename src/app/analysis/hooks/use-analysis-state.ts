@@ -40,7 +40,7 @@ const useAnalysisState = (): AnalysisState => {
         const {childFilter, parentFilter} = dimensionsHierarchy
         setEditingFilter({
           connector: getKeyByValue(defaultTo(parentFilter?.connector, "AND"), ConnectorType) as ConnectorType, 
-          field: childFilter.condition.field.id.fieldId, 
+          field: childFilter.condition.field.fieldId, 
           operator: childFilter.condition.operator.symbol as OperatorTypeValues, 
           value: childFilter.condition.value
         })
@@ -50,7 +50,7 @@ const useAnalysisState = (): AnalysisState => {
       const filter = findMetricFilter(filters, link)
       setEditingFilter({
         connector: ConnectorType.AND,
-        field: filter?.condition.field.id.fieldId, 
+        field: filter?.condition.field.fieldId, 
         operator: getValueByKey(filter?.condition.operator.symbol!, OperatorTypeValues) as OperatorTypeValues, 
         value: filter?.condition.value
       })
@@ -62,8 +62,8 @@ const useAnalysisState = (): AnalysisState => {
 
     if (dimensionsHierarchy) {
       const {childFilter} = dimensionsHierarchy
-      childFilter.condition.operator.symbol = operator, 
-      childFilter.condition.operator.description = startCase(getKeyByValue(operator, OperatorTypeValues) as OperatorTypeValues).toLocaleLowerCase(), 
+      childFilter.condition.operator.symbol = operator
+      childFilter.condition.operator.description = startCase(getKeyByValue(operator, OperatorTypeValues) as OperatorTypeValues).toLocaleLowerCase()
       childFilter.condition.value = value
       childFilter.condition.valuesMap = value.split(";").reduce((acc: any, curr: any, index: number) => ({ ...acc, [index + 1]: curr }), {})
     }
@@ -75,7 +75,7 @@ const useAnalysisState = (): AnalysisState => {
     
     if (isDefined(metricFilter)) {
       metricFilter.condition.operator.symbol = operator
-      metricFilter.condition.operator.description = startCase(getKeyByValue(operator, OperatorTypeValues) as OperatorTypeValues).toLocaleLowerCase(), 
+      metricFilter.condition.operator.description = startCase(getKeyByValue(operator, OperatorTypeValues) as OperatorTypeValues).toLocaleLowerCase()
       metricFilter.condition.value = value
     }
   }
