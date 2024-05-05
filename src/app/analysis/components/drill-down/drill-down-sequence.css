@@ -11,11 +11,8 @@
   overflow: auto;
   max-height: 375px;
   min-height: 375px;
-  border-bottom: 1px solid #f0f0f0;
-  border-left: 1px solid #f0f0f0;
-  border-right: 1px solid #f0f0f0;
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
+  border: 1px solid #f0f0f0;
+  border-radius: 6px;
 }
 
 .drill-down-source-table .ant-table-container,

@@ -9,23 +9,16 @@
 .order-fields-source-table, .order-fields-destine-table {
   width: 100%;
   overflow: auto;
-  max-height: 335px;
-  min-height: 335px;
-  border-bottom: 1px solid #f0f0f0;
-  border-left: 1px solid #f0f0f0;
-  border-right: 1px solid #f0f0f0;
-  border-bottom-left-radius: 6px;
-  border-bottom-right-radius: 6px;
-}
-
-.order-fields-destine-table {
-  max-height: 373px;
-  min-height: 373px;
+  max-height: 375px;
+  min-height: 375px;
+  border: 1px solid #f0f0f0;
+  border-radius: 6px;
 }
 
 .order-fields-source-table .ant-table-container,
 .order-fields-destine-table .ant-table-container {
   border-inline-start: 0 !important;
+  border-top: 0 !important;
 }
 .order-fields-source-table .ant-table-cell,
 .order-fields-destine-table .ant-table-cell {

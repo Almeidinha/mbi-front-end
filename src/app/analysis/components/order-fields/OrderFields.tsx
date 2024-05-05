@@ -6,19 +6,17 @@ import useAnalysisState from '../../hooks/use-analysis-state';
 import { FieldDTO, OrderTypes } from '@/lib/types/Analysis';
 import { cloneDeep, defaultTo, unionBy } from '@/lib/helpers/safe-navigation';
 import { convertToBIAnalysisFieldDTO } from '@/lib/helpers/converters';
-import { Button, Card, Col, Divider, Flex, Row, Select, Space, Table } from 'antd';
+import { Button, Card, Col, Divider, Flex, Row, Select, Space, Table, Typography } from 'antd';
 import { DragOutlined, MenuOutlined, StepBackwardOutlined, StepForwardOutlined } from '@ant-design/icons';
 import { ColumnsType, ColumnType } from 'antd/es/table';
 import enumToOptions from '@/lib/helpers/enumToOptions';
-
-import './order-fields.css'
-import CustomTableHeader from '@/components/custom/custom-table-header';
 import { useTableTransferRowClick } from '../../hooks/use-table-transfer-row-click';
 import { getDragProps } from '@/components/custom/dragable/DragableProps';
 
+import './order-fields.css'
+
 const tableProps = {
   size: "small" as const,
-  showHeader: false as const,
   bordered: true as const,
   pagination: false as const,
 };
@@ -140,20 +138,18 @@ const OrderFields = (props: IProps) => {
       <Col span={24}>
         <Row>
         <Col span={8}>
-          <CustomTableHeader title='Avaliable Fields'>
-            <Table
-              {...tableProps}
-              style={{width: '100%', overflow: 'auto'}}
-              rootClassName='order-fields-source-table'
-              onRow={onSourceRowClick}
-              columns={sourceColumns}
-              dataSource={fields.map((field) => ({...field, key: field.fieldId})) || []}
-              rowSelection={{
-                type: 'checkbox',
-                selectedRowKeys: sourceKeys
-              }}
-            />
-          </CustomTableHeader>
+          <Table
+            {...tableProps}
+            style={{width: '100%', overflow: 'auto'}}
+            rootClassName='order-fields-source-table'
+            onRow={onSourceRowClick}
+            columns={sourceColumns}
+            dataSource={fields.map((field) => ({...field, key: field.fieldId})) || []}
+            rowSelection={{
+              type: 'checkbox',
+              selectedRowKeys: sourceKeys
+            }}
+          />
         </Col>
         <Col span={4} style={{textAlign: 'center'}}>
           <Space split={<Divider type="horizontal" />} direction='vertical' align='center' style={{height: '100%', justifyContent: 'center'}}>
@@ -165,7 +161,6 @@ const OrderFields = (props: IProps) => {
           <ReactDragListView {...getDragProps({fields: selectedFields, dataIndex: 'fieldId', setter: setSelectedFields})}>
             <Table
               {...tableProps}
-              showHeader={true}
               style={{width: '100%', overflow: 'auto'}}
               rootClassName='order-fields-destine-table'
               onRow={onDestineRowClick}
