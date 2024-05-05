@@ -13,7 +13,8 @@ import enumToOptions from '@/lib/helpers/enumToOptions';
 
 import './order-fields.css'
 import CustomTableHeader from '@/components/custom/custom-table-header';
-import { mapOrder } from '@/lib/helpers/arrays';
+import { useTableTransferRowClick } from '../../hooks/use-table-transfer-row-click';
+import { getDragProps } from '@/components/custom/dragable/DragableProps';
 
 const tableProps = {
   size: "small" as const,
@@ -77,8 +78,16 @@ const OrderFields = (props: IProps) => {
     indicator,
   } = useAnalysisState.useContainer()
 
-  const [sourceKeys, setSourceKeys] = useState<number[]>([])
-  const [destineKeys, setDestineKeys] = useState<number[]>([])
+  const { 
+    sourceKeys,
+    destineKeys,
+    setSourceKeys,
+    setDestineKeys,
+    onSourceRowClick, 
+    onDestineRowClick
+  } = useTableTransferRowClick<FieldDTO, 'fieldId'>({
+    key: 'fieldId'
+  })
 
   const [fields, setFields] = useState<FieldDTO[]>(
     cloneDeep(defaultTo(indicator?.fields, [])).sort((a, b) => a.visualizationSequence - b.visualizationSequence)
@@ -117,7 +126,7 @@ const OrderFields = (props: IProps) => {
 
   const handleOk = () => {
     selectedFields.forEach((field, i) => {
-      field.order = field.order = i+1 
+      field.order = i+1 
     })
     
     editFields({
@@ -125,44 +134,6 @@ const OrderFields = (props: IProps) => {
       onSuccess: () => props.onFinish?.()
     })
   }
-
-  const onSourceRowClick = (data: FieldDTO, index?: number) => {
-    return {
-      onClick:  () => {
-      
-        const hasKey = sourceKeys.includes(data.fieldId!)
-        if (hasKey) {
-          setSourceKeys((oldData) => oldData.filter((key) => key !== data.fieldId!))
-        } else {
-          setSourceKeys((oldData) => [...oldData, data.fieldId!])
-        }
-      } 
-    }
-  }
-
-  const onDestineRowClick = (data: FieldDTO, index?: number) => {
-    return {
-      onClick:  () => {
-      
-        const hasKey = destineKeys.includes(data.fieldId!)
-        if (hasKey) {
-          setDestineKeys((oldData) => oldData.filter((key) => key !== data.fieldId!))
-        } else {
-          setDestineKeys((oldData) => [...oldData, data.fieldId!])
-        }
-      } 
-    }
-  }
-
-  const dragProps = {
-    onDragEnd(fromIndex: number, toIndex: number) {
-      const item = selectedFields.splice(fromIndex, 1)[0];
-      selectedFields.splice(toIndex, 0, item);
-      const ordered = mapOrder(selectedFields, selectedFields.map((d) => d.fieldId), "fieldId")
-      setSelectedFields([...ordered])
-    },
-    handleSelector: "svg",
-  };
 
   return <Space direction='vertical' style={{width: '100%'}}>
     <Card type='inner'>
@@ -191,7 +162,7 @@ const OrderFields = (props: IProps) => {
           </Space>
         </Col>
         <Col span={12}>
-          <ReactDragListView {...dragProps}>
+          <ReactDragListView {...getDragProps({fields: selectedFields, dataIndex: 'fieldId', setter: setSelectedFields})}>
             <Table
               {...tableProps}
               showHeader={true}

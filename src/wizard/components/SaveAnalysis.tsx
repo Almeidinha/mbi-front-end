@@ -181,17 +181,18 @@ const SaveAnalysis = () => {
 
   const searchForFieldId = (field: FieldType) => {
     if (isNil(dbAnalysis)) {
-      return undefined
+      return 0
     }
-    return defaultTo(dbAnalysis.fields, [])
-      .find((analysisField) => analysisField.tableNickname === field.tableName 
-        &&  analysisField.name === field.nickname)?.fieldId
+    const fieldId = defaultTo(dbAnalysis.fields, [])
+    .find((analysisField) => analysisField.tableNickname === field.tableName 
+      &&  analysisField.name === field.nickname)?.fieldId
+    return defaultTo(fieldId, 0)
   }
 
   const getFields = (rawFields: FieldType[]): FieldDTO[] => {
     return rawFields.map((field) => ({
       fieldId: searchForFieldId(field),
-      indicatorId: dbAnalysis?.code,
+      indicatorId: defaultTo(dbAnalysis?.code, 0),
       name: field.name,
       title: field.title!,
       fieldType: field.analyticType === AnalyticType.DIMENSION ? 'D' : "M",

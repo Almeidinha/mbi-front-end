@@ -106,8 +106,8 @@ export interface MetricDimensionRestrictionDTO {
 }
 
 export interface FieldDTO {
-  fieldId?: number;
-  indicatorId?: number;
+  fieldId: number;
+  indicatorId: number;
   name: string;
   title: string;
   nickname: string;

@@ -14,9 +14,11 @@ import {
 } from "@/app/providers";
 import { useAppDispatch } from "@/app/redux/hooks";
 import { setUser } from "@/app/redux/features/user/user-slice";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useUserSessionQuery } from "@/hooks/controllers/user";
 import { isDefined } from "@/lib/helpers/safe-navigation";
+import { log } from "console";
+import { clearStore } from "@/lib/helpers/localStorageUtils";
 
 const AppLayout: React.FC<{children?: React.ReactNode}> = ({ children }) => {
 
@@ -29,6 +31,7 @@ const AppLayout: React.FC<{children?: React.ReactNode}> = ({ children }) => {
 
   useEffect(() => {
     
+    console.log('session?.user.email >> ', session?.user.email)
     if (isDefined(session?.user.email)) {
       reloadUsers().then((result) => {
         

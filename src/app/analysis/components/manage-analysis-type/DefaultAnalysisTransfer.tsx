@@ -85,7 +85,7 @@ const DefaultAnalysisTransfer = (props: DefaultAnalysisTransferProps) => {
   const handleOk = () => {
     if (isDefined(fields)) {
       fields.filter((field) => field.defaultField !== 'N').forEach((field, index) => {
-        field.visualizationSequence =  ++index
+        field.visualizationSequence =  index+1
       })
       props.onOk?.(fields)
     }

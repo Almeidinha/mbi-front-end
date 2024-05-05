@@ -3,7 +3,7 @@
 import { useAnalysisMutation, useAnalysisTableQuery } from '@/hooks/controllers/analysis'
 import { defaultTo, is, isDefined } from '@/lib/helpers/safe-navigation'
 import { Card, Flex, Modal, Row, Space, Table, Tooltip, Typography } from 'antd'
-import { AddFilterIcon, AddSequenceIcon, AggregationIcon, DecimalPositionsIcon, HorizontalAnalysisIcon, InsertColumnIcon, OrderIcon, RefreshIcon, VerticalAnalysisIcon, ViewSequenceIcon } from '@/lib/icons/customIcons'
+import { AddFilterIcon, AddSequenceIcon, AggregationIcon, DecimalPositionsIcon, DrillDownIcon, HorizontalAnalysisIcon, InsertColumnIcon, OrderIcon, RefreshIcon, VerticalAnalysisIcon, ViewSequenceIcon } from '@/lib/icons/customIcons'
 import { CloseCircleOutlined } from '@ant-design/icons'
 import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
 import AnalysisFilter from '../components/filters/Filter'
@@ -22,6 +22,7 @@ import OrderFields from '../components/order-fields/OrderFields'
 import Aggregation from '../components/aggregation/Aggregation'
 
 import "./analysisView.css"
+import DrillDownSequence from '../components/drill-down/DrillDownSequence'
 
 interface IAnalysisView {
   indicatorId: number
@@ -250,6 +251,17 @@ const AnalysisView = (params: IAnalysisView) => {
     setModalOpen(true)
   }
 
+  const handleDrillDownSequenceClick = () => {    
+    setModalTitle(<Typography.Text type='secondary'>Drill Down Sequence</Typography.Text>)
+    setModalContent(<DrillDownSequence
+      onCancel={() => setModalOpen(false)} 
+      onFinish={() => {
+        setModalOpen(false)
+        reloadAnalysisResult()
+      }}/>)
+    setModalOpen(true)
+  }
+  
   const refreshAnalysis = () => {
     reloadAnalysisResult()
   }
@@ -264,11 +276,12 @@ const AnalysisView = (params: IAnalysisView) => {
         <Flex onClick={handleFilterClick}><Tooltip title="Filter"><AddFilterIcon className='active'/></Tooltip></Flex>
         <Flex onClick={handAggregationClick}><Tooltip title="Aggregations"><AggregationIcon className={hasNumericFields ? 'active' : ''}/></Tooltip></Flex>
         <Flex onClick={handleViewSequenceClick}><Tooltip title="Change View Order"><ViewSequenceIcon className='active'/></Tooltip></Flex>
-        <Flex onClick={handleSequenceClick}><Tooltip title="Add Sequence"><AddSequenceIcon className='active'/></Tooltip></Flex>
-        <Flex onClick={handleVerticalAnalysisClick}><Tooltip title="Vertical Analysis"><VerticalAnalysisIcon className={indicator?.multidimensional ? 'active' : ''}/></Tooltip></Flex>
-        <Flex onClick={handleHorizontalAnalysisClick}><Tooltip title="Horizontal Analysis"><HorizontalAnalysisIcon className={indicator?.multidimensional ? 'active' : ''}/></Tooltip></Flex>
         <Flex onClick={handleOrderClick}><Tooltip title="Fields Order"><OrderIcon className='active'/></Tooltip></Flex>
+        <Flex onClick={handleDrillDownSequenceClick}><Tooltip title="Drill Down Sequence"><DrillDownIcon className='active'/></Tooltip></Flex>
+        <Flex onClick={handleVerticalAnalysisClick}><Tooltip title="Vertical Analysis"><VerticalAnalysisIcon className={indicator?.multidimensional ? 'active' : ''}/></Tooltip></Flex>
+        <Flex onClick={handleHorizontalAnalysisClick}><Tooltip title="Horizontal Analysis"><HorizontalAnalysisIcon className={indicator?.multidimensional ? 'active' : ''}/></Tooltip></Flex>        
         <Flex onClick={handleDecimalPositionsClick}><Tooltip title="Decimal Positions"><DecimalPositionsIcon className={hasNumericFields ? 'active' : ''}/></Tooltip></Flex>
+        <Flex onClick={handleSequenceClick}><Tooltip title="Add Sequence"><AddSequenceIcon className='active'/></Tooltip></Flex>
         <Flex onClick={refreshAnalysis}><Tooltip title="Reload"><RefreshIcon className='active'/></Tooltip></Flex>
       </Flex>
     </Space>

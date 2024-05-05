@@ -9,6 +9,8 @@ import { is, isNil } from '@/lib/helpers/safe-navigation'
 import { SaveOutlined } from '@ant-design/icons'
 import { useFieldsMutation } from '@/hooks/controllers/fields'
 import { convertToBIAnalysisFieldDTO } from '@/lib/helpers/converters'
+import fieldTypes from '@/ERDEngine/config/filed_typs'
+import { defaultTo } from 'lodash'
 
 interface IProps {
   fieldId: string
@@ -35,6 +37,28 @@ const EditFieldComponent = (props: IProps) => {
     return <Typography.Text type="warning">Could not find Field with ID {props.fieldId}</Typography.Text>
   }
 
+  const getDrillDownNextSequence = () => {
+    const fields = defaultTo(indicator?.fields, [])
+    return fields.reduce(
+      (highestOrder, currentItem) =>  Math.max(highestOrder, currentItem.drillDownSequence), fields[0].drillDownSequence
+    )
+  }
+
+  const handleFieldTypeChange = (formField: FieldDTO) => {
+
+    if (formField.fieldType === field.fieldType) {
+      return
+    }
+
+    if (formField.fieldType === FieldTypes.DIMENSION) {
+      field.drillDown = true
+      field.drillDownSequence = getDrillDownNextSequence() + 1
+    } else {
+      field.drillDown = false
+      field.drillDownSequence = 0
+    }
+  }
+
   const initialValues: Partial<FieldDTO> = {
     title: field.title,
     fieldType: field.fieldType,
@@ -48,6 +72,7 @@ const EditFieldComponent = (props: IProps) => {
 
   const handleFormSubmit = (values: any) => {    
     form.validateFields().then(formFields => {
+      handleFieldTypeChange(formFields)
       const analysisField =  convertToBIAnalysisFieldDTO({...field,...formFields})
       editField({
         field: analysisField,

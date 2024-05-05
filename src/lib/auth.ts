@@ -13,11 +13,12 @@ export const authOptions: AuthOptions = {
     secret: "tJ+PgnZDfZK+m2LhPrSI7eIRgaFs2x7tgqpeeaqToRo=",
     jwt: {
       secret: process.env.NEXT_PUBLIC_JWT_SECRET,
-      maxAge: 1800
+      maxAge: 60 * 60, // 1 hour
     },
     session: {
       strategy: "jwt",
-      maxAge: 30 * 24 * 60 * 60, // 30 days
+      //maxAge: 24 * 60 * 60, // 24 hours
+      maxAge: 60 * 60, // 1 hour
       updateAge: 24 * 60 * 60, // 24 hours
       generateSessionToken: () => {
         return randomUUID() ?? randomBytes(32).toString("hex");
@@ -61,11 +62,9 @@ export const authOptions: AuthOptions = {
         return { ...session,  authToken: token.authToken}
       },
       async jwt({ token, user }: { token: any | null, user: TUser | null }) {
-                
         if(isDefined(user) && isDefined(user.authToken)) {
-          return {...token, authToken: user.authToken}
+          token.authToken = user.authToken
         }
- 
         return token
       }
     }

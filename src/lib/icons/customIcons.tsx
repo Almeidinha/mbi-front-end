@@ -188,6 +188,18 @@ const AggregationSvg = () => (
   </svg>
 );
 
+const DrillDownSvg = () => (
+  <svg focusable="false" aria-hidden="true" viewBox="0 0 512 512" width="1em" height="1em">
+    <path fillOpacity="0" pointerEvents="none" d="M0 0h512v512H0z"/>
+    <g fill="currentColor">
+      <path d="M450 216h-17V75L364 5H207v81H77v130H61v52l162 162v78h65v-78l162-162v-52zM369 54V33l37 37h-37V54zM223 21h129v16H239v17h113v16H239v16h178v130H304v-33h97v-16h-97v-11l-5-5h102v-16H283l-16-17h134v-16H250l-16-16h-11V21zm53 130h-37v-33h5l32 33zM93 102h130v16H109v17h114v16H109v16h179v49H93V102zm340 154H77v-24h356v24z"/>
+      <path d="M109 183h162v17H109v-17zM117 354h17v16h-17v-16zM134 457v-71h-17v82l-32 22-32-22V337H36v120l-20-13-9 14 78 51 77-51-9-14-19 13zM36 305h17v16H36v-16z"/>
+      <path d="M77 386h16v81H77v-81zM77 354h16v16H77v-16zM377 370h16v16h-16v-16zM494 444l-20 13V354h-16v114l-33 22-32-22v-66h-16v55l-20-13-9 14 77 51 78-51-9-14zM458 321h16v16h-16v-16z"/>
+      <path d="M417 386h16v81h-16v-81zM417 354h16v16h-16v-16z"/>
+    </g>
+  </svg>
+);
+
 export const KeyIcon = (props: Partial<CustomIconComponentProps>) => (
   <Icon component={KeySvg} {...props} />
 );
@@ -262,4 +274,8 @@ export const HorizontalAnalysisIcon = (props: Partial<CustomIconComponentProps>)
 
 export const AggregationIcon = (props: Partial<CustomIconComponentProps>) => (
   <Icon component={AggregationSvg} {...props } />
+);
+
+export const DrillDownIcon = (props: Partial<CustomIconComponentProps>) => (
+  <Icon component={DrillDownSvg} {...props } />
 );
