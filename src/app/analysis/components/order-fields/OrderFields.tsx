@@ -6,7 +6,7 @@ import useAnalysisState from '../../hooks/use-analysis-state';
 import { FieldDTO, OrderTypes } from '@/lib/types/Analysis';
 import { cloneDeep, defaultTo, unionBy } from '@/lib/helpers/safe-navigation';
 import { convertToBIAnalysisFieldDTO } from '@/lib/helpers/converters';
-import { Button, Card, Col, Divider, Flex, Row, Select, Space, Table, Typography } from 'antd';
+import { Button, Card, Col, Divider, Flex, Row, Select, Space, Table } from 'antd';
 import { DragOutlined, MenuOutlined, StepBackwardOutlined, StepForwardOutlined } from '@ant-design/icons';
 import { ColumnsType, ColumnType } from 'antd/es/table';
 import enumToOptions from '@/lib/helpers/enumToOptions';

@@ -1,9 +1,14 @@
 import { IAnalysisResult } from "@/lib/types/Analysis";
 import  AxiosClient  from "@/services/axios";
-import { AnalysisInput, BIIndDTO } from "@/wizard/types";
+import { AnalysisInput, BIIndDTO, BIIndSummary } from "@/wizard/types";
 
 export const getAnalysisDtoListFn = async () => {
   const response = await AxiosClient.get<BIIndDTO[]>('/indicator/list');
+  return response.data;
+};
+
+export const getIndicatorListDescription = async () => {
+  const response = await AxiosClient.get<BIIndSummary[]>('/indicator/summary/list');
   return response.data;
 };
 

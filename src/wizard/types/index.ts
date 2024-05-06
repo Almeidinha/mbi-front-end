@@ -96,4 +96,20 @@ export type BIIndDTO = {
   biUserGroupIndDtoList: BIUserGroupIndDTO[],
 }
 
-
+export interface BIIndSummary {
+  id: number
+  name: string
+  biAreaByArea: {
+    id: number
+    description: string
+  }
+  biUserIndicators: {
+    userId: number
+    favorite: boolean
+    canChange: boolean
+  }[]
+  biUserGroupIndicators: {
+    userGroupId: number
+    canEdit: boolean
+  }[]
+}

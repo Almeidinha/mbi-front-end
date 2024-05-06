@@ -1,6 +1,6 @@
 "use client"
 
-import { useAnalysisDtoListQuery } from '@/hooks/controllers/analysis'
+import { useAnalysisDtoListQuery, useBIIndSummaryQuery } from '@/hooks/controllers/analysis'
 import { useUserIndQuery } from '@/hooks/controllers/user'
 import { defaultTo, is, isEmpty, isNil } from '@/lib/helpers/safe-navigation'
 import { Card, Flex, Space, Switch, Tag, Tooltip, Typography, notification } from 'antd'
@@ -25,10 +25,10 @@ type DataType = {
 const AnalysisList = () => {
 
   const {
-    analysis,
-    reloadAnalysis,
-    loadingAnalysis
-  } = useAnalysisDtoListQuery()
+    biIndSummary,
+    loadingBIIndSummary,
+    reloadBIIndSummary
+  } = useBIIndSummaryQuery()
 
   const {
     updateUserIndFavorite,
@@ -78,23 +78,23 @@ const AnalysisList = () => {
         onChange={() => updateUserIndFavorite({
           userId: user?.id!,
           indicatorId: record.id,
-          onSuccess: reloadAnalysis
+          onSuccess: reloadBIIndSummary
         })} 
       />
     },
   ]
 
   const data: DataType[] = useMemo(() => {
-    return defaultTo(analysis, []).map((ana, index) => ({
-      key: String(ana.id),
-      id: ana.id,
-      areaId: ana.areaId,
-      name: ana.name,
-      areaName: ana.areaName,
-      canEdit: is(ana?.biUserIndDtoList.find(u => u.userId === user?.id)?.canChange) || is(ana?.biUserGroupIndDtoList.find(u => u.userGroupId === user?.userGroupId)?.canEdit),
-      favorite: is(ana?.biUserIndDtoList.find(u => u.userId === user?.id)?.favorite)
+    return defaultTo(biIndSummary, []).map((ind, index) => ({
+      key: String(ind.id),
+      id: ind.id,
+      areaId: ind.biAreaByArea.id,
+      name: ind.name,
+      areaName: ind.biAreaByArea.description,
+      canEdit: is(ind?.biUserIndicators.find(u => u.userId === user?.id)?.canChange) || is(ind?.biUserGroupIndicators.find(u => u.userGroupId === user?.userGroupId)?.canEdit),
+      favorite: is(ind?.biUserIndicators.find(u => u.userId === user?.id)?.favorite)
     }))
-  }, [analysis, user])
+  }, [biIndSummary, user])
 
   
   const handleOpenAnalysis = () => {
@@ -132,7 +132,7 @@ const AnalysisList = () => {
         columns={columns}
         dataSource={data}
         size='small'
-        loading={loadingAnalysis}
+        loading={loadingBIIndSummary}
         bordered
         rowSelection={{
           renderCell: () => null,

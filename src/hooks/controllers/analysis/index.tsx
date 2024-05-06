@@ -1,6 +1,6 @@
 import * as QueryKeys from "@/lib/types/QueryKeys";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { addAnalysisFn, addSequenceFn, deleteAnalysisFn, getAnalysisByIdFn, getAnalysisDtoListFn, getAnalysisTableFn, putAnalysisFn } from "./query";
+import { addAnalysisFn, addSequenceFn, deleteAnalysisFn, getAnalysisByIdFn, getAnalysisDtoListFn, getAnalysisTableFn, getIndicatorListDescription, putAnalysisFn } from "./query";
 import { isDefined } from "@/lib/helpers/safe-navigation";
 import { AnalysisInput } from "@/wizard/types";
 
@@ -115,6 +115,23 @@ export const useAnalysisDtoListQuery = () => {
     analysis,
     reloadAnalysis,
     loadingAnalysis,
+    isError
+  }
+  
+}
+
+export const useBIIndSummaryQuery = () => {
+
+  const { isLoading: loadingBIIndSummary, isError, data: biIndSummary, refetch: reloadBIIndSummary } = useQuery(
+    QueryKeys.Keys.FETCH_ANALYSIS_DTO_LIST,
+    () => getIndicatorListDescription(),
+    { enabled: true }
+  );
+
+  return {
+    biIndSummary,
+    reloadBIIndSummary,
+    loadingBIIndSummary,
     isError
   }
   
