@@ -99,10 +99,8 @@ export type BIIndDTO = {
 export interface BIIndSummary {
   id: number
   name: string
-  biAreaByArea: {
-    id: number
-    description: string
-  }
+  areaId: number
+  areaName: string
   biUserIndicators: {
     userId: number
     favorite: boolean

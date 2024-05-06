@@ -88,9 +88,9 @@ const AnalysisList = () => {
     return defaultTo(biIndSummary, []).map((ind, index) => ({
       key: String(ind.id),
       id: ind.id,
-      areaId: ind.biAreaByArea.id,
+      areaId: ind.areaId,
       name: ind.name,
-      areaName: ind.biAreaByArea.description,
+      areaName: ind.areaName,
       canEdit: is(ind?.biUserIndicators.find(u => u.userId === user?.id)?.canChange) || is(ind?.biUserGroupIndicators.find(u => u.userGroupId === user?.userGroupId)?.canEdit),
       favorite: is(ind?.biUserIndicators.find(u => u.userId === user?.id)?.favorite)
     }))
