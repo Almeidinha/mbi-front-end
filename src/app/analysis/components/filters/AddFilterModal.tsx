@@ -8,7 +8,7 @@ import { FilterAction } from '@/lib/types/Filter'
 import { SaveOutlined } from '@ant-design/icons'
 import { useIndFiltersMutation } from '@/hooks/controllers/filters'
 import { isDefined } from '@/lib/helpers/safe-navigation'
-import { convertToBIAnalysisFieldDTO } from '@/lib/helpers/converters'
+import { convertToFieldDTO } from '@/lib/helpers/converters'
 
 
 interface IFilterModal extends ModalProps {
@@ -76,7 +76,7 @@ const AddFilterModal = (props: IFilterModal) => {
         buildFilterMutation({
           input: {
             filters: {...stateFilters!},
-            field: convertToBIAnalysisFieldDTO(fieldDto),
+            field: fieldDto,
             operator: fields.operator,
             value: fields.value,
             link: props.link,
